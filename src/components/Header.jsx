@@ -10,7 +10,7 @@ const Header = () => {
       {/* Logo */}
       <img
         className="w-20"
-        src="https://img.freepik.com/premium-vector/education-school-logo-design_586739-1335.jpg?w=2000"
+        src="/spt_classes_logo.svg"
         alt="logo"
       />
 
