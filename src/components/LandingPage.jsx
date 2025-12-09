@@ -1,49 +1,50 @@
-import Header from "./Header.jsx"
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Header from "./Header";
 
 export function HeroComponent() {
     const [index, setIndex] = useState(0);
     const [fade, setFade] = useState(true);
-    const colorOption = {
-        0: "blue",
-        1: "green",
-        2: "orange"
-    }
 
-    const text={
-        0:"Taher",
-        1:"Malik",
-        2:"NIT JSR"
-    }
+    const colorOption = {
+        0: "linear-gradient(to right, #1e3a8a, #2563eb)",   // Navy → Royal Blue
+        1: "linear-gradient(to right, #2563eb, #3b82f6)",   // Royal → Sky Blue
+        2: "linear-gradient(to right, #1e40af, #3b82f6)"    // Deep Blue → Sky Blue
+    };
+
+    const text = {
+        0:"NITians",
+        1: "Taher Malik",
+        2: "Ayush Pandey",
+        3: "Abhishek Kumar"
+    };
+
     useEffect(() => {
         const interval = setInterval(() => {
             setFade(false);
             setTimeout(() => {
                 setIndex((prev) => (prev + 1) % 3);
                 setFade(true);
-            }, 800); 
+            }, 800);
         }, 3000);
 
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <>
-            <div className={`w-full h-[300px] `} >
-                <div className={`
-                    w-full h-[250px]
-                    transition-all duration-500
-                    ${fade ? "translate-x-0 opacity-100" : "translate-x-100 opacity-0"}
-                `}
-                style={{ background: colorOption[index] }}>
-                    {text[index]}
-
-                </div>
-            </div >
-        </>
-    )
+        <div className="w-full h-[350px] flex items-center justify-center pt-24">
+            <div
+                className={`w-[90%] h-[250px] mx-auto rounded-xl flex items-center justify-center text-white text-5xl font-bold transition-all duration-700 ${
+                    fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
+                style={{ background: colorOption[index] }}
+            >
+                {text[index]}
+            </div>
+        </div>
+    );
 }
+
+
 export default function LandingPage() {
     return (
         <>
