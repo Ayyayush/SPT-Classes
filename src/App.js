@@ -1,28 +1,28 @@
-import {RouterProvider,createBrowserRouter} from "react-router-dom";
-import Header from "./components/Header";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./components/Login";
 import Browse from "./components/Browse";
+import Header from "./components/Header.jsx";
+import LandingPage from "./components/LandingPage.jsx";
 
-const appRouter=createBrowserRouter([
+const appRouter = createBrowserRouter([
     {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/browse",
-    element: <Browse />,
-  },
-   {
+        path: "/",
+        element: <LandingPage />,
+    },
+    {
+        path: "/browse",
+        element: <Browse />,
+    },
+    {
 
     }
 ])
 
 
-function App(){
+function App() {
     return (
         <div>
-            <Header/>
-            <RouterProvider router={appRouter}/>
+            <RouterProvider router={appRouter} />
         </div>
     )
 }

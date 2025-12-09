@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-   <div className="fixed top-0 left-0 w-full flex items-center justify-between px-8 py-3 bg-gradient-to-b from-blue-500 to-transparent">
+   <div className="sticky top-0 left-0 w-full flex items-center justify-between px-8 py-3 bg-gradient-to-b from-blue-500 to-transparent">
 
 
 
