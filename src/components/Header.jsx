@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -23,6 +24,14 @@ const Header = () => {
         <a href="/courses">Courses</a>
         <a href="/about">About</a>
         <a href="/contact">Contact</a>
+
+         {/* ✅ Login button/link */}
+        <Link
+          to="/login"
+          className="px-4 py-2 rounded-full bg-white text-blue-600 font-semibold"
+        >
+          Login
+        </Link>
       </div>
 
     </div>
