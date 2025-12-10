@@ -1,5 +1,6 @@
 import Header from "./Header.jsx"
 import { motion } from "framer-motion";
+
 export function HeroDisplay(props) {
     return (<div className="flex flex-shrink-0 w-[100vw] items-center justify-center text-3xl font-bold bg-blue-500">
         {props.msg}
@@ -28,6 +29,8 @@ export function HeroComponent() {
         </div>
     );
 }
+
+
 export default function LandingPage() {
     return (
         <>
