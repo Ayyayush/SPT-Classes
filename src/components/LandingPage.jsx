@@ -45,6 +45,7 @@ export function HeroComponent() {
 }
 
 
+
 export default function LandingPage() {
     return (
         <>
