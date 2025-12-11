@@ -1,38 +1,87 @@
 export function HeroComponent() {
   return (
-    <section className="relative w-full h-[460px] bg-gradient-to-b from-[#1E40AF] via-[#2563EB] to-[#3B82F6]">
+    <section className="relative w-full h-[520px] md:h-[600px]">
 
-      {/* Soft fade at top to detach from header */}
-      <div className="absolute top-0 left-0 w-full h-10 bg-gradient-to-b from-black/20 to-transparent" />
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://img.freepik.com/premium-photo/graduation-group-back-view-students-celebrate-education-success-excited-graduates-campus-celebration-study-goals-university-award-learning-motivation-happy-future_590464-130999.jpg?w=2000')",
+        }}
+      />
 
-      <div className="max-w-5xl mx-auto h-full flex flex-col items-center justify-center text-center px-6">
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B235A]/60 to-[#0B235A]/95"></div>
 
-        <h1 className="text-white text-4xl md:text-5xl font-bold leading-snug">
-          Empowering Students for a <br />
-          <span className="text-[#E0ECFF]">Brighter Future</span>
-        </h1>
+      {/* HERO CONTENT */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-32">
+        <div className="max-w-2xl">
 
-        <p className="mt-4 text-[#CBD5E1] text-lg max-w-2xl">
-          SPT Classes provides expert guidance, structured courses,
-          and result-oriented teaching for academic excellence.
-        </p>
+          <h1 className="text-white text-4xl md:text-5xl font-bold leading-tight">
+            Launching our Students into <br /> Bright Futures
+          </h1>
 
-        <div className="flex gap-4 mt-8">
-          <button className="px-7 py-3 bg-white text-[#1E40AF] rounded-md font-semibold shadow-lg hover:bg-gray-100 transition">
-            Get Started
-          </button>
-          <button className="px-7 py-3 border border-white/60 text-white rounded-md font-semibold hover:bg-white/10 transition">
-            View Courses
-          </button>
+          <p className="mt-4 text-white/80 text-lg">
+            SPT Classes provides expert guidance, structured courses,
+            and result-oriented teaching for academic excellence.
+          </p>
+
+          {/* CTA BUTTONS */}
+          <div className="flex gap-4 mt-8">
+            <button className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-semibold shadow-lg transition">
+              Apply Now
+            </button>
+
+            <button className="px-6 py-3 bg-white/20 border border-white/40 text-white rounded-md font-semibold backdrop-blur-md hover:bg-white/30 transition">
+              Schedule a Visit
+            </button>
+          </div>
+
         </div>
+      </div>
 
-        {/* trust row */}
-        <div className="mt-10 flex gap-10 text-sm text-[#E0ECFF] font-medium">
-          <span>✔ Expert Faculty</span>
-          <span>✔ Concept-Based Learning</span>
-          <span>✔ Proven Results</span>
+      {/* FEATURE CARDS BELOW HERO */}
+      <div className="relative z-10 -mt-10 md:-mt-16 px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          {/* CARD 1 */}
+          <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
+            <h3 className="font-semibold text-lg mb-2">Registration</h3>
+            <p className="text-white/70 text-sm">
+              Get enrolled into government-certified education programs
+              with expert faculty and structured learning paths.
+            </p>
+            <a href="#" className="text-orange-400 mt-3 inline-block text-sm font-semibold">
+              Apply now →
+            </a>
+          </div>
+
+          {/* CARD 2 */}
+          <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
+            <h3 className="font-semibold text-lg mb-2">Latest News</h3>
+            <p className="text-white/70 text-sm">
+              Stay updated with academic events, new courses,
+              and announcements from SPT Classes.
+            </p>
+            <a href="#" className="text-orange-400 mt-3 inline-block text-sm font-semibold">
+              Read more →
+            </a>
+          </div>
+
+          {/* CARD 3 */}
+          <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
+            <h3 className="font-semibold text-lg mb-2">Discover Us</h3>
+            <p className="text-white/70 text-sm">
+              Learn more about our vision, teaching methodology,
+              and modern education ecosystem.
+            </p>
+            <a href="#" className="text-orange-400 mt-3 inline-block text-sm font-semibold">
+              Learn more →
+            </a>
+          </div>
+
         </div>
-
       </div>
     </section>
   );
