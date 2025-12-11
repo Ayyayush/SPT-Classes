@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Login.css";
+import "./Style/Login.css"
 import logo from "./Assets/spt_classes_logo.svg";
 
 export function LeftLoginComponent() {
