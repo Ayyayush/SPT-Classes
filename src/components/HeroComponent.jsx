@@ -1,4 +1,70 @@
+import { useEffect, useLayoutEffect, useState } from "react";
+
+export function CardComponent(props) {
+  const titleArray=["Registration","Latest News","Discover Us"]
+  const messageArray=[
+    "Get enrolled into government-certified education programswith expert faculty and structured learning paths.",
+    "Stay updated with academic events, new courses,and announcements from SPT Classes.",
+    "Learn more about our vision, teaching methodology,and modern education ecosystem."
+  ]
+  const buttonTextArray=[
+    "Apply Now →","Read more →","Learn more →"
+  ]
+  return (
+    <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
+      <h3 className="font-semibold text-lg mb-2">{titleArray[props?.index]}</h3>
+      <p className="text-white/70 text-sm">
+        {messageArray[props?.index]}
+      </p>
+      <a href="#" className="text-orange-400 mt-3 inline-block text-sm font-semibold">
+        {buttonTextArray[props?.index]}
+      </a>
+    </div>
+  )
+}
+
+export function CardSkeleton() {
+  return (
+    <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10 space-y-3">
+
+      {/* Title */}
+      <div className="relative w-32 h-5 bg-white/20 rounded overflow-hidden">
+        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+      </div>
+
+      {/* Message (2–3 lines) */}
+      <div className="space-y-2">
+        <div className="relative w-full h-4 bg-white/20 rounded overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+        </div>
+
+        <div className="relative w-3/4 h-4 bg-white/20 rounded overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+        </div>
+
+        <div className="relative w-1/2 h-4 bg-white/20 rounded overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+        </div>
+      </div>
+
+      {/* Button */}
+      <div className="relative w-28 h-4 bg-orange-400/40 rounded overflow-hidden mt-3">
+        <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+      </div>
+
+    </div>
+  );
+}
+
 export function HeroComponent() {
+  const [skeleton,setSkeleton]=useState(true)
+  useEffect(()=>{
+    setTimeout(()=>{
+      setSkeleton(false)
+    },1000)
+
+  },[])
+
   return (
     <section className="relative w-full h-[520px] md:h-[600px]">
 
@@ -46,41 +112,14 @@ export function HeroComponent() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
 
           {/* CARD 1 */}
-          <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
-            <h3 className="font-semibold text-lg mb-2">Registration</h3>
-            <p className="text-white/70 text-sm">
-              Get enrolled into government-certified education programs
-              with expert faculty and structured learning paths.
-            </p>
-            <a href="#" className="text-orange-400 mt-3 inline-block text-sm font-semibold">
-              Apply now →
-            </a>
-          </div>
+          {skeleton ? <CardSkeleton/>:<CardComponent index={0}/>}
 
           {/* CARD 2 */}
-          <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
-            <h3 className="font-semibold text-lg mb-2">Latest News</h3>
-            <p className="text-white/70 text-sm">
-              Stay updated with academic events, new courses,
-              and announcements from SPT Classes.
-            </p>
-            <a href="#" className="text-orange-400 mt-3 inline-block text-sm font-semibold">
-              Read more →
-            </a>
-          </div>
-
+          {skeleton ? <CardSkeleton/>:<CardComponent index={1}/>}
+          
           {/* CARD 3 */}
-          <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
-            <h3 className="font-semibold text-lg mb-2">Discover Us</h3>
-            <p className="text-white/70 text-sm">
-              Learn more about our vision, teaching methodology,
-              and modern education ecosystem.
-            </p>
-            <a href="#" className="text-orange-400 mt-3 inline-block text-sm font-semibold">
-              Learn more →
-            </a>
-          </div>
-
+          {skeleton ? <CardSkeleton/>:<CardComponent index={2}/>}
+          
         </div>
       </div>
     </section>

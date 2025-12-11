@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const teamMembers = [
@@ -10,18 +10,31 @@ const teamMembers = [
   },
   {
     name: "Tahir",
-    linkedin: "https://www.linkedin.com/in/mukul-sapra-ba31b3372/",
+    linkedin: "https://www.linkedin.com/in/taher-malik-4712a9270/",
     github: "https://github.com/tahermalik",
   },
   {
     name: "Abhishek",
-    linkedin: "https://www.linkedin.com/in/rahul--bhandari/",
+    linkedin: "https://www.linkedin.com/in/abhishek-kumar-18b862323/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     github: "https://github.com/whoisabhishekk",
   },
 ];
 
+
 const Header = () => {
   const [showTeam, setShowTeam] = useState(false);
+  const navigate=useNavigate();
+  async function doLogin(e) {
+    try {
+      e.preventDefault();
+      e.stopPropagation();
+      navigate("/login")
+
+
+    } catch (error) {
+      console.log("error while login" + error)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] shadow-md">
@@ -100,19 +113,16 @@ const Header = () => {
             </div>
           )}
 
-          {/* SIGN IN */}
-          <button className="text-white/90 hover:text-white transition text-sm font-medium">
-            Sign In
-          </button>
-
-          {/* SIGN UP */}
-          <button
+          {/* Log-In */}
+          <div
+            onClick={(e) => doLogin(e)}
             className="px-4 py-2 rounded-md text-white font-semibold 
                       bg-gradient-to-r from-[#3B82F6] to-[#2563EB]
-                      hover:opacity-90 transition shadow-md"
+                      hover:opacity-90 transition shadow-md border-gray-200 border-[1px]
+                      hover:border-gray-400 cursor-pointer"
           >
-            Sign Up
-          </button>
+            Log-In
+          </div>
         </div>
       </div>
     </header>
