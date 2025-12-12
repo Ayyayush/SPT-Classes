@@ -23,6 +23,7 @@ export function LeftLoginComponent() {
     </div>
   )
 }
+
 export function LoginSkeleton() {
   return (
     <div className="login-right animate-pulse">
@@ -69,7 +70,6 @@ export function LoginSkeleton() {
     </div>
   );
 }
-
 
 const RightLoginComponent = () => {
   const [email, setEmail] = useState("");
@@ -229,7 +229,6 @@ export default function Login() {
         <div className="login-box">
           <LeftLoginComponent />
           {skeleton ? <LoginSkeleton /> : <RightLoginComponent />}
-
         </div>
       </div>
     </>
