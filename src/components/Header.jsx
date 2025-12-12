@@ -17,7 +17,8 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const menuRef = useRef(null);
-
+  const announcementsRef=useRef(null)
+  
   useEffect(() => {
     try {
       const raw = localStorage.getItem("user");
@@ -64,10 +65,10 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] shadow-md">
       <div className="w-full flex items-center justify-between px-4 md:px-12 py-4">
         <div className="flex items-center gap-3 min-w-[140px]">
-          <img src={logo} alt="SPT Classes Logo" className="w-12 h-12 object-contain" />
+          <img src={logo} alt="SPT Classes Logo" className="w-14.5 h-13 object-contain" />
           <div className="leading-tight hidden sm:block">
-            <p className="text-white text-lg font-semibold">SPT Classes</p>
-            <p className="text-blue-100 text-xs tracking-widest">EDUCATION & SERVICES</p>
+            <p className="text-white text-lg font-semibold">Sharp Programmer Technology</p>
+            <p className="text-blue-100 text-xs tracking-widest">Where Learning Meets Excellence.</p>
           </div>
         </div>
 

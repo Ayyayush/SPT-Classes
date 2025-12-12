@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Style/Login.css"
 import logo from "./Assets/spt_classes_logo.svg";
+import { useNavigate } from "react-router-dom";
 
 export function LeftLoginComponent() {
   return (
@@ -72,6 +73,7 @@ export function LoginSkeleton() {
 }
 
 const RightLoginComponent = () => {
+  const navigate=useNavigate();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
 
@@ -135,6 +137,17 @@ const RightLoginComponent = () => {
     }
 
     console.log("Login Data:", { email, password });
+  }
+
+  function loadSignUp(e){
+    try{
+      e.preventDefault();
+      e.stopPropagation();
+      navigate("/signup")
+
+    }catch(error){
+      console.log(error+"error while going to sign up from login")
+    }
   }
 
   return (
@@ -208,7 +221,7 @@ const RightLoginComponent = () => {
 
       <p className="login-right-subtext">
         Don't have an SPT Classes account yet?{" "}
-        <span className="link-text">Create one now</span>
+        <span className="link-text" onClick={(e)=>loadSignUp(e)}>Create one now</span>
       </p>
     </div>
   );

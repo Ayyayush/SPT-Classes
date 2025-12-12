@@ -1,9 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./Assets/spt_classes_logo.svg";
 import "./Style/Signup.css";
 
-export default function Signup() {
+function LeftSignUp() {
+  return (
+    <div className="signup-left">
+      <div className="signup-left-top">
+        <img src={logo} alt="logo" className="signup-left-logo" />
+      </div>
+
+      <div className="signup-left-content">
+        <h2>
+          <span>Join</span> SPT Classes
+        </h2>
+        <p>
+          Start learning — access courses, progress tracking and community.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function RightSignUp() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -96,7 +115,7 @@ export default function Signup() {
       const users = JSON.parse(localStorage.getItem("demo_users") || "[]");
       users.push(user);
       localStorage.setItem("demo_users", JSON.stringify(users));
-    } catch (err) {}
+    } catch (err) { }
 
     setSuccessMsg("Account created successfully! Redirecting to login...");
     setForm({
@@ -115,6 +134,214 @@ export default function Signup() {
   }
 
   return (
+    <div className="signup-right">
+      <h3 className="signup-right-title">Create your account</h3>
+
+      <form className="signup-form" onSubmit={handleSubmit} noValidate>
+        <div className="form-grid">
+          <div className="form-field">
+            <label>Full name</label>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your full name"
+            />
+            {errors.name && <p className="error-text">{errors.name}</p>}
+          </div>
+
+          <div className="form-field">
+            <label>Email</label>
+            <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+            />
+            {errors.email && <p className="error-text">{errors.email}</p>}
+          </div>
+        </div>
+
+        <div className="form-grid">
+          <div className="form-field">
+            <label>Password</label>
+            <div className="password-row">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={form.password}
+                onChange={handleChange}
+                placeholder="At least 8 characters"
+              />
+              <button
+                type="button"
+                className="show-btn"
+                onClick={() => setShowPassword((s) => !s)}
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <div className="password-hint">
+              <small>
+                Use at least 8 characters including uppercase, lowercase & a
+                number.
+              </small>
+            </div>
+
+            <div className="password-strength">
+              <div
+                className={`password-strength-bar ${passwordStrength.color}`}
+                style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+              />
+              {passwordStrength.label && (
+                <span
+                  className={`password-strength-label ${passwordStrength.color}`}
+                >
+                  {passwordStrength.label} password
+                </span>
+              )}
+            </div>
+            {errors.password && (
+              <p className="error-text">{errors.password}</p>
+            )}
+          </div>
+
+          <div className="form-field">
+            <label>Confirm password</label>
+            <div className="password-row">
+              <input
+                name="confirm"
+                type={showConfirm ? "text" : "password"}
+                value={form.confirm}
+                onChange={handleChange}
+                placeholder="Repeat your password"
+              />
+              <button
+                type="button"
+                className="show-btn"
+                onClick={() => setShowConfirm((s) => !s)}
+                aria-label="Toggle confirm visibility"
+              >
+                {showConfirm ? "Hide" : "Show"}
+              </button>
+            </div>
+            {errors.confirm && (
+              <p className="error-text">{errors.confirm}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="form-grid">
+          <div className="form-field terms-field">
+            <label className="terms-label">
+              <input
+                type="checkbox"
+                name="accepted"
+                checked={form.accepted}
+                onChange={handleChange}
+                className="checkbox-input"
+              />
+              <span>I agree to the Terms & Conditions</span>
+            </label>
+            {errors.accepted && (
+              <p className="error-text">{errors.accepted}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="form-actions">
+          <button type="submit" className="primary-btn">
+            Create account
+          </button>
+          {successMsg && <p className="success-text">{successMsg}</p>}
+        </div>
+
+        <p className="small-note">
+          Already have an account?{" "}
+          <button
+            type="button"
+            className="link-text"
+            onClick={() => navigate("/login")}
+          >
+            Log in
+          </button>
+        </p>
+      </form>
+    </div>
+  )
+}
+
+function RightSignUpSkeleton() {
+  return (
+    <div className="signup-right space-y-6">
+      {/* Title */}
+      <div className="w-48 h-6 bg-gray-400 rounded"></div>
+
+      {/* Form grid: Full Name & Email */}
+      <div className="form-grid gap-4">
+        {/* Full Name */}
+        <div className="form-field space-y-2">
+          <div className="w-full h-4 bg-gray-400 rounded"></div>
+          <div className="w-3/4 h-4 bg-gray-400 rounded"></div>
+        </div>
+
+        {/* Email */}
+        <div className="form-field space-y-2">
+          <div className="w-full h-4 bg-gray-400 rounded"></div>
+          <div className="w-3/4 h-4 bg-gray-400 rounded"></div>
+        </div>
+      </div>
+
+      {/* Password & Confirm */}
+      <div className="form-grid gap-4">
+        {/* Password */}
+        <div className="form-field space-y-2">
+          <div className="w-full h-4 bg-gray-400 rounded"></div>
+          <div className="w-full h-4 bg-gray-400 rounded"></div>
+          <div className="w-full h-2 bg-gray-400 rounded mt-2"></div> {/* strength bar */}
+        </div>
+
+        {/* Confirm Password */}
+        <div className="form-field space-y-2">
+          <div className="w-full h-4 bg-gray-400 rounded"></div>
+          <div className="w-full h-4 bg-gray-400 rounded"></div>
+        </div>
+      </div>
+
+      {/* Terms & Conditions */}
+      <div className="form-grid">
+        <div className="form-field terms-field space-y-2">
+          <div className="w-5/6 h-4 bg-gray-400 rounded"></div>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="form-actions space-y-2">
+        <div className="w-40 h-10 bg-gray-500 rounded"></div>
+        <div className="w-32 h-8 bg-gray-400 rounded"></div>
+      </div>
+
+      {/* Small note */}
+      <div className="w-3/4 h-4 bg-gray-400 rounded"></div>
+    </div>
+  );
+}
+
+
+
+
+
+export default function Signup() {
+  const [skeleton,setSkeleton]=useState(true);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setSkeleton(false);
+    },1000)
+  },[])
+
+  return (
     <div className="signup-page">
       <div className="login-bg" aria-hidden="true">
         <div className="login-bg-layer layer-1" />
@@ -124,156 +351,11 @@ export default function Signup() {
       </div>
 
       <div className="signup-box">
-        <div className="signup-left">
-          <div className="signup-left-top">
-            <img src={logo} alt="logo" className="signup-left-logo" />
-          </div>
+        <LeftSignUp/>
+        {skeleton ? <RightSignUpSkeleton /> : <RightSignUp />}
 
-          <div className="signup-left-content">
-            <h2>
-              <span>Join</span> SPT Classes
-            </h2>
-            <p>
-              Start learning — access courses, progress tracking and community.
-            </p>
-          </div>
-        </div>
 
-        <div className="signup-right">
-          <h3 className="signup-right-title">Create your account</h3>
 
-          <form className="signup-form" onSubmit={handleSubmit} noValidate>
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Full name</label>
-                <input
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Your full name"
-                />
-                {errors.name && <p className="error-text">{errors.name}</p>}
-              </div>
-
-              <div className="form-field">
-                <label>Email</label>
-                <input
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                />
-                {errors.email && <p className="error-text">{errors.email}</p>}
-              </div>
-            </div>
-
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Password</label>
-                <div className="password-row">
-                  <input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    value={form.password}
-                    onChange={handleChange}
-                    placeholder="At least 8 characters"
-                  />
-                  <button
-                    type="button"
-                    className="show-btn"
-                    onClick={() => setShowPassword((s) => !s)}
-                    aria-label="Toggle password visibility"
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
-                <div className="password-hint">
-                  <small>
-                    Use at least 8 characters including uppercase, lowercase & a
-                    number.
-                  </small>
-                </div>
-
-                <div className="password-strength">
-                  <div
-                    className={`password-strength-bar ${passwordStrength.color}`}
-                    style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
-                  />
-                  {passwordStrength.label && (
-                    <span
-                      className={`password-strength-label ${passwordStrength.color}`}
-                    >
-                      {passwordStrength.label} password
-                    </span>
-                  )}
-                </div>
-                {errors.password && (
-                  <p className="error-text">{errors.password}</p>
-                )}
-              </div>
-
-              <div className="form-field">
-                <label>Confirm password</label>
-                <div className="password-row">
-                  <input
-                    name="confirm"
-                    type={showConfirm ? "text" : "password"}
-                    value={form.confirm}
-                    onChange={handleChange}
-                    placeholder="Repeat your password"
-                  />
-                  <button
-                    type="button"
-                    className="show-btn"
-                    onClick={() => setShowConfirm((s) => !s)}
-                    aria-label="Toggle confirm visibility"
-                  >
-                    {showConfirm ? "Hide" : "Show"}
-                  </button>
-                </div>
-                {errors.confirm && (
-                  <p className="error-text">{errors.confirm}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="form-grid">
-              <div className="form-field terms-field">
-                <label className="terms-label">
-                  <input
-                    type="checkbox"
-                    name="accepted"
-                    checked={form.accepted}
-                    onChange={handleChange}
-                    className="checkbox-input"
-                  />
-                  <span>I agree to the Terms & Conditions</span>
-                </label>
-                {errors.accepted && (
-                  <p className="error-text">{errors.accepted}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="form-actions">
-              <button type="submit" className="primary-btn">
-                Create account
-              </button>
-              {successMsg && <p className="success-text">{successMsg}</p>}
-            </div>
-
-            <p className="small-note">
-              Already have an account?{" "}
-              <button
-                type="button"
-                className="link-text"
-                onClick={() => navigate("/login")}
-              >
-                Log in
-              </button>
-            </p>
-          </form>
-        </div>
       </div>
     </div>
   );

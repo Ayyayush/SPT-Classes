@@ -1,14 +1,14 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 export function CardComponent(props) {
-  const titleArray=["Registration","Latest News","Discover Us"]
-  const messageArray=[
+  const titleArray = ["Registration", "Latest Announcements", "Discover Us"]
+  const messageArray = [
     "Get enrolled into government-certified education programswith expert faculty and structured learning paths.",
     "Stay updated with academic events, new courses,and announcements from SPT Classes.",
     "Learn more about our vision, teaching methodology,and modern education ecosystem."
   ]
-  const buttonTextArray=[
-    "Apply Now →","Read more →","Learn more →"
+  const buttonTextArray = [
+    "Apply Now →", "Read more →", "Learn more →"
   ]
   return (
     <div className="bg-[#0B235A] text-white rounded-lg p-6 shadow-xl border border-white/10">
@@ -56,14 +56,20 @@ export function CardSkeleton() {
   );
 }
 
-export function HeroComponent() {
-  const [skeleton,setSkeleton]=useState(true)
-  useEffect(()=>{
-    setTimeout(()=>{
+const HeroComponent = forwardRef((props, ref) => {
+  const [skeleton, setSkeleton] = useState(true)
+  useEffect(() => {
+    setTimeout(() => {
       setSkeleton(false)
-    },1000)
+    }, 1000)
 
-  },[])
+  }, [])
+
+  const handleAnnouncements = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section className="relative w-full h-[520px] md:h-[600px]">
@@ -112,16 +118,20 @@ export function HeroComponent() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
 
           {/* CARD 1 */}
-          {skeleton ? <CardSkeleton/>:<CardComponent index={0}/>}
+          {skeleton ? <CardSkeleton /> : <CardComponent index={0} />}
 
           {/* CARD 2 */}
-          {skeleton ? <CardSkeleton/>:<CardComponent index={1}/>}
-          
+          <div onClick={(e)=>handleAnnouncements(e)}>
+            {skeleton ? <CardSkeleton /> : <CardComponent index={1} />}
+          </div>
+
           {/* CARD 3 */}
-          {skeleton ? <CardSkeleton/>:<CardComponent index={2}/>}
-          
+          {skeleton ? <CardSkeleton /> : <CardComponent index={2} />}
+
         </div>
       </div>
     </section>
   );
-}
+})
+
+export default HeroComponent;
