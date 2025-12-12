@@ -7,7 +7,7 @@ import logo from "./Assets/spt_classes_logo.svg";
 
 const teamMembers = [
   { name: "Ayush", linkedin: "#", github: "#" },
-  { name: "Tahir", linkedin: "#", github: "#" },
+  { name: "Taher", linkedin: "#", github: "#" },
   { name: "Abhishek", linkedin: "#", github: "#" },
 ];
 
