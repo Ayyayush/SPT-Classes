@@ -10,13 +10,13 @@ export const courses = {
       title: "C++ Programming",
       desc: "Learn OOP + DS basics.",
       duration: "2 Months",
-      img: "https://cdn-icons-png.flaticon.com/512/6132/6132222.png",
+      img: "https://img.icons8.com/color/480/c-plus-plus-logo.png",
     },
     {
       title: "Java Programming",
       desc: "Core Java + Swing + DB.",
       duration: "3 Months",
-      img: "https://cdn-icons-png.flaticon.com/512/226/226777.png",
+      img: "https://img.icons8.com/color/480/java-coffee-cup-logo.png",
     }
   ],
 
