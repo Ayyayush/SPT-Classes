@@ -4,7 +4,7 @@ import { FaChevronLeft,FaChevronRight } from "react-icons/fa6";
 
 export function ReviewCardSkeleton() {
   return (
-    <div className="w-[300px] h-[300px] bg-blue-50 rounded-2xl shadow-md p-4 flex flex-col gap-3 animate-pulse">
+    <div className="w-[400px] h-[300px] bg-blue-50 rounded-2xl shadow-md p-4 flex flex-col gap-3 animate-pulse">
 
       {/* User section */}
       <div className="flex items-center gap-3">
@@ -44,7 +44,7 @@ export function ReviewCardSkeleton() {
 
 export function ReviewCard(props) {
   return (
-    <div className="w-[300px] bg-blue-50 rounded-2xl shadow-md flex flex-col gap-3 hover:shadow-lg transition h-[300px] p-4">
+    <div className="w-[400px] bg-blue-50 rounded-2xl shadow-md flex flex-col gap-3 hover:shadow-lg transition h-[300px] p-4">
 
       {/* User Info */}
       <div className="flex items-center gap-3">
