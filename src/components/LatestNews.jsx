@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 
 const newsData = [
   {
@@ -27,22 +27,45 @@ const newsData = [
   },
 ];
 
-const LatestNews =forwardRef((props,ref)=>{
+const LatestNews = forwardRef((props, ref) => {
+  //// flipped is an array where initially all the index are false
   const [flipped, setFlipped] = useState(Array(newsData.length).fill(false));
 
-  const toggleFlip = (index) => {
-    const newFlipped = [...flipped];
-    newFlipped[index] = !newFlipped[index];
-    setFlipped(newFlipped);
-  };
+  useEffect(() => {
+    const flipCardsSequentially = async () => {
+      while (true) { // continuous loop
+        for (let i = 0; i < newsData.length; i++) {
+          // Flip forward
+          setFlipped((prev) => {
+            const newFlipped = [...prev];
+            newFlipped[i] = true;
+            return newFlipped;
+          });
+          await new Promise((resolve) => setTimeout(resolve, 2000)); // stay flipped 2s
 
-  async function loadMoreAnnouncements(e){
-    try{
-        e.preventDefault();
-        e.stopPropagation();
+          // Flip back
+          setFlipped((prev) => {
+            const newFlipped = [...prev];
+            newFlipped[i] = false;
+            return newFlipped;
+          });
+          await new Promise((resolve) => setTimeout(resolve, 500)); // wait before next card
+        }
+      }
+    };
 
-    }catch(error){
-        console.log(error+"Error while loading anoucements")
+    flipCardsSequentially();
+  }, []);
+
+
+
+  async function loadMoreAnnouncements(e) {
+    try {
+      e.preventDefault();
+      e.stopPropagation();
+
+    } catch (error) {
+      console.log(error + "Error while loading anoucements")
     }
   }
 
@@ -55,7 +78,7 @@ const LatestNews =forwardRef((props,ref)=>{
           <div
             key={i}
             className="flip-card cursor-pointer"
-            onClick={() => toggleFlip(i)}
+
           >
             <div className={`flip-card-inner ${flipped[i] ? "flipped" : ""}`}>
               {/* Front */}
@@ -71,8 +94,11 @@ const LatestNews =forwardRef((props,ref)=>{
           </div>
         ))}
       </div>
-      <div onClick={(e)=>loadMoreAnnouncements(e)} className="w-[100%] flex justify-center mt-4 underline text-blue-800 cursor-pointer">
-        View More Anouncements
+      <div onClick={(e) => loadMoreAnnouncements(e)} className="w-[100%] flex justify-center mt-4 text-blue-600 cursor-pointer">
+        <div className="transition-all duration-2000 linear hover:text-blue-800 font-semibold relative group">
+          View More Anouncements
+          <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-800 transition-all duration-300 group-hover:w-full"></span>
+        </div>
       </div>
     </div>
   );
