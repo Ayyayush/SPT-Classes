@@ -5,6 +5,8 @@ import Header from "./components/Header.jsx";
 import LandingPage from "./components/LandingPage.jsx";
 import Signup from "./components/Signup.jsx";
 import CoursesPage from "./Pages/CoursesPage";
+import RegisterForm from "./components/RegisterForm.jsx";
+
 
 const appRouter = createBrowserRouter([
     {
@@ -25,6 +27,10 @@ const appRouter = createBrowserRouter([
     {   path: "/courses" ,
         element: <CoursesPage /> 
     },
+    {   path: "/registerForm" ,
+        element: <RegisterForm /> 
+    },
+
 ])
 
 

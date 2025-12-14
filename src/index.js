@@ -3,25 +3,39 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
+import { Provider } from 'react-redux';
+import store from './redux/Store/store.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/service-worker.js")
-      .then((reg) => {
-        console.log("Service Worker registered", reg);
-      })
-      .catch((err) => {
-        console.error("SW registration failed", err);
-      });
-  });
+  const isLocalhost =
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1';
+
+  if (isLocalhost) {
+    navigator.serviceWorker.getRegistrations().then((regs) => {
+      regs.forEach((reg) => reg.unregister());
+    });
+  } else {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then((reg) => {
+          console.log("Service Worker registered", reg);
+        })
+        .catch((err) => {
+          console.error("SW registration failed", err);
+        });
+    });
+  }
 }
 
 // If you want to start measuring performance in your app, pass a function

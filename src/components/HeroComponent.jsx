@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function CardComponent(props) {
   const titleArray = ["Registration", "Latest Announcements", "Discover Us"]
@@ -58,6 +59,7 @@ export function CardSkeleton() {
 
 const HeroComponent = forwardRef((props, ref) => {
   const [skeleton, setSkeleton] = useState(true)
+  const navigate=useNavigate();
   useEffect(() => {
     setTimeout(() => {
       setSkeleton(false)
@@ -69,6 +71,13 @@ const HeroComponent = forwardRef((props, ref) => {
     e.preventDefault();
     e.stopPropagation();
     ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate("/registerForm")
+   
   };
 
   return (
@@ -118,7 +127,9 @@ const HeroComponent = forwardRef((props, ref) => {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
 
           {/* CARD 1 */}
-          {skeleton ? <CardSkeleton /> : <CardComponent index={0} />}
+          <div onClick={(e)=>handleRegister(e)}>
+            {skeleton ? <CardSkeleton /> : <CardComponent index={0} />}
+          </div>
 
           {/* CARD 2 */}
           <div onClick={(e)=>handleAnnouncements(e)}>

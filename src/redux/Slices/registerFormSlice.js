@@ -1,0 +1,31 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+const registrationFormSlice = createSlice({
+    name: 'RegistrationForm',
+    initialState:{
+        details:{
+            studentFullName:"",
+            studentPhoneNumber:"",
+            studentAge:"",
+            studentEmailId:"",
+            studentDomain:"",
+            assistance:false
+        }
+    },
+    reducers: {
+        /// action.payload will be an object
+        setDetails:(state,action)=>{
+            state.details.studentFullName=action.payload.studentFullName;
+            state.details.studentPhoneNumber=action.payload.studentPhoneNumber;
+            state.details.studentAge=action.payload.studentAge;
+            state.details.studentEmailId=action.payload.studentEmailId;
+            state.details.studentDomain=action.payload.studentDomain;
+            state.details.assistance=action.payload.assistance;
+
+        },
+    },
+});
+
+
+export const { setDetails } = registrationFormSlice.actions;
+export default registrationFormSlice.reducer;
