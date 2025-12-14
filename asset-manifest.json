@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/SPT-Classes/static/css/main.fdf819d7.css",
+    "main.js": "/SPT-Classes/static/js/main.af2032d7.js",
+    "static/js/453.062e599e.chunk.js": "/SPT-Classes/static/js/453.062e599e.chunk.js",
+    "static/media/teacher.png": "/SPT-Classes/static/media/teacher.49ef6a3655f01bb462cf.png",
+    "static/media/spt_classes_logo.svg": "/SPT-Classes/static/media/spt_classes_logo.abf310ec99d32fb36e28c473034a8924.svg",
+    "index.html": "/SPT-Classes/index.html",
+    "main.fdf819d7.css.map": "/SPT-Classes/static/css/main.fdf819d7.css.map",
+    "main.af2032d7.js.map": "/SPT-Classes/static/js/main.af2032d7.js.map",
+    "453.062e599e.chunk.js.map": "/SPT-Classes/static/js/453.062e599e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fdf819d7.css",
+    "static/js/main.af2032d7.js"
+  ]
+}
