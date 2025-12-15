@@ -2,9 +2,7 @@
   "name": "spt-classes",
   "version": "0.1.0",
   "private": true,
-
   "homepage": "https://ayyayush.github.io/SPT-Classes",
-
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.1",
     "@testing-library/dom": "^10.4.1",
@@ -22,11 +20,9 @@
     "react-select": "^5.10.2",
     "web-vitals": "^2.1.4"
   },
-
   "devDependencies": {
     "gh-pages": "^6.1.1"
   },
-
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -36,14 +32,12 @@
     "eject": "react-scripts eject",
     "dev": "nodemon index.js"
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
   },
-
   "browserslist": {
     "production": [
       ">0.2%",
