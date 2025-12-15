@@ -6,6 +6,7 @@ import LandingPage from "./components/LandingPage.jsx";
 import Signup from "./components/Signup.jsx";
 import CoursesPage from "./Pages/CoursesPage";
 import RegisterForm from "./components/RegisterForm.jsx";
+import { Toaster } from "react-hot-toast";
 
 
 const appRouter = createBrowserRouter([
@@ -38,6 +39,7 @@ function App() {
     return (
         <div>
             <RouterProvider router={appRouter} />
+            <Toaster position="top-center" reverseOrder={false} />
         </div>
     )
 }

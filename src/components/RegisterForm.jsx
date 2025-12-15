@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { setDetails } from "../redux/Slices/registerFormSlice";
+import axios from "axios";
+import { ADMIN_ENDPOINTS } from "./endpoint";
+import toast from "react-hot-toast";
 
 const ageOptions = [
     { value: "under-16", label: "Under 16" },
@@ -33,17 +36,16 @@ const selectStyles = {
 };
 export default function RegisterForm() {
     const [name, setName] = useState("")
-    const [age, setAge] = useState(23);
+    const [age, setAge] = useState(null);
     const [phoneNumber, setPhoneNumber] = useState("")
     const [emailId, setEmailId] = useState("")
-    const [domain, setDomain] = useState("")
+    const [domain, setDomain] = useState(null)
     const [guidance, setGuidance] = useState(false)
     const [needGuidance, setNeedGuidance] = useState(false)
     const dispatch = useDispatch()
 
-
     useEffect(() => {
-        if (domain === "not-sure") {
+        if (domain?.value === "not-sure") {
             setGuidance(true)
         }else{
             setGuidance(false)
@@ -55,26 +57,62 @@ export default function RegisterForm() {
         try {
             e.preventDefault();
             e.stopPropagation();
+
+            setName(prev=>prev.trim())
+            if(name===""){
+                toast.error("name cant be empty");
+                return;
+            }
+            if(!age){
+                toast.error("Select the age");
+                return;
+            }
+
+
+            const regexEmailId = /^[a-zA-Z0-9]+@gmail\.(com|in|net|org)$/;
+            if (!regexEmailId.test(emailId)) {
+                console.log("invalid mail")
+                toast.error("Invalid email!");
+                return;
+            } 
+            
+            const regexPhoneNumber=/^[0-9]{10}$/
+            if (!regexPhoneNumber.test(phoneNumber)) {
+                console.log("invalid phone number")
+                toast.error("Invalid phone number!");
+                return;
+            } 
+
+            if(!domain){
+                toast.error("Select the domain");
+                return;
+            }
+
+
+
             const obj = {
                 studentFullName: name,
                 studentPhoneNumber: phoneNumber,
-                studentAge: age,
+                studentAge: age?.value,
                 studentEmailId: emailId,
-                studentDomain: domain,
-                assistance: needGuidance
+                studentDomain: domain?.value,
+                needGuidance: needGuidance
             }
             dispatch(setDetails(obj))
 
             setName("");
             setPhoneNumber("")
             setEmailId("")
-            setAge("")
-            setDomain("")
+            setAge(null)
+            setDomain(null)
             setGuidance(false)
             setNeedGuidance(false)
-
+            console.log(obj)
+            await axios.post(`${ADMIN_ENDPOINTS}/addStudentInfo`,{studentDetails:obj},{withCredentials:true})
+            toast.success("Data saved successfully")
 
         } catch (error) {
+            toast.error("Something went wrong")
             console.log("error while submitting registration details" + error)
         }
     }
@@ -91,7 +129,7 @@ export default function RegisterForm() {
                         Register to get personalized course guidance
                     </p>
 
-                    <form className="space-y-4">
+                    <div className="space-y-4">
                         {/* Name */}
                         <div className="flex flex-col">
                             <label className="text-sm font-medium mb-1 text-gray-700">Full Name</label>
@@ -111,7 +149,8 @@ export default function RegisterForm() {
                             <Select
                                 isSearchable={false}
                                 options={ageOptions}
-                                onChange={(e) => setAge(e.value)}
+                                value={age}
+                                onChange={(e) => setAge(e)}
                                 placeholder="Select age range"
                                 styles={selectStyles}
                                 required
@@ -125,6 +164,7 @@ export default function RegisterForm() {
                                 type="email"
                                 value={emailId}
                                 required
+                                pattern="^[a-zA-Z0-9]+@gmail\.(com|in|net|org)$" 
                                 onChange={(e) => setEmailId(e.target.value)}
                                 placeholder="you@example.com"
                                 className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -137,6 +177,8 @@ export default function RegisterForm() {
                             <input
                                 type="tel"
                                 value={phoneNumber}
+                                maxLength={10}
+                                inputMode="numeric"
                                 required
                                 onChange={(e) => setPhoneNumber(e.target.value)}
                                 placeholder="Enter your phone number"
@@ -151,7 +193,8 @@ export default function RegisterForm() {
                                 isSearchable={false}
                                 options={domainOptions}
                                 required
-                                onChange={(e) => setDomain(e.value)}
+                                value={domain}
+                                onChange={(e) => setDomain(e)}
                                 placeholder="Select a domain"
                                 styles={selectStyles}
                             />
@@ -176,7 +219,7 @@ export default function RegisterForm() {
                         >
                             Get Course Details
                         </div>
-                    </form>
+                    </div>
 
                     <p className="text-xs text-center text-gray-400 mt-4">
                         We’ll contact you with personalized guidance and next steps

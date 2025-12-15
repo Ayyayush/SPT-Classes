@@ -9,7 +9,7 @@ const registrationFormSlice = createSlice({
             studentAge:"",
             studentEmailId:"",
             studentDomain:"",
-            assistance:false
+            needGuidance:false
         }
     },
     reducers: {
@@ -20,7 +20,7 @@ const registrationFormSlice = createSlice({
             state.details.studentAge=action.payload.studentAge;
             state.details.studentEmailId=action.payload.studentEmailId;
             state.details.studentDomain=action.payload.studentDomain;
-            state.details.assistance=action.payload.assistance;
+            state.details.needGuidance=action.payload.needGuidance;
 
         },
     },
