@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Lenis from "lenis";
 import Login from "./components/Login";
 import Browse from "./components/Browse";
 import Header from "./components/Header.jsx";
@@ -23,19 +25,39 @@ const appRouter = createBrowserRouter([
          element: <Login />,
     },
     {   path: "/signup",
-        element: <Signup /> 
+        element: <Signup />
     },
     {   path: "/courses" ,
-        element: <CoursesPage /> 
+        element: <CoursesPage />
     },
     {   path: "/registerForm" ,
-        element: <RegisterForm /> 
+        element: <RegisterForm />
     },
 
 ])
 
 
 function App() {
+    useEffect(() => {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            smoothTouch: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        return () => {
+            lenis.destroy();
+        };
+    }, []);
+
     return (
         <div>
             <RouterProvider router={appRouter} />
