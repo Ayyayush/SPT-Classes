@@ -43,34 +43,36 @@ export function ReviewCardSkeleton() {
 
 
 export function ReviewCard(props) {
+  const getInitials = (name) => {
+    if (!name) return "A";
+    const parts = name.split(" ");
+    if (parts.length > 1) {
+      return parts[0][0] + parts[1][0];
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
   return (
-    <div className="w-[400px] bg-blue-50 rounded-2xl shadow-md flex flex-col gap-3 hover:shadow-lg transition h-[300px] p-4">
+    <div className="w-[400px] bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 h-[300px] p-6 border border-gray-100 flex flex-col justify-between">
+      <div className="space-y-4">
+        <div className="flex items-start gap-4">
+          <div className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md flex-shrink-0">
+            {getInitials(props?.username)}
+          </div>
 
-      {/* User Info */}
-      <div className="flex items-center gap-3">
-        {/* User Avatar */}
-        <div className="h-12 w-12 rounded-full bg-blue-200 flex items-center justify-center text-blue-800 font-semibold text-lg">
+          <div className="flex-1">
+            <h3 className="text-gray-900 font-bold text-base">
+              {props?.username || "Anonymous"}
+            </h3>
 
-        </div>
-
-        {/* User Name */}
-        <div className="flex flex-col">
-
-          <h3 className="text-blue-900 font-semibold text-sm sm:text-base">
-            {props?.username || "Anonymous"}
-          </h3>
-
-          {/*Rating */}
-          <div className="flex items-center gap-1 mt-2">
-            {/* Example: 5-star rating */}
-            <div className="flex gap-0.5">
+            <div className="flex items-center gap-1 mt-1">
               {Array(5)
                 .fill(0)
                 .map((_, idx) => (
                   <svg
                     key={idx}
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 text-blue-500"
+                    className="h-5 w-5 text-yellow-400"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -80,13 +82,29 @@ export function ReviewCard(props) {
             </div>
           </div>
         </div>
+
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-5">
+          {props?.message}
+        </p>
       </div>
 
-      {/* Message */}
-      <p className="text-blue-700 text-sm sm:text-[14px] line-clamp-4">
-        {props?.message}
-      </p>
-
+      <div className="flex items-center gap-2 text-xs text-gray-400 mt-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span>Verified Student</span>
+      </div>
     </div>
   );
 }
@@ -144,64 +162,76 @@ export function Review(props) {
 
 
   return (
-    <>
-      <div className="border-t-black border flex flex-row justify-around gap-2 p-2 items-center relative  bg-blue-100">
-        {/* Left Button */}
-        <button
-          onClick={handlePrev}
-          className="absolute left-2 z-10 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
-        >
-          <FaChevronLeft />
-        </button>
-
-        {/* Reviews */}
-        <div className="flex items-center justify-between w-[90%]">
-          {displayIndexes.map((idx, i) => {
-            const review = props?.feedBack[idx];
-            let scale = 0.8;
-            let opacity = 0.6;
-
-            // center two cards focused
-            if (i === 1) {
-              scale = 1;
-              opacity = 1;
-            }
-
-
-            return (
-              <div
-                key={idx}
-                className="transition-all duration-200 flex-shrink-0"
-                style={{
-                  transform: `scale(${scale})`,
-                  opacity: opacity,
-                  width: "33%", // all 3 cards spaced equally
-                }}
-              >
-                {currentIndex[1] === "LEFT" ? i === 2 ? <ReviewCardSkeleton /> : <ReviewCard
-                  username={review.username}
-                  message={review.message}
-                /> : currentIndex[1] === "RIGHT" ? i === 0 ? <ReviewCardSkeleton /> : <ReviewCard
-                  username={review.username}
-                  message={review.message}
-                /> : <ReviewCard
-                  username={review.username}
-                  message={review.message} />}
-              </div>
-            );
-          })}
+    <section className="w-full py-20 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12 space-y-3">
+          <h2 className="text-4xl font-bold text-gray-800">Student Testimonials</h2>
+          <p className="text-gray-600 text-lg">
+            Hear what our students have to say about their learning experience
+          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto rounded-full"></div>
         </div>
 
-        {/* Right Button */}
-        <button
-          onClick={handleNext}
-          className="absolute right-2 z-10 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
-        >
-          <FaChevronRight />
-        </button>
-      </div>
+        <div className="relative flex items-center justify-center py-12">
+          <button
+            onClick={handlePrev}
+            className="absolute left-0 md:left-4 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110"
+            aria-label="Previous review"
+          >
+            <FaChevronLeft className="text-xl" />
+          </button>
 
-    </>
+          <div className="flex items-center justify-center gap-6 w-full max-w-6xl overflow-hidden">
+            {displayIndexes.map((idx, i) => {
+              const review = props?.feedBack[idx];
+              let scale = 0.85;
+              let opacity = 0.5;
+
+              if (i === 1) {
+                scale = 1;
+                opacity = 1;
+              }
+
+              return (
+                <div
+                  key={idx}
+                  className="transition-all duration-500 flex-shrink-0"
+                  style={{
+                    transform: `scale(${scale})`,
+                    opacity: opacity,
+                    width: "33%",
+                  }}
+                >
+                  {currentIndex[1] === "LEFT" ? (
+                    i === 2 ? (
+                      <ReviewCardSkeleton />
+                    ) : (
+                      <ReviewCard username={review.username} message={review.message} />
+                    )
+                  ) : currentIndex[1] === "RIGHT" ? (
+                    i === 0 ? (
+                      <ReviewCardSkeleton />
+                    ) : (
+                      <ReviewCard username={review.username} message={review.message} />
+                    )
+                  ) : (
+                    <ReviewCard username={review.username} message={review.message} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={handleNext}
+            className="absolute right-0 md:right-4 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110"
+            aria-label="Next review"
+          >
+            <FaChevronRight className="text-xl" />
+          </button>
+        </div>
+      </div>
+    </section>
   )
 };
 
@@ -209,21 +239,24 @@ export default function ReviewComponent() {
   const feedBack = [
     {
       username: "Taher Malik",
-      message: "Hello World"
+      message: "SPT Classes has been an incredible learning experience. The instructors are knowledgeable and the course content is well-structured. I highly recommend it to anyone looking to enhance their programming skills."
     },
     {
       username: "Ayush Pandey",
-      message: "Hello World2"
+      message: "The teaching methodology at SPT Classes is exceptional. The hands-on projects and real-world applications helped me understand complex concepts easily. Grateful for the support from the faculty."
     },
     {
-      username: "Abhisek Kumar",
-      message: "Hello World3"
+      username: "Abhishek Kumar",
+      message: "I enrolled in the Java Programming course and it exceeded my expectations. The practical approach and personalized attention made all the difference. Thanks to SPT Classes for preparing me for my career."
     },
     {
-      username:"NITTIANS",
-      message:"We are NITIIANS"
+      username: "Priya Sharma",
+      message: "Best decision I made was joining SPT Classes. The faculty is supportive and the learning environment is very encouraging. I gained confidence in my technical skills and secured a great placement."
+    },
+    {
+      username: "Rahul Verma",
+      message: "The curriculum is industry-relevant and the instructors bring real-world experience to the classroom. SPT Classes provided me with the foundation I needed to excel in my software development career."
     }
-
   ]
   return (
     <>
