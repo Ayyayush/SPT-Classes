@@ -8,13 +8,15 @@ import ChooseUs from "./ChooseUs.jsx";   // default export
 import LatestNews from "./LatestNews.jsx";
 import ReviewComponent from "./Review.jsx";
 import { useRef } from "react";
+import HeroComponent2 from "../Pages/CoursesPage.jsx";
 
 export default function LandingPage() {
   const announcementsRef=useRef(null)
   return (
     <>
       <Header />
-      <HeroComponent ref={announcementsRef}/>
+      {/* <HeroComponent ref={announcementsRef}/> */}
+      <HeroComponent2 ref={announcementsRef}/>
       <LatestNews ref={announcementsRef}/>
       <ChooseUs />
       <Courses />

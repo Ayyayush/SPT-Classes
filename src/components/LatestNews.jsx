@@ -143,7 +143,7 @@ const LatestNews = forwardRef((props, ref) => {
   }
 
   return (
-    <div ref={ref} className="scroll-mt-24 w-full py-16 bg-gradient-to-b from-gray-50 to-white">
+    <div ref={ref} className="scroll-mt-24 w-full py-16 bg-gradient-to-b from-gray-50 to-blue-100">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12 space-y-3">
           <h2 className="text-4xl font-bold text-gray-800 animate-fadeIn">

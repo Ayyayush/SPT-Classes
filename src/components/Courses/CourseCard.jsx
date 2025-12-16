@@ -1,4 +1,4 @@
-export default function CourseCard({ course }) {
+function CourseCard({ course }) {
   return (
     <div className="
       bg-white/10 backdrop-blur-xl 
