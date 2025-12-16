@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import logo from "./Assets/spt_classes_logo.svg";
+import toast from "react-hot-toast";
 
 const teamMembers = [
   { name: "Ayush", linkedin: "#", github: "#" },
@@ -61,6 +62,16 @@ const Header = () => {
     navigate("/profile");
   }
 
+  async function handleCourse(e) {
+    try {
+      console.log("Handle Course clicked")
+      navigate("/courses", { state: { tab: "NIELIT Certified Courses" } })
+    } catch (error) {
+      toast.success("Some error while loading More courses")
+      console.log(error)
+    }
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] shadow-md">
       <div className="w-full flex items-center justify-between px-4 md:px-12 py-4">
@@ -74,8 +85,8 @@ const Header = () => {
 
         <nav className="hidden lg:flex gap-8 text-white text-sm font-medium">
           <Link className="hover:text-blue-100 transition" to="/">Home</Link>
-          <Link className="hover:text-blue-100 transition" to="/courses">Courses</Link>
-          <Link className="hover:text-blue-100 transition" to="/about">About</Link>
+          <div onClick={(e)=>handleCourse(e)} className="hover:text-blue-100 transition">Courses</div>
+          <Link  className="hover:text-blue-100 transition" to="/about">About</Link>
           <Link className="hover:text-blue-100 transition" to="/contact">Contact</Link>
         </nav>
 
