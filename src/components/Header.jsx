@@ -1,31 +1,21 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaLinkedin, FaGithub } from "react-icons/fa";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiMenu, FiX } from "react-icons/fi";
 import logo from "./Assets/spt_classes_logo.svg";
 import toast from "react-hot-toast";
 
-const teamMembers = [
-  { name: "Ayush", linkedin: "#", github: "#" },
-  { name: "Taher", linkedin: "#", github: "#" },
-  { name: "Abhishek", linkedin: "#", github: "#" },
-];
-
 const Header = () => {
-  const [showTeam, setShowTeam] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const menuRef = useRef(null);
-  const announcementsRef=useRef(null)
-  
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem("user");
-      if (raw) setUser(JSON.parse(raw));
-      else setUser(null);
-    } catch (e) {
+      setUser(raw ? JSON.parse(raw) : null);
+    } catch {
       setUser(null);
     }
   }, []);
@@ -34,159 +24,161 @@ const Header = () => {
     function onDocClick(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuOpen(false);
-        setShowTeam(false);
       }
     }
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, []);
 
-  function handleLoginClick(e) {
-    e.preventDefault();
-    setShowTeam(false);
-    setMenuOpen(false);
-    navigate("/login");
+  function handleCourse() {
+    try {
+      navigate("/courses", { state: { tab: "NIELIT Certified Courses" } });
+      setMobileNavOpen(false);
+    } catch {
+      toast.error("Error loading courses");
+    }
   }
 
   function handleLogout() {
     localStorage.removeItem("user");
     setUser(null);
     setMenuOpen(false);
-    setShowTeam(false);
     navigate("/");
   }
 
-  function goProfile() {
-    setMenuOpen(false);
-    setShowTeam(false);
-    navigate("/profile");
-  }
-
-  async function handleCourse(e) {
-    try {
-      console.log("Handle Course clicked")
-      navigate("/courses", { state: { tab: "NIELIT Certified Courses" } })
-    } catch (error) {
-      toast.success("Some error while loading More courses")
-      console.log(error)
-    }
-  }
-
   return (
-    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] shadow-md">
-      <div className="w-full flex items-center justify-between px-4 md:px-12 py-4">
-        <div className="flex items-center gap-3 min-w-[140px]">
-          <img src={logo} alt="SPT Classes Logo" className="w-14.5 h-13 object-contain" />
-          <div className="leading-tight hidden sm:block">
-            <p className="text-white text-lg font-semibold">Sharp Programmer Technology</p>
-            <p className="text-blue-100 text-xs tracking-widest">Where Learning Meets Excellence.</p>
+    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] backdrop-blur-md border-b border-white/20 shadow-lg">
+
+      {/* TOP BAR */}
+      <div className="flex items-center justify-between px-4 md:px-12 py-4">
+
+        {/* LOGO */}
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="SPT Logo" className="w-12 h-12" />
+          <div className="hidden md:block leading-tight">
+            <p className="text-white font-semibold text-lg">
+              Sharp Programmer Technology
+            </p>
+            <p className="text-blue-100 text-xs tracking-widest">
+              Where Learning Meets Excellence
+            </p>
           </div>
         </div>
 
-        <nav className="hidden lg:flex gap-8 text-white text-sm font-medium">
+        {/* DESKTOP NAV (PERFECT CENTER) */}
+        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-10 text-white text-sm font-medium">
           <Link className="hover:text-blue-100 transition" to="/">Home</Link>
-          <div onClick={(e)=>handleCourse(e)} className="hover:text-blue-100 transition">Courses</div>
-          <Link  className="hover:text-blue-100 transition" to="/about">About</Link>
+          <button onClick={handleCourse} className="hover:text-blue-100 transition">Courses</button>
+          <Link className="hover:text-blue-100 transition" to="/about">About</Link>
           <Link className="hover:text-blue-100 transition" to="/contact">Contact</Link>
         </nav>
 
+        {/* RIGHT ICONS */}
         <div className="flex items-center gap-3 relative" ref={menuRef}>
+          
+          {/* MOBILE MENU ICON */}
           <button
-            onClick={() =>
-              setShowTeam((prev) => {
-                const next = !prev;
-                if (next) setMenuOpen(false); 
-                return next;
-              })
-            }
-            className="hidden sm:flex items-center gap-2 px-3 py-2 bg-white text-[#1E40AF] border border-blue-200 rounded-md hover:bg-blue-50 transition text-sm font-medium shadow-sm"
-            aria-expanded={showTeam}
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            className="lg:hidden text-white text-2xl"
           >
-            Design by Team
-            <FaLinkedin className="text-blue-600" />
+            {mobileNavOpen ? <FiX /> : <FiMenu />}
           </button>
 
-          {showTeam && (
-            <div className="absolute right-0 top-12 bg-white rounded-lg shadow-xl border border-blue-200 p-3 w-56 z-50">
-              <p className="text-[#1E40AF] font-semibold text-sm mb-2">Our Team</p>
-              <ul className="space-y-2">
-                {teamMembers.map((member, index) => (
-                  <li key={index} className="flex justify-between items-center bg-gray-50 hover:bg-gray-100 p-2 rounded-md">
-                    <span className="text-sm font-medium text-gray-700">{member.name}</span>
-                    <div className="flex gap-2">
-                      <a href={member.linkedin} target="_blank" rel="noreferrer"><FaLinkedin className="text-blue-600 text-lg" /></a>
-                      <a href={member.github} target="_blank" rel="noreferrer"><FaGithub className="text-gray-800 text-lg" /></a>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+          {/* USER ICON */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setMenuOpen(!menuOpen);
+            }}
+            className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow"
+          >
+            {user ? (
+              <span className="font-semibold text-[#1E40AF]">
+                {user.name?.charAt(0).toUpperCase()}
+              </span>
+            ) : (
+              <FiUser className="text-[#1E40AF]" />
+            )}
+          </button>
+
+          {/* USER DROPDOWN */}
+          {menuOpen && (
+            <div className="absolute right-0 top-12 w-60 bg-white rounded-xl shadow-xl p-4">
+              {user ? (
+                <>
+                  <p className="font-semibold text-gray-800">{user.name}</p>
+                  <p className="text-xs text-gray-500 mb-3">{user.email}</p>
+
+                  <button
+                    onClick={() => navigate("/profile")}
+                    className="block w-full text-left px-3 py-2 rounded hover:bg-blue-50"
+                  >
+                    My Profile
+                  </button>
+
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-3 py-2 rounded bg-red-50 text-red-600 hover:bg-red-100"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="block w-full py-2 bg-blue-600 text-white rounded mb-2"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="block w-full py-2 bg-gray-100 rounded"
+                  >
+                    Sign Up
+                  </button>
+                </>
+              )}
             </div>
           )}
-
-          <div className="relative">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setMenuOpen((prev) => {
-                  const next = !prev;
-                  if (next) setShowTeam(false); 
-                  return next;
-                });
-              }}
-              className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-sm border border-white/40 hover:opacity-95 transition"
-              aria-label="User menu"
-              aria-expanded={menuOpen}
-            >
-              {user?.avatar ? (
-                <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
-              ) : user ? (
-                <div className="w-10 h-10 rounded-full bg-[#0B235A] text-white flex items-center justify-center font-semibold">
-                  {user.name ? user.name.charAt(0).toUpperCase() : <FiUser />}
-                </div>
-              ) : (
-                <FiUser className="text-[#1E40AF] text-lg" />
-              )}
-            </button>
-
-            {menuOpen && (
-              <div className="absolute right-0 mt-3 w-64 backdrop-blur-xl bg-white/70 shadow-2xl border border-white/40 rounded-2xl p-4 animate-[fadeIn_0.15s_ease-out] z-50">
-                {user ? (
-                  <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-full ring-2 ring-blue-400 overflow-hidden">
-                        {user.avatar ? (
-                          <img src={user.avatar} className="w-12 h-12 object-cover" alt="profile" />
-                        ) : (
-                          <div className="w-full h-full bg-blue-700 text-white flex items-center justify-center font-semibold text-lg">
-                            {user.name?.charAt(0)?.toUpperCase()}
-                          </div>
-                        )}
-                      </div>
-
-                      <div>
-                        <p className="font-semibold text-gray-800 text-sm">{user.name}</p>
-                        <p className="text-xs text-gray-500">{user.email}</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <button onClick={goProfile} className="w-full text-left px-4 py-2 text-sm rounded-lg hover:bg-blue-50 transition">My Profile</button>
-                      <button onClick={() => { setMenuOpen(false); navigate("/dashboard"); }} className="w-full text-left px-4 py-2 text-sm rounded-lg hover:bg-blue-50 transition">Dashboard</button>
-                      <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition">Logout</button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <p className="text-gray-700 mb-3 text-sm font-medium">Start your learning journey</p>
-                    <button onClick={() => { setMenuOpen(false); navigate("/login"); }} className="w-full py-2 bg-blue-600 text-white rounded-xl font-medium mb-2 hover:bg-blue-700 transition">Log In</button>
-                    <button onClick={() => { setMenuOpen(false); navigate("/signup"); }} className="w-full py-2 bg-gray-100 rounded-xl font-medium hover:bg-gray-200 transition">Sign Up</button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
         </div>
       </div>
+
+      {/* MOBILE NAV MENU (FIXED SPACING) */}
+      {mobileNavOpen && (
+        <div className="lg:hidden bg-[#1E40AF]/95 backdrop-blur-md px-6 py-5 space-y-4 text-white text-sm font-medium">
+          <Link
+            to="/"
+            onClick={() => setMobileNavOpen(false)}
+            className="block w-full"
+          >
+            Home
+          </Link>
+
+          <button
+            onClick={handleCourse}
+            className="block w-full text-left"
+          >
+            Courses
+          </button>
+
+          <Link
+            to="/about"
+            onClick={() => setMobileNavOpen(false)}
+            className="block w-full"
+          >
+            About
+          </Link>
+
+          <Link
+            to="/contact"
+            onClick={() => setMobileNavOpen(false)}
+            className="block w-full"
+          >
+            Contact
+          </Link>
+        </div>
+      )}
     </header>
   );
 };

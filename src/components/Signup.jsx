@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "./Assets/spt_classes_logo.svg";
 import "./Style/Signup.css";
 import axios from "axios";
-import { USER_ENDPOINTS } from "./endpoint";
+import { AUTH_ENDPOINTS, USER_ENDPOINTS } from "./endpoint";
 import toast from "react-hot-toast";
 
 function LeftSignUp() {
@@ -117,7 +117,7 @@ function RightSignUp() {
         TC:form.accepted
       }
 
-      result=await axios.post(`${USER_ENDPOINTS}/registerStudent`,{studentDetials:studentDetials},{withCredentials:true})
+      result=await axios.post(`${AUTH_ENDPOINTS}/registerStudent`,{studentDetials:studentDetials},{withCredentials:true})
 
       
     } catch (err) { 

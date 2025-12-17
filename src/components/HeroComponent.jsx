@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 /* ================= CARD COMPONENT ================= */
 export function CardComponent({ index }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   const titleArray = ["Registration", "Latest Announcements", "Discover Us"];
   const messageArray = [
     "Get enrolled into government-certified education programs with expert faculty and structured learning paths.",
@@ -14,19 +12,10 @@ export function CardComponent({ index }) {
   const buttonTextArray = ["Apply Now", "Read more", "Learn more"];
 
   return (
-    <div
-      className="group bg-[#0B235A] text-white rounded-xl p-4 shadow-lg
-                 border border-white/10 hover:border-white/30
-                 transition-all duration-300 md:hover:-translate-y-1
-                 h-full flex flex-col"
-    >
-      <div className="mb-2">
-        <div className="bg-orange-500/20 p-2 rounded-lg text-orange-400 w-fit
-                        group-hover:bg-orange-500 group-hover:text-white transition">
-          {/* icon */}
-        </div>
-      </div>
-
+    <div className="group bg-[#0B235A] text-white rounded-xl p-4 shadow-lg
+                    border border-white/10 hover:border-white/30
+                    transition-all duration-300 md:hover:-translate-y-1
+                    h-full flex flex-col cursor-pointer">
       <h3 className="font-semibold text-lg mb-2 group-hover:text-orange-400 transition">
         {titleArray[index]}
       </h3>
@@ -35,26 +24,9 @@ export function CardComponent({ index }) {
         {messageArray[index]}
       </p>
 
-      <div className="mt-auto flex items-center gap-1.5 text-orange-400 font-medium text-sm">
-        {buttonTextArray[index]}
-        <span className={`transition-transform ${isHovered ? "translate-x-1" : ""}`}>→</span>
+      <div className="mt-auto text-orange-400 font-medium text-sm">
+        {buttonTextArray[index]} →
       </div>
-    </div>
-  );
-}
-
-/* ================= SKELETON ================= */
-
-export function CardSkeleton() {
-  return (
-    <div className="bg-[#0B235A] rounded-xl p-6 shadow-xl border border-white/10 space-y-4 h-full">
-      <div className="w-32 h-5 bg-white/20 rounded animate-pulse" />
-      <div className="space-y-2">
-        <div className="w-full h-4 bg-white/20 rounded animate-pulse" />
-        <div className="w-3/4 h-4 bg-white/20 rounded animate-pulse" />
-        <div className="w-1/2 h-4 bg-white/20 rounded animate-pulse" />
-      </div>
-      <div className="w-28 h-4 bg-orange-400/40 rounded animate-pulse mt-4" />
     </div>
   );
 }
@@ -62,41 +34,74 @@ export function CardSkeleton() {
 /* ================= HERO ================= */
 
 const HeroComponent = forwardRef((props, ref) => {
-  const [skeleton, setSkeleton] = useState(true);
   const navigate = useNavigate();
 
+  /* 🔁 HERO BACKGROUND IMAGES (CHANGE HERE LATER IF NEEDED) */
+  const heroImages = [
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1600&q=80",
+    "https://img.freepik.com/premium-photo/graduation-group-back-view-students-celebrate-education-success-excited-graduates-campus-celebration-study-goals-university-award-learning-motivation-happy-future_590464-130999.jpg?w=2000",
+  ];
+
+  const [currentImage, setCurrentImage] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  /* 🔄 SMOOTH IMAGE ROTATION */
   useEffect(() => {
-    const timer = setTimeout(() => setSkeleton(false), 1000);
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setFade(false);
+
+      setTimeout(() => {
+        setCurrentImage((prev) => (prev + 1) % heroImages.length);
+        setFade(true);
+      }, 1200);
+    }, 6500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  /* 📦 PRELOAD IMAGES */
+  useEffect(() => {
+    heroImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
   }, []);
 
   const handleAnnouncements = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     ref?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate("/registerForm");
-  };
-
   return (
-    <section className="relative w-full min-h-[520px] md:min-h-[600px]">
-      {/* Background */}
+    <section className="relative w-full min-h-[520px] md:min-h-[600px] overflow-hidden">
+
+      {/* 📌 TOP-RIGHT APPLY NOW BUTTON */}
+      <div className="absolute top-6 right-6 z-20">
+        <button
+          onClick={() => navigate("/registerForm")}
+          className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600
+                     text-white rounded-lg font-semibold shadow-lg
+                     transition-all backdrop-blur-md"
+        >
+          Apply Now
+        </button>
+      </div>
+
+      {/* 🔥 DYNAMIC BACKGROUND */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://img.freepik.com/premium-photo/graduation-group-back-view-students-celebrate-education-success-excited-graduates-campus-celebration-study-goals-university-award-learning-motivation-happy-future_590464-130999.jpg?w=2000')",
-        }}
+        className={`absolute inset-0 bg-cover bg-center transition-opacity
+                    ease-in-out duration-[1800ms] ${
+          fade ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ backgroundImage: `url(${heroImages[currentImage]})` }}
       />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B235A]/60 to-[#0B235A]/95" />
+      {/* 🌑 OVERLAY */}
+      <div className="absolute inset-0 bg-gradient-to-b
+                      from-transparent via-[#0B235A]/60 to-[#0B235A]/95" />
 
-      {/* Content */}
+      {/* 🧠 HERO CONTENT */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-32">
         <div className="max-w-2xl space-y-6">
           <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
@@ -107,34 +112,21 @@ const HeroComponent = forwardRef((props, ref) => {
             SPT Classes provides expert guidance, structured courses,
             and result-oriented teaching for academic excellence.
           </p>
-
-          <div className="flex flex-wrap gap-4 mt-8">
-            <button
-              onClick={handleRegister}
-              className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg transition-all"
-            >
-              Apply Now
-            </button>
-
-            <button className="px-8 py-3 bg-white/20 border-2 border-white/40 text-white rounded-xl font-semibold backdrop-blur-md hover:bg-white/30 hover:border-white/60 transition-all">
-              Schedule a Visit
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Cards */}
-      <div className="relative z-10 mt-8 md:-mt-16 px-6 pb-10">
+      {/* 🧩 INFO CARDS (MOVED LOWER – NO TEXT OVERLAP) */}
+      <div className="relative z-10 mt-16 md:-mt-6 px-6 pb-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div onClick={handleRegister}>
-            {skeleton ? <CardSkeleton /> : <CardComponent index={0} />}
+          <div onClick={() => navigate("/registerForm")}>
+            <CardComponent index={0} />
           </div>
 
           <div onClick={handleAnnouncements}>
-            {skeleton ? <CardSkeleton /> : <CardComponent index={1} />}
+            <CardComponent index={1} />
           </div>
 
-          {skeleton ? <CardSkeleton /> : <CardComponent index={2} />}
+          <CardComponent index={2} />
         </div>
       </div>
     </section>
