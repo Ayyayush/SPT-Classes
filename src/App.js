@@ -8,6 +8,8 @@ import LandingPage from "./components/LandingPage.jsx";
 import Signup from "./components/Signup.jsx";
 import CoursesPage from "./components/CoursesPage.jsx";
 import RegisterForm from "./components/RegisterForm.jsx";
+import AboutUs from "./components/AboutUs.jsx";
+import ContactUs from "./components/ContactUs.jsx";
 import { Toaster } from "react-hot-toast";
 
 
@@ -32,6 +34,12 @@ const appRouter = createBrowserRouter([
     },
     {   path: "/registerForm" ,
         element: <RegisterForm />
+    },
+    {   path: "/about" ,
+        element: <AboutUs />
+    },
+    {   path: "/contact" ,
+        element: <ContactUs />
     },
 
 ])
