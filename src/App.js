@@ -6,7 +6,7 @@ import Browse from "./components/Browse";
 import Header from "./components/Header.jsx";
 import LandingPage from "./components/LandingPage.jsx";
 import Signup from "./components/Signup.jsx";
-import CoursesPage from "./Pages/CoursesPage";
+import CoursesPage from "./components/CoursesPage.jsx";
 import RegisterForm from "./components/RegisterForm.jsx";
 import { Toaster } from "react-hot-toast";
 
