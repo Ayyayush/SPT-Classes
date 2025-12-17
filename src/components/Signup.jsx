@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./Assets/spt_classes_logo.svg";
 import "./Style/Signup.css";
+import axios from "axios";
+import { USER_ENDPOINTS } from "./endpoint";
+import toast from "react-hot-toast";
 
 function LeftSignUp() {
   return (
@@ -73,7 +76,7 @@ function RightSignUp() {
     const e = {};
     if (!form.name.trim()) e.name = "Full name is required";
     if (!form.email.trim()) e.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+    else if (!/^[a-zA-Z0-9._%+-]+@gmail\.(com|in|net|org)$/.test(form.email))
       e.email = "Enter a valid email";
     if (!form.password) e.password = "Password is required";
     else if (form.password.length < 8)
@@ -96,7 +99,7 @@ function RightSignUp() {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const eObj = validateAll();
     if (Object.keys(eObj).length) {
@@ -104,40 +107,46 @@ function RightSignUp() {
       return;
     }
 
-    const user = {
-      id: Date.now().toString(),
-      name: form.name.trim(),
-      email: form.email.trim(),
-      createdAt: new Date().toISOString(),
-    };
 
+    let result;
     try {
-      const users = JSON.parse(localStorage.getItem("demo_users") || "[]");
-      users.push(user);
-      localStorage.setItem("demo_users", JSON.stringify(users));
-    } catch (err) { }
+      const studentDetials={
+        studentFullName: form.name.trim(),
+        studentEmailId: form.email.trim(),
+        studentPassword: form.password,
+        TC:form.accepted
+      }
 
-    setSuccessMsg("Account created successfully! Redirecting to login...");
-    setForm({
-      name: "",
-      email: "",
-      password: "",
-      confirm: "",
-      accepted: false,
-    });
-    setPasswordStrength({ score: 0, label: "", color: "" });
+      result=await axios.post(`${USER_ENDPOINTS}/registerStudent`,{studentDetials:studentDetials},{withCredentials:true})
 
-    setTimeout(() => {
-      setSuccessMsg("");
-      navigate("/login");
-    }, 1400);
+      
+    } catch (err) { 
+      console.log(err)
+      toast.error("Something went wrong")
+    }
+    
+    if(result?.data?.flag){
+      setSuccessMsg("Account created successfully! Redirecting to login...");
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        confirm: "",
+        accepted: false,
+      });
+      setPasswordStrength({ score: 0, label: "", color: "" });
+      setTimeout(() => {
+        setSuccessMsg("");
+        navigate("/login");
+      }, 1400);
+    }
   }
 
   return (
     <div className="signup-right">
       <h3 className="signup-right-title">Create your account</h3>
 
-      <form className="signup-form" onSubmit={handleSubmit} noValidate>
+      <div className="signup-form">
         <div className="form-grid">
           <div className="form-field">
             <label>Full name</label>
@@ -251,9 +260,9 @@ function RightSignUp() {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="primary-btn">
+          <div className="primary-btn flex justify-center" onClick={handleSubmit}>
             Create account
-          </button>
+          </div>
           {successMsg && <p className="success-text">{successMsg}</p>}
         </div>
 
@@ -267,7 +276,7 @@ function RightSignUp() {
             Log in
           </button>
         </p>
-      </form>
+      </div>
     </div>
   )
 }
@@ -328,10 +337,6 @@ function RightSignUpSkeleton() {
   );
 }
 
-
-
-
-
 export default function Signup() {
   const [skeleton,setSkeleton]=useState(true);
 
@@ -353,9 +358,6 @@ export default function Signup() {
       <div className="signup-box">
         <LeftSignUp/>
         {skeleton ? <RightSignUpSkeleton /> : <RightSignUp />}
-
-
-
       </div>
     </div>
   );
