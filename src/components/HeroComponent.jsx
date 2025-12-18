@@ -79,7 +79,7 @@ const HeroComponent = forwardRef((props, ref) => {
       {/* 📌 TOP-RIGHT APPLY NOW BUTTON */}
       <div className="absolute top-6 right-6 z-20">
         <button
-          onClick={() => navigate("/registerForm")}
+          onClick={() => navigate("/RegisterForm")}
           className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600
                      text-white rounded-lg font-semibold shadow-lg
                      transition-all backdrop-blur-md"
@@ -118,7 +118,7 @@ const HeroComponent = forwardRef((props, ref) => {
       {/* 🧩 INFO CARDS (MOVED LOWER – NO TEXT OVERLAP) */}
       <div className="relative z-10 mt-16 md:-mt-6 px-6 pb-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div onClick={() => navigate("/registerForm")}>
+          <div onClick={() => navigate("/RegisterForm")}>
             <CardComponent index={0} />
           </div>
 

@@ -369,7 +369,7 @@ const Courses = ({ flag, courseName,length }) => {
   async function handleCourse(e) {
     try {
       console.log("Handle Course clicked")
-      navigate("/courses", { state: { tab: activeTab } })
+      navigate("/Courses", { state: { tab: activeTab } })
     } catch (error) {
       toast.success("Some error while loading More courses")
       console.log(error)

@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import RegistrationReducer from '../Slices/registerFormSlice.js'
+import BreadCrumbReducer from '../Slices/breadCrumbsSlice.js'
+
 
 const store = configureStore({
     reducer: {
-        RegistrationReducer: RegistrationReducer, // add more slices here as needed
+        RegisterForm: RegistrationReducer, // add more slices here as needed
+        BreadCrumbs:BreadCrumbReducer
     },
 });
 

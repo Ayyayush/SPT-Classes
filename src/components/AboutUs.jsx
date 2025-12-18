@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import BreadCrumbs from "./BreadCrumbs";
 
 const AboutUs = () => {
   const highlights = [
@@ -58,6 +59,7 @@ const AboutUs = () => {
   return (
     <div className="bg-white">
       <Header />
+      <BreadCrumbs/>
 
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20 px-6">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400 rounded-full blur-3xl opacity-20"></div>

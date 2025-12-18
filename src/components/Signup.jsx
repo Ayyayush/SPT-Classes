@@ -122,7 +122,7 @@ function RightSignUp() {
       
     } catch (err) { 
       console.log(err)
-      toast.error("Something went wrong")
+      toast.error(err?.response?.data?.message)
     }
     
     if(result?.data?.flag){
@@ -137,7 +137,7 @@ function RightSignUp() {
       setPasswordStrength({ score: 0, label: "", color: "" });
       setTimeout(() => {
         setSuccessMsg("");
-        navigate("/login");
+        navigate("/Login");
       }, 1400);
     }
   }
@@ -271,7 +271,7 @@ function RightSignUp() {
           <button
             type="button"
             className="link-text"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/Login")}
           >
             Log in
           </button>

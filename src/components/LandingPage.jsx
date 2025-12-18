@@ -10,13 +10,18 @@ import ReviewComponent from "./Review.jsx";
 import FaqComponent from "./Faq.jsx";
 import { useRef } from "react";
 import HeroComponent2 from "./HeroComponent2.jsx";
+import BreadCrumbs from "./BreadCrumbs.jsx";
+
 
 export default function LandingPage() {
   const announcementsRef=useRef(null);
-    const faqRef = useRef(null);          // ✅ NEW
+  const faqRef = useRef(null);          // ✅ NEW
+
   return (
     <>
+      {/* http://localhost:3000 */}
       <Header />
+      <BreadCrumbs/>
       <HeroComponent ref={announcementsRef}/>
       {/* <HeroComponent2 ref={announcementsRef}/> */}
       <LatestNews ref={announcementsRef}/>

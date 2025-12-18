@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiUser, FiMenu, FiX } from "react-icons/fi";
 import logo from "./Assets/spt_classes_logo.svg";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { addPath } from "../redux/Slices/breadCrumbsSlice";
+import { BASE_URL } from "./endpoint";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,6 +13,7 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const menuRef = useRef(null);
+  const dispatch=useDispatch();
 
   useEffect(() => {
     try {
@@ -32,7 +36,7 @@ const Header = () => {
 
   function handleCourse() {
     try {
-      navigate("/courses", { state: { tab: "NIELIT Certified Courses" } });
+      navigate("/Courses", { state: { tab: "NIELIT Certified Courses" } });
       setMobileNavOpen(false);
     } catch {
       toast.error("Error loading courses");
@@ -69,8 +73,8 @@ const Header = () => {
         <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-10 text-white text-sm font-medium">
           <Link className="hover:text-blue-100 transition" to="/">Home</Link>
           <button onClick={handleCourse} className="hover:text-blue-100 transition">Courses</button>
-          <Link className="hover:text-blue-100 transition" to="/about">About</Link>
-          <Link className="hover:text-blue-100 transition" to="/contact">Contact</Link>
+          <Link className="hover:text-blue-100 transition" to="/About">About</Link>
+          <Link className="hover:text-blue-100 transition" to="/Contact">Contact</Link>
         </nav>
 
         {/* RIGHT ICONS */}
@@ -126,13 +130,13 @@ const Header = () => {
               ) : (
                 <>
                   <button
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/Login")}
                     className="block w-full py-2 bg-blue-600 text-white rounded mb-2"
                   >
                     Login
                   </button>
                   <button
-                    onClick={() => navigate("/signup")}
+                    onClick={() => navigate("/Signup")}
                     className="block w-full py-2 bg-gray-100 rounded"
                   >
                     Sign Up

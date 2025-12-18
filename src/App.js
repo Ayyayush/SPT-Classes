@@ -19,26 +19,26 @@ const appRouter = createBrowserRouter([
         element: <LandingPage />,
     },
     {
-        path: "/browse",
+        path: "/Browse",
         element: <Browse />,
     },
     {
-         path: "/login",
+         path: "/Login",
          element: <Login />,
     },
-    {   path: "/signup",
+    {   path: "/Signup",
         element: <Signup />
     },
-    {   path: "/courses" ,
+    {   path: "/Courses" ,
         element: <CoursesPage />
     },
-    {   path: "/registerForm" ,
+    {   path: "/RegisterForm" ,
         element: <RegisterForm />
     },
-    {   path: "/about" ,
+    {   path: "/About" ,
         element: <AboutUs />
     },
-    {   path: "/contact" ,
+    {   path: "/Contact" ,
         element: <ContactUs />
     },
 

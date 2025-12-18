@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./Style/Login.css"
 import logo from "./Assets/spt_classes_logo.svg";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AUTH_ENDPOINTS } from "./endpoint";
+import toast from "react-hot-toast";
 
 export function LeftLoginComponent() {
   return (
@@ -127,7 +130,7 @@ const RightLoginComponent = () => {
   }
 
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     validateEmail(email);
@@ -136,7 +139,10 @@ const RightLoginComponent = () => {
       return;
     }
 
-    console.log("Login Data:", { email, password });
+    const result = await axios.post(`${AUTH_ENDPOINTS}/studentLogin`,{email:email,password:password},{withCredentials:true})
+    if(result?.data?.success) toast.success("Login done Successfully")
+    else toast.error(result?.data?.message)
+    // console.log("Login Data:", { email, password });
   }
 
   function loadSignUp(e){
