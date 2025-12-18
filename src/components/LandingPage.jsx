@@ -7,11 +7,13 @@ import Footer from "./Footer.jsx";       // default export → no {}
 import ChooseUs from "./ChooseUs.jsx";   // default export
 import LatestNews from "./LatestNews.jsx";
 import ReviewComponent from "./Review.jsx";
+import FaqComponent from "./Faq.jsx";
 import { useRef } from "react";
 import HeroComponent2 from "./HeroComponent2.jsx";
 
 export default function LandingPage() {
-  const announcementsRef=useRef(null)
+  const announcementsRef=useRef(null);
+    const faqRef = useRef(null);          // ✅ NEW
   return (
     <>
       <Header />
@@ -21,6 +23,7 @@ export default function LandingPage() {
       <ChooseUs />
       <Courses flag={true} courseName={"NIELIT Certified Courses"} length={6}/>
       <ReviewComponent />
+     <FaqComponent ref={faqRef} />     {/* ✅ attach ref */}
       <Footer />
     </>
   );

@@ -126,6 +126,8 @@ const HeroComponent = forwardRef((props, ref) => {
             <CardComponent index={1} />
           </div>
 
+
+{/* Her i want that on clicking it it takes it to the Faq comoonent which is before footer  */}
           <CardComponent index={2} />
         </div>
       </div>
