@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { setDetails } from "../redux/Slices/registerFormSlice";
 import axios from "axios";
-import { ADMIN_ENDPOINTS } from "./endpoint";
+import { ADMIN_ENDPOINTS, USER_ENDPOINTS } from "./endpoint";
 import toast from "react-hot-toast";
 
 const ageOptions = [
@@ -60,6 +60,7 @@ export default function RegisterForm() {
             e.stopPropagation();
 
             setName(prev => prev.trim())
+            //// validating data
             if (name === "") {
                 toast.error("name cant be empty");
                 return;
@@ -68,22 +69,18 @@ export default function RegisterForm() {
                 toast.error("Select the age");
                 return;
             }
-
-
             const regexEmailId = /^[a-zA-Z0-9]+@gmail\.(com|in|net|org)$/;
             if (!regexEmailId.test(emailId)) {
                 console.log("invalid mail")
                 toast.error("Invalid email!");
                 return;
             }
-
             const regexPhoneNumber = /^[0-9]{10}$/
             if (!regexPhoneNumber.test(phoneNumber)) {
                 console.log("invalid phone number")
                 toast.error("Invalid phone number!");
                 return;
             }
-
             if (!domain) {
                 toast.error("Select the domain");
                 return;
@@ -99,6 +96,11 @@ export default function RegisterForm() {
                 studentDomain: domain?.value,
                 needGuidance: needGuidance
             }
+
+            const sheetData=[
+                [name,age?.value,emailId,phoneNumber,domain?.value,needGuidance]
+            ]
+
             dispatch(setDetails(obj))
 
             setName("");
@@ -109,7 +111,13 @@ export default function RegisterForm() {
             setGuidance(false)
             setNeedGuidance(false)
             console.log(obj)
+
+            //// calling the backend for stroing the data in DB
             await axios.post(`${ADMIN_ENDPOINTS}/addStudentInfo`, { studentDetails: obj }, { withCredentials: true })
+
+            //// calling the API for storing the data in GS
+            await axios.post(`${USER_ENDPOINTS}/addDataInSheet`,{values:sheetData},{withCredentials:true})
+
             toast.success("Data saved successfully")
 
         } catch (error) {
