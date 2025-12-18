@@ -12,10 +12,12 @@ export function CardComponent({ index }) {
   const buttonTextArray = ["Apply Now", "Read more", "Learn more"];
 
   return (
-    <div className="group bg-[#0B235A] text-white rounded-xl p-4 shadow-lg
-                    border border-white/10 hover:border-white/30
-                    transition-all duration-300 md:hover:-translate-y-1
-                    h-full flex flex-col cursor-pointer">
+    <div
+      className="group bg-[#0B235A] text-white rounded-xl p-4 shadow-lg
+                 border border-white/10 hover:border-white/30
+                 transition-all duration-300 md:hover:-translate-y-1
+                 h-full flex flex-col cursor-pointer"
+    >
       <h3 className="font-semibold text-lg mb-2 group-hover:text-orange-400 transition">
         {titleArray[index]}
       </h3>
@@ -36,7 +38,6 @@ export function CardComponent({ index }) {
 const HeroComponent = forwardRef((props, ref) => {
   const navigate = useNavigate();
 
-  /* 🔁 HERO BACKGROUND IMAGES (CHANGE HERE LATER IF NEEDED) */
   const heroImages = [
     "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80",
     "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1600&q=80",
@@ -46,7 +47,6 @@ const HeroComponent = forwardRef((props, ref) => {
   const [currentImage, setCurrentImage] = useState(0);
   const [fade, setFade] = useState(true);
 
-  /* 🔄 SMOOTH IMAGE ROTATION */
   useEffect(() => {
     const interval = setInterval(() => {
       setFade(false);
@@ -60,7 +60,6 @@ const HeroComponent = forwardRef((props, ref) => {
     return () => clearInterval(interval);
   }, []);
 
-  /* 📦 PRELOAD IMAGES */
   useEffect(() => {
     heroImages.forEach((src) => {
       const img = new Image();
@@ -73,10 +72,15 @@ const HeroComponent = forwardRef((props, ref) => {
     ref?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleFaqScroll = () => {
+    const faqSection = document.getElementById("faq-section");
+    faqSection?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="relative w-full min-h-[520px] md:min-h-[600px] overflow-hidden">
 
-      {/* 📌 TOP-RIGHT APPLY NOW BUTTON */}
+      {/* TOP RIGHT BUTTON */}
       <div className="absolute top-6 right-6 z-20">
         <button
           onClick={() => navigate("/RegisterForm")}
@@ -88,7 +92,7 @@ const HeroComponent = forwardRef((props, ref) => {
         </button>
       </div>
 
-      {/* 🔥 DYNAMIC BACKGROUND */}
+      {/* BACKGROUND */}
       <div
         className={`absolute inset-0 bg-cover bg-center transition-opacity
                     ease-in-out duration-[1800ms] ${
@@ -97,11 +101,11 @@ const HeroComponent = forwardRef((props, ref) => {
         style={{ backgroundImage: `url(${heroImages[currentImage]})` }}
       />
 
-      {/* 🌑 OVERLAY */}
+      {/* OVERLAY */}
       <div className="absolute inset-0 bg-gradient-to-b
                       from-transparent via-[#0B235A]/60 to-[#0B235A]/95" />
 
-      {/* 🧠 HERO CONTENT */}
+      {/* HERO TEXT */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-32">
         <div className="max-w-2xl space-y-6">
           <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
@@ -115,8 +119,8 @@ const HeroComponent = forwardRef((props, ref) => {
         </div>
       </div>
 
-      {/* 🧩 INFO CARDS (MOVED LOWER – NO TEXT OVERLAP) */}
-      <div className="relative z-10 mt-16 md:-mt-6 px-6 pb-12">
+      {/* INFO CARDS – MOVED LOWER */}
+      <div className="relative z-10 mt-24 md:mt-12 px-6 pb-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           <div onClick={() => navigate("/RegisterForm")}>
             <CardComponent index={0} />
@@ -126,9 +130,10 @@ const HeroComponent = forwardRef((props, ref) => {
             <CardComponent index={1} />
           </div>
 
+          <div onClick={handleFaqScroll}>
+            <CardComponent index={2} />
+          </div>
 
-{/* Her i want that on clicking it it takes it to the Faq comoonent which is before footer  */}
-          <CardComponent index={2} />
         </div>
       </div>
     </section>
