@@ -318,7 +318,7 @@ const CourseCard = ({ course, index}) => {
 
   return (
     <div
-      className="group bg-white/10 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/20 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-fadeIn"
+      className="bg-white/10 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/20 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-fadeIn"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <div className="relative w-full h-44 bg-white overflow-hidden">
@@ -332,7 +332,7 @@ const CourseCard = ({ course, index}) => {
         />
       </div>
 
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 grid grid-cols-1 grid-rows-3">
         <h3 className="text-xl font-bold group-hover:text-orange-400 transition-colors duration-300">
           {course.title}
         </h3>

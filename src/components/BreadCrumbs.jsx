@@ -39,33 +39,55 @@ export default function BreadCrumbs() {
         }
     }
     return (
-        <nav className="w-full bg-white px-6 py-3 border-b border-gray-200">
-            <ol className="flex items-center space-x-2 text-sm">
-                {pathArray.map((item, index) => {
-                    const isLast = index === pathArray.length - 1;
+    <nav className="w-full bg-white px-6 py-4 border-b border-gray-200 shadow-md">
+        <ol className="flex items-center flex-wrap gap-2 text-sm">
+        {pathArray.map((item, index) => {
+            const isLast = index === pathArray.length - 1;
 
-                    return (
-                        <li key={index} className="flex items-center">
-                            {!isLast ? (
-                                <div
-                                    onClick={(e)=>handleClick(e,URL_OBJ[item])}
-                                    className="text-blue-600 hover:text-blue-800 font-medium transition"
-                                >
-                                    {item}
-                                </div>
-                            ) : (
-                                <span className="text-gray-900 font-semibold">
-                                    {item}
-                                </span>
-                            )}
+            return (
+            <li key={index} className="flex items-center">
+                {!isLast ? (
+                <div
+                    onClick={(e) => handleClick(e, URL_OBJ[item])}
+                    className="
+                    px-4 py-1.5
+                    rounded-full
+                    bg-blue-50
+                    text-blue-700
+                    font-medium
+                    cursor-pointer
+                    shadow-sm
+                    hover:bg-blue-600
+                    hover:text-white
+                    hover:shadow-md
+                    transition-all
+                    duration-300
+                    "
+                >
+                    {item}
+                </div>
+                ) : (
+                <span
+                    className="
+                    px-4 py-1.5
+                    rounded-full
+                    bg-black
+                    text-white
+                    font-semibold
+                    shadow-md
+                    "
+                >
+                    {item}
+                </span>
+                )}
 
-                            {!isLast && (
-                                <span className="mx-2 text-gray-400">{">"}</span>
-                            )}
-                        </li>
-                    );
-                })}
-            </ol>
-        </nav>
+                {!isLast && (
+                <span className="mx-2 text-gray-400 text-lg">›</span>
+                )}
+            </li>
+            );
+        })}
+        </ol>
+    </nav>
     );
 }
