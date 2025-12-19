@@ -315,6 +315,19 @@ const courses = {
 
 const CourseCard = ({ course, index}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const navigate=useNavigate();
+  function handleCourseClick(e){
+    try{
+      e.preventDefault();
+      e.stopPropagation();
+      navigate("/Courses/ParticularCourse",{state:{course:course}})
+
+
+    }catch(error){
+      console.log(error)
+      toast.error("something went wrong on course click")
+    }
+  }
 
   return (
     <div
@@ -345,9 +358,9 @@ const CourseCard = ({ course, index}) => {
           <span className="font-medium">{course.duration}</span>
         </div>
 
-        <button className="w-full py-3 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition-all duration-300 shadow-lg">
+        <div onClick={(e)=>handleCourseClick(e)} className="w-full flex justify-center py-3 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition-all duration-300 shadow-lg">
           Learn More
-        </button>
+        </div>
       </div>
     </div>
   );
