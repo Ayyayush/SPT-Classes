@@ -11,6 +11,10 @@ import FaqComponent from "./Faq.jsx";
 import { useRef } from "react";
 import HeroComponent2 from "./HeroComponent2.jsx";
 import BreadCrumbs from "./BreadCrumbs.jsx";
+import OurStars from "./OurStars.jsx";
+
+
+
 
 
 export default function LandingPage() {
@@ -28,6 +32,8 @@ export default function LandingPage() {
       <ChooseUs />
       <Courses flag={true} courseName={"NIELIT Certified Courses"} length={6}/>
       <ReviewComponent />
+      <OurStars />  
+
      <FaqComponent ref={faqRef} />     {/* ✅ attach ref */}
       <Footer />
     </>
