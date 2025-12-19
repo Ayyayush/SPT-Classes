@@ -69,7 +69,7 @@ const AnnouncementCard = ({ news, index }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 grid grid-cols-1 grid-rows-3">
         <div className="flex items-start justify-between gap-3">
           <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300 flex-1">
             {news.title}
