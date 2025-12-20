@@ -5,7 +5,6 @@ import logo from "./Assets/spt_classes_logo.svg";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addPath } from "../redux/Slices/breadCrumbsSlice";
-import { BASE_URL } from "./endpoint";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,7 +12,7 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const menuRef = useRef(null);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     try {
@@ -56,30 +55,40 @@ const Header = () => {
       {/* TOP BAR */}
       <div className="flex items-center justify-between px-4 md:px-12 py-4">
 
-        {/* LOGO */}
+        {/* LOGO + NAME */}
         <div className="flex items-center gap-3">
           <img src={logo} alt="SPT Logo" className="w-12 h-12" />
-          <div className="hidden md:block leading-tight">
-            <p className="text-white font-semibold text-lg">
+
+          <div className="leading-tight">
+            {/* Mobile */}
+            <p className="text-white font-semibold text-sm md:hidden">
               Sharp Programmer Technology
             </p>
-            <p className="text-blue-100 text-xs tracking-widest">
+
+            {/* Desktop */}
+            <p className="hidden md:block text-white font-semibold text-lg">
+              Sharp Programmer Technology
+            </p>
+
+            <p className="hidden md:block text-blue-100 text-xs tracking-widest">
               Where Learning Meets Excellence
             </p>
           </div>
         </div>
 
-        {/* DESKTOP NAV (PERFECT CENTER) */}
+        {/* DESKTOP NAV */}
         <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-10 text-white text-sm font-medium">
           <Link className="hover:text-blue-100 transition" to="/">Home</Link>
-          <button onClick={handleCourse} className="hover:text-blue-100 transition">Courses</button>
+          <button onClick={handleCourse} className="hover:text-blue-100 transition">
+            Courses
+          </button>
           <Link className="hover:text-blue-100 transition" to="/About">About</Link>
           <Link className="hover:text-blue-100 transition" to="/Contact">Contact</Link>
         </nav>
 
         {/* RIGHT ICONS */}
         <div className="flex items-center gap-3 relative" ref={menuRef}>
-          
+
           {/* MOBILE MENU ICON */}
           <button
             onClick={() => setMobileNavOpen(!mobileNavOpen)}
@@ -148,39 +157,13 @@ const Header = () => {
         </div>
       </div>
 
-      {/* MOBILE NAV MENU (FIXED SPACING) */}
+      {/* MOBILE NAV MENU */}
       {mobileNavOpen && (
         <div className="lg:hidden bg-[#1E40AF]/95 backdrop-blur-md px-6 py-5 space-y-4 text-white text-sm font-medium">
-          <Link
-            to="/"
-            onClick={() => setMobileNavOpen(false)}
-            className="block w-full"
-          >
-            Home
-          </Link>
-
-          <button
-            onClick={handleCourse}
-            className="block w-full text-left"
-          >
-            Courses
-          </button>
-
-          <Link
-            to="/about"
-            onClick={() => setMobileNavOpen(false)}
-            className="block w-full"
-          >
-            About
-          </Link>
-
-          <Link
-            to="/contact"
-            onClick={() => setMobileNavOpen(false)}
-            className="block w-full"
-          >
-            Contact
-          </Link>
+          <Link to="/" onClick={() => setMobileNavOpen(false)}>Home</Link>
+          <button onClick={handleCourse} className="block w-full text-left">Courses</button>
+          <Link to="/about" onClick={() => setMobileNavOpen(false)}>About</Link>
+          <Link to="/contact" onClick={() => setMobileNavOpen(false)}>Contact</Link>
         </div>
       )}
     </header>

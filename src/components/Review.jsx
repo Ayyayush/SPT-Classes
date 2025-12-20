@@ -42,21 +42,40 @@ export function ReviewCardSkeleton() {
 }
 
 
+
 export function ReviewCard(props) {
   const getInitials = (name) => {
     if (!name) return "A";
     const parts = name.split(" ");
-    if (parts.length > 1) {
-      return parts[0][0] + parts[1][0];
-    }
-    return name.substring(0, 2).toUpperCase();
+    return parts.length > 1
+      ? parts[0][0] + parts[1][0]
+      : name.substring(0, 2).toUpperCase();
   };
 
   return (
-    <div className="w-[400px] bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 h-[300px] p-6 border border-gray-100 flex flex-col justify-between">
-      <div className="space-y-4">
-        <div className="flex items-start gap-4">
-          <div className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md flex-shrink-0">
+    <div className="
+      w-[400px] h-[300px] p-6 flex flex-col justify-between
+      rounded-2xl
+      bg-gradient-to-br from-white via-[#f8fbff] to-[#eef4ff]
+      border border-[#e5edff]
+      shadow-[0_25px_60px_rgba(37,99,235,0.18)]
+      hover:shadow-[0_35px_80px_rgba(37,99,235,0.28)]
+      transition-all duration-500
+    ">
+
+      {/* Top */}
+      <div className="space-y-4 relative">
+        {/* Accent bar */}
+        <div className="absolute left-0 top-0 h-10 w-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-500" />
+
+        <div className="flex items-start gap-4 pl-3">
+          <div className="
+            h-14 w-14 rounded-full
+            bg-gradient-to-br from-blue-500 to-indigo-600
+            flex items-center justify-center
+            text-white font-bold text-lg
+            shadow-md ring-4 ring-blue-100
+          ">
             {getInitials(props?.username)}
           </div>
 
@@ -65,32 +84,29 @@ export function ReviewCard(props) {
               {props?.username || "Anonymous"}
             </h3>
 
-            <div className="flex items-center gap-1 mt-1">
-              {Array(5)
-                .fill(0)
-                .map((_, idx) => (
-                  <svg
-                    key={idx}
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-yellow-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.21c.969 0 1.371 1.24.588 1.81l-3.404 2.473a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.404-2.473a1 1 0 00-1.175 0l-3.404 2.473c-.784.57-1.838-.197-1.539-1.118l1.285-3.97a1 1 0 00-.364-1.118L2.025 9.397c-.783-.57-.38-1.81.588-1.81h4.21a1 1 0 00.95-.69l1.286-3.97z" />
-                  </svg>
-                ))}
+            <div className="flex items-center gap-1 mt-1 text-yellow-400">
+              {[...Array(5)].map((_, idx) => (
+                <svg
+                  key={idx}
+                  className="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.21c.969 0 1.371 1.24.588 1.81l-3.404 2.473a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.404-2.473a1 1 0 00-1.175 0l-3.404 2.473c-.784.57-1.838-.197-1.539-1.118l1.285-3.97a1 1 0 00-.364-1.118L2.025 9.397c-.783-.57-.38-1.81.588-1.81h4.21a1 1 0 00.95-.69l1.286-3.97z" />
+                </svg>
+              ))}
             </div>
           </div>
         </div>
 
-        <p className="text-gray-600 text-sm leading-relaxed line-clamp-5">
-          {props?.message}
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-5 pl-3">
+          “{props?.message}”
         </p>
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-gray-400 mt-4">
+      {/* Footer */}
+      <div className="flex items-center gap-2 text-xs text-blue-600 font-medium mt-4">
         <svg
-          xmlns="http://www.w3.org/2000/svg"
           className="h-4 w-4"
           fill="none"
           viewBox="0 0 24 24"
@@ -103,7 +119,7 @@ export function ReviewCard(props) {
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <span>Verified Student</span>
+        Verified Student
       </div>
     </div>
   );
