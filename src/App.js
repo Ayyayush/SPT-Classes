@@ -11,6 +11,7 @@ import RegisterForm from "./components/RegisterForm.jsx";
 import AboutUs from "./components/AboutUs.jsx";
 import ContactUs from "./components/ContactUs.jsx";
 import { Toaster } from "react-hot-toast";
+import ParticularCourse from "./components/ParticularCourse.jsx";
 
 
 const appRouter = createBrowserRouter([
@@ -31,6 +32,9 @@ const appRouter = createBrowserRouter([
     },
     {   path: "/Courses" ,
         element: <CoursesPage />
+    },
+    {   path: "/Courses/ParticularCourse" ,
+        element: <ParticularCourse />
     },
     {   path: "/RegisterForm" ,
         element: <RegisterForm />
