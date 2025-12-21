@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ShimmerCourseCard } from "./Shimmer";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +13,6 @@ const categories = [
 ];
 
 /* ================= COURSES DATA ================= */
-
-
 
 const courses = {
   "NIELIT Certified Courses": [
@@ -78,7 +76,6 @@ const courses = {
       duration: "2 Months",
       img: "https://cdn-icons-png.flaticon.com/512/942/942781.png",
     },
-
   ],
 
   "Professional & Career Courses": [
@@ -88,7 +85,7 @@ const courses = {
       duration: "2 Months",
       img: "https://cdn-icons-png.flaticon.com/512/2721/2721275.png",
     },
-     {
+    {
       title: "GST Practitioner Course",
       desc: "GST registration, returns, and compliance.",
       duration: "1.5 Months",
@@ -115,7 +112,7 @@ const courses = {
   ],
 };
 
-/* ================= COURSE CARD (FIXED) ================= */
+/* ================= COURSE CARD ================= */
 
 const CourseCard = ({ course }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -130,20 +127,8 @@ const CourseCard = ({ course }) => {
   };
 
   return (
-    <div
-      className="
-        bg-white/10 backdrop-blur-xl
-        rounded-2xl overflow-hidden
-        border border-white/20
-        shadow-xl hover:shadow-2xl
-        hover:-translate-y-2
-        transition-all duration-500
-        flex flex-col
-        h-full
-      "
-    >
-      {/* IMAGE */}
-      <div className="h-44 bg-white flex items-center justify-center">
+    <div className="bg-white/10 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/20 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full">
+      <div className="h-44 bg-white flex items-center justify-center relative">
         {!imageLoaded && <div className="absolute inset-0 shimmer-wrapper" />}
         <img
           src={course.img}
@@ -155,36 +140,20 @@ const CourseCard = ({ course }) => {
         />
       </div>
 
-      {/* CONTENT */}
       <div className="flex flex-col flex-1 p-6">
         <div className="space-y-3">
-          <h3 className="text-lg font-bold text-white">
-            {course.title}
-          </h3>
-
+          <h3 className="text-lg font-bold text-white">{course.title}</h3>
           <p className="text-white/70 text-sm leading-relaxed">
             {course.desc}
           </p>
-
           <p className="text-white/80 text-sm font-medium">
             {course.duration}
           </p>
         </div>
 
-        {/* BUTTON — PERFECTLY ALIGNED */}
         <button
           onClick={handleCourseClick}
-          className="
-            mt-auto
-            w-full
-            py-3
-            bg-orange-500
-            hover:bg-orange-600
-            rounded-xl
-            font-semibold
-            transition-all
-            shadow-lg
-          "
+          className="mt-auto w-full py-3 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition-all shadow-lg"
         >
           Learn More
         </button>
@@ -198,6 +167,12 @@ const CourseCard = ({ course }) => {
 const Courses = ({ flag, courseName, length }) => {
   const [activeTab, setActiveTab] = useState(courseName);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
 
   return (
     <section className="bg-[#0B235A] pt-20 pb-10 text-white">
@@ -226,11 +201,15 @@ const Courses = ({ flag, courseName, length }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {(loading ? [] : courses[activeTab])
-            .slice(0, length)
-            .map((course, i) => (
-              <CourseCard key={i} course={course} />
-            ))}
+          {loading
+            ? [...Array(length)].map((_, i) => (
+                <ShimmerCourseCard key={i} />
+              ))
+            : courses[activeTab]
+                .slice(0, length)
+                .map((course, i) => (
+                  <CourseCard key={i} course={course} />
+                ))}
         </div>
       </div>
     </section>
