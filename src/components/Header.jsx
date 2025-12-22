@@ -5,6 +5,8 @@ import logo from "./Assets/spt_classes_logo.svg";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addPath } from "../redux/Slices/breadCrumbsSlice";
+import RegisterForm from "./RegisterForm";
+import { setShowRegisterFrom } from "../redux/Slices/registerFormSlice";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -84,7 +86,8 @@ const Header = () => {
           </button>
           <Link className="hover:text-blue-100 transition" to="/About">About</Link>
           <Link className="hover:text-blue-100 transition" to="/Contact">Contact</Link>
-           <Link className="hover:text-blue-100 transition" to="/Facilities">Facilities</Link>
+          <Link className="hover:text-blue-100 transition" to="/Facilities">Facilities</Link>
+          <div className="hover:text-blue-100 transition cursor-pointer" onClick={() => {dispatch(setShowRegisterFrom())}}>Registration Form</div>
         </nav>
 
         {/* RIGHT ICONS */}
@@ -166,8 +169,12 @@ const Header = () => {
           <Link to="/about" onClick={() => setMobileNavOpen(false)}>About</Link>
           <Link to="/contact" onClick={() => setMobileNavOpen(false)}>Contact</Link>
            <Link to="/Facilities" onClick={() => setMobileNavOpen(false)}>Facilities</Link>
+          <div onClick={() => {dispatch(setShowRegisterFrom())}}>Registration Form</div>
         </div>
       )}
+
+      
+
     </header>
   );
 };

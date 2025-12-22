@@ -12,6 +12,8 @@ import { useRef } from "react";
 import HeroComponent2 from "./HeroComponent2.jsx";
 import BreadCrumbs from "./BreadCrumbs.jsx";
 import OurStars from "./OurStars.jsx";
+import { useSelector } from "react-redux";
+import RegisterForm from "./RegisterForm.jsx";
 
 
 
@@ -20,9 +22,11 @@ import OurStars from "./OurStars.jsx";
 export default function LandingPage() {
   const announcementsRef=useRef(null);
   const faqRef = useRef(null);          // ✅ NEW
+  const showRegister=useSelector((state)=>state?.RegistrationForm?.showRegisterForm);
+  console.log(showRegister)
 
   return (
-    <>
+    <div className="h-fit w-[100vw] relative">
       {/* http://localhost:3000 */}
       <Header />
       <BreadCrumbs/>
@@ -34,8 +38,14 @@ export default function LandingPage() {
       <ReviewComponent />
       <OurStars />  
 
-     <FaqComponent ref={faqRef} />     {/* ✅ attach ref */}
+      <FaqComponent ref={faqRef} />     {/* ✅ attach ref */}
       <Footer />
-    </>
+
+      {showRegister &&
+        <div className="w-[100vw] h-[100vh] backdrop-blur-xl fixed inset-0 z-[999] flex justify-center pb-6 pt-6">
+          <RegisterForm/>
+        </div>
+      }
+    </div>
   );
 }

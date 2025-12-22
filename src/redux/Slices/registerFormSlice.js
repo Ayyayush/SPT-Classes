@@ -10,7 +10,8 @@ const registrationFormSlice = createSlice({
             studentEmailId:"",
             studentDomain:"",
             needGuidance:false
-        }
+        },
+        showRegisterForm:false
     },
     reducers: {
         /// action.payload will be an object
@@ -23,9 +24,12 @@ const registrationFormSlice = createSlice({
             state.details.needGuidance=action.payload.needGuidance;
 
         },
+        setShowRegisterFrom:(state)=>{
+            state.showRegisterForm=!state?.showRegisterForm
+        }
     },
 });
 
 
-export const { setDetails } = registrationFormSlice.actions;
+export const { setDetails,setShowRegisterFrom } = registrationFormSlice.actions;
 export default registrationFormSlice.reducer;

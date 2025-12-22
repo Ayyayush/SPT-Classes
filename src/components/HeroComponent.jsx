@@ -5,6 +5,10 @@ import RegisterForm from "./RegisterForm";
 import library1 from "./Assets/hero/library1.jpg";
 import library2 from "./Assets/hero/library2.jpg";
 import students from "./Assets/hero/library3.png";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setShowRegisterFrom } from "../redux/Slices/registerFormSlice";
 
 
 /* ================= CARD COMPONENT ================= */
@@ -36,19 +40,19 @@ export function CardComponent({ index }) {
 
 const HeroComponent = forwardRef((props, ref) => {
   const navigate = useNavigate();
+  const dispatch=useDispatch();
 
- const heroImages = [
-  library1,
-  library2,
-  students,
-];
+  const heroImages = [
+    library1,
+    library2,
+    students,
+  ];
 
 
 
   const [currentImage, setCurrentImage] = useState(0);
   const [fade, setFade] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [showRegister, setShowRegister] = useState(false);
 
   /* IMAGE ROTATION */
   useEffect(() => {
@@ -69,105 +73,91 @@ const HeroComponent = forwardRef((props, ref) => {
     img.onload = () => setIsLoading(false);
   }, []);
 
-  /* 🔒 LOCK BACKGROUND SCROLL WHEN FORM OPENS */
-  useEffect(() => {
-    if (showRegister) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [showRegister]);
-
   const handleAnnouncements = (e) => {
     e.preventDefault();
     ref?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  function handleRegisterClick(e) {
+    try {
+      e.preventDefault();
+      e.stopPropagation();
+      dispatch(setShowRegisterFrom())
+    } catch (error) {
+      toast.error("wrong while clicking on register")
+    }
+  }
+
   return (
-    <section className="relative w-full min-h-[520px] md:min-h-[600px] overflow-hidden">
+    <>
+      <section className="relative w-full min-h-[520px] md:min-h-[600px] overflow-hidden">
 
-      {/* APPLY NOW */}
-      <div className="absolute top-6 right-6 z-20">
-        <button
-          onClick={() => setShowRegister(true)}
-          className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold shadow-lg transition"
-        >
-          Apply Now
-        </button>
-      </div>
-
-      {/* BACKGROUND */}
-      {isLoading ? (
-        <div className="absolute inset-0 bg-[#0B235A] animate-pulse" />
-      ) : (
-        <div
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1800ms] ${
-            fade ? "opacity-100" : "opacity-0"
-          }`}
-          style={{  backgroundImage: `url(${heroImages[currentImage]})`,
-                    filter: "blur(2.5px)",
-                    transform: "scale(1.03)", }}
-        />
-      )}
-
-      {/* HERO OVERLAY (NORMAL STATE) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B235A]/60 to-[#0B235A]/95" />
-
-      {/* HERO TEXT */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-32">
-        <h1 className="text-white text-4xl md:text-5xl font-bold leading-tight">
-          Launching our Students into <br /> Bright Futures
-        </h1>
-        <p className="text-white/90 text-lg mt-4 max-w-2xl">
-          SPT Classes provides expert guidance, structured courses, and
-          result-oriented teaching for academic excellence.
-        </p>
-      </div>
-
-      {/* INFO CARDS */}
-      <div className="relative z-10 mt-24 px-6 pb-12">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          {isLoading ? (
-            <>
-              <ShimmerHeroCard />
-              <ShimmerHeroCard />
-              <ShimmerHeroCard />
-            </>
-          ) : (
-            <>
-              <div onClick={() => setShowRegister(true)}>
-                <CardComponent index={0} />
-              </div>
-              <div onClick={handleAnnouncements}>
-                <CardComponent index={1} />
-              </div>
-              <div>
-                <CardComponent index={2} />
-              </div>
-            </>
-          )}
+        {/* APPLY NOW */}
+        <div className="absolute top-6 right-6 z-20">
+          <button
+            onClick={(e) => handleRegisterClick(e)}
+            className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold shadow-lg transition"
+          >
+            Apply Now
+          </button>
         </div>
-      </div>
 
-      {/* 🔲 BACKDROP (BLUR + DIM ENTIRE PAGE) */}
-      {showRegister && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-md"
-          onClick={() => setShowRegister(false)}
-        />
-      )}
+        {/* BACKGROUND */}
+        {isLoading ? (
+          <div className="absolute inset-0 bg-[#0B235A] animate-pulse" />
+        ) : (
+          <div
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1800ms] ${fade ? "opacity-100" : "opacity-0"
+              }`}
+            style={{
+              backgroundImage: `url(${heroImages[currentImage]})`,
+              filter: "blur(2.5px)",
+              transform: "scale(1.03)",
+            }}
+          />
+        )}
 
-      {/* REGISTER FORM MODAL */}
-      {showRegister && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          <RegisterForm onClose={() => setShowRegister(false)} />
+        {/* HERO OVERLAY (NORMAL STATE) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B235A]/60 to-[#0B235A]/95" />
+
+        {/* HERO TEXT */}
+        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-32">
+          <h1 className="text-white text-4xl md:text-5xl font-bold leading-tight">
+            Launching our Students into <br /> Bright Futures
+          </h1>
+          <p className="text-white/90 text-lg mt-4 max-w-2xl">
+            SPT Classes provides expert guidance, structured courses, and
+            result-oriented teaching for academic excellence.
+          </p>
         </div>
-      )}
-    </section>
+
+        {/* INFO CARDS */}
+        <div className="relative z-10 mt-24 px-6 pb-12">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+            {isLoading ? (
+              <>
+                <ShimmerHeroCard />
+                <ShimmerHeroCard />
+                <ShimmerHeroCard />
+              </>
+            ) : (
+              <>
+                <div onClick={(e) => handleRegisterClick(e)}>
+                  <CardComponent index={0} />
+                </div>
+                <div onClick={handleAnnouncements}>
+                  <CardComponent index={1} />
+                </div>
+                <div>
+                  <CardComponent index={2} />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+      </section> 
+    </>
   );
 });
 

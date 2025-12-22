@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
-import { setDetails } from "../redux/Slices/registerFormSlice";
+import { setDetails, setShowRegisterFrom } from "../redux/Slices/registerFormSlice";
 import axios from "axios";
 import { ADMIN_ENDPOINTS, USER_ENDPOINTS } from "./endpoint";
 import toast from "react-hot-toast";
@@ -41,7 +41,7 @@ const selectStyles = {
 
 /* ================= REGISTER FORM ================= */
 
-export default function RegisterForm({ onClose }) {
+export default function RegisterForm() {
   const [name, setName] = useState("");
   const [age, setAge] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -125,7 +125,6 @@ export default function RegisterForm({ onClose }) {
       );
 
       toast.success("Data saved successfully");
-      onClose(); // close modal after success
     } catch (error) {
       toast.error("Something went wrong");
       console.log("error while submitting registration details", error);
@@ -133,15 +132,15 @@ export default function RegisterForm({ onClose }) {
   }
 
   return (
-    <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-fadeIn">
+    <div className="relative z-60 w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-fadeIn">
 
       {/* CLOSE BUTTON */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl"
+      <div
+        onClick={()=>{dispatch(setShowRegisterFrom())}}
+        className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl flex justify-center items-center cursor-pointer"
       >
         ✕
-      </button>
+      </div>
 
       <h1 className="text-2xl sm:text-3xl font-semibold text-center mb-2 text-gray-800">
         Begin Your Learning Journey 🚀

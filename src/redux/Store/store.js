@@ -5,7 +5,7 @@ import BreadCrumbReducer from '../Slices/breadCrumbsSlice.js'
 
 const store = configureStore({
     reducer: {
-        RegisterForm: RegistrationReducer, // add more slices here as needed
+        RegistrationForm: RegistrationReducer, // add more slices here as needed
         BreadCrumbs:BreadCrumbReducer
     },
 });
