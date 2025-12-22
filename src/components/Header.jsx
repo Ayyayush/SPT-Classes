@@ -84,6 +84,7 @@ const Header = () => {
           </button>
           <Link className="hover:text-blue-100 transition" to="/About">About</Link>
           <Link className="hover:text-blue-100 transition" to="/Contact">Contact</Link>
+           <Link className="hover:text-blue-100 transition" to="/Facilities">Facilities</Link>
         </nav>
 
         {/* RIGHT ICONS */}
@@ -164,6 +165,7 @@ const Header = () => {
           <button onClick={handleCourse} className="block w-full text-left">Courses</button>
           <Link to="/about" onClick={() => setMobileNavOpen(false)}>About</Link>
           <Link to="/contact" onClick={() => setMobileNavOpen(false)}>Contact</Link>
+           <Link to="/Facilities" onClick={() => setMobileNavOpen(false)}>Facilities</Link>
         </div>
       )}
     </header>

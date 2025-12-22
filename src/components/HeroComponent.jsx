@@ -44,6 +44,7 @@ const HeroComponent = forwardRef((props, ref) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showRegister, setShowRegister] = useState(false);
 
+  /* IMAGE ROTATION */
   useEffect(() => {
     const interval = setInterval(() => {
       setFade(false);
@@ -55,11 +56,25 @@ const HeroComponent = forwardRef((props, ref) => {
     return () => clearInterval(interval);
   }, []);
 
+  /* FIRST IMAGE LOAD */
   useEffect(() => {
     const img = new Image();
     img.src = heroImages[0];
     img.onload = () => setIsLoading(false);
   }, []);
+
+  /* 🔒 LOCK BACKGROUND SCROLL WHEN FORM OPENS */
+  useEffect(() => {
+    if (showRegister) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showRegister]);
 
   const handleAnnouncements = (e) => {
     e.preventDefault();
@@ -91,14 +106,8 @@ const HeroComponent = forwardRef((props, ref) => {
         />
       )}
 
-      {/* FADE + BLUR WHEN FORM OPENS */}
-      <div
-        className={`absolute inset-0 transition-all duration-500 ${
-          showRegister
-            ? "bg-black/60 backdrop-blur-md"
-            : "bg-gradient-to-b from-transparent via-[#0B235A]/60 to-[#0B235A]/95"
-        }`}
-      />
+      {/* HERO OVERLAY (NORMAL STATE) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B235A]/60 to-[#0B235A]/95" />
 
       {/* HERO TEXT */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-32">
@@ -136,9 +145,17 @@ const HeroComponent = forwardRef((props, ref) => {
         </div>
       </div>
 
-      {/* REGISTER FORM OVERLAY */}
+      {/* 🔲 BACKDROP (BLUR + DIM ENTIRE PAGE) */}
       {showRegister && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-md"
+          onClick={() => setShowRegister(false)}
+        />
+      )}
+
+      {/* REGISTER FORM MODAL */}
+      {showRegister && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
           <RegisterForm onClose={() => setShowRegister(false)} />
         </div>
       )}
