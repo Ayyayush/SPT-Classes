@@ -2,6 +2,10 @@ import { forwardRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShimmerHeroCard } from "./Shimmer";
 import RegisterForm from "./RegisterForm";
+import library1 from "./Assets/hero/library1.jpg";
+import library2 from "./Assets/hero/library2.jpg";
+import students from "./Assets/hero/library3.png";
+
 
 /* ================= CARD COMPONENT ================= */
 export function CardComponent({ index }) {
@@ -33,11 +37,13 @@ export function CardComponent({ index }) {
 const HeroComponent = forwardRef((props, ref) => {
   const navigate = useNavigate();
 
-  const heroImages = [
-    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80",
-    "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1600&q=80",
-    "https://img.freepik.com/premium-photo/graduation-group-back-view-students-celebrate-education-success-excited-graduates-campus-celebration-study-goals-university-award-learning-motivation-happy-future_590464-130999.jpg?w=2000",
-  ];
+ const heroImages = [
+  library1,
+  library2,
+  students,
+];
+
+
 
   const [currentImage, setCurrentImage] = useState(0);
   const [fade, setFade] = useState(true);
@@ -102,7 +108,9 @@ const HeroComponent = forwardRef((props, ref) => {
           className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1800ms] ${
             fade ? "opacity-100" : "opacity-0"
           }`}
-          style={{ backgroundImage: `url(${heroImages[currentImage]})` }}
+          style={{  backgroundImage: `url(${heroImages[currentImage]})`,
+                    filter: "blur(2.5px)",
+                    transform: "scale(1.03)", }}
         />
       )}
 
