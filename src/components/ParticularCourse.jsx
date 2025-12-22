@@ -11,6 +11,7 @@ import {
     Layers,
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import BreadCrumbs from "./BreadCrumbs.jsx";
 
 const ICONS = {
     check: CheckCircle,
@@ -1510,6 +1511,107 @@ const courseDetails = {
             },
         ],
     },
+
+    "O-Level Certification": {
+        overview: {
+            title: "Course Overview",
+            description:
+                "The O-Level Certification course is a foundational IT qualification designed by NIELIT, aimed at developing professional-level computer knowledge and skills required for government and private sector jobs.",
+            objectives: [
+                { icon: "check", text: "Build strong fundamentals in information technology." },
+                { icon: "check", text: "Develop practical skills in programming and office tools." },
+                { icon: "check", text: "Prepare for NIELIT O-Level certification examinations." },
+            ],
+        },
+
+        syllabus: [
+            {
+                sno: 1,
+                chapter: "IT Tools and Network Basics (M1-R5)",
+                duration: 40,
+                theory: 20,
+                lab: 20,
+                outcome:
+                    "Understand computer fundamentals, operating systems, word processing, spreadsheets, presentations, internet usage, and networking basics.",
+            },
+            {
+                sno: 2,
+                chapter: "Web Design and Publishing (M2-R5)",
+                duration: 40,
+                theory: 18,
+                lab: 22,
+                outcome:
+                    "Create static websites using HTML, CSS, and basic JavaScript, and publish websites using web hosting concepts.",
+            },
+            {
+                sno: 3,
+                chapter: "Programming and Problem Solving through Python (M3-R5)",
+                duration: 40,
+                theory: 18,
+                lab: 22,
+                outcome:
+                    "Develop programming logic using Python, write programs, and solve computational problems.",
+            },
+            {
+                sno: 4,
+                chapter: "Internet of Things and its Applications (M4-R5)",
+                duration: 40,
+                theory: 18,
+                lab: 22,
+                outcome:
+                    "Understand IoT concepts, sensors, devices, and real-world IoT applications.",
+            },
+            {
+                sno: 5,
+                chapter: "Practical & Project Work",
+                duration: 40,
+                theory: 0,
+                lab: 40,
+                outcome:
+                    "Apply learned concepts in real-world projects and practical examinations.",
+            },
+        ],
+
+        benefits: [
+            { icon: "star", text: "Government-recognized IT certification" },
+            { icon: "star", text: "Eligibility for many government job exams" },
+            { icon: "star", text: "Strong foundation in IT and programming" },
+            { icon: "star", text: "Improves employability in private sector" },
+            { icon: "star", text: "Industry-relevant practical training" },
+        ],
+
+        jobMarket: {
+            description:
+                "O-Level certification holders are preferred for various IT-related roles in government departments, public sector units, and private organizations.",
+            points: [
+                { icon: "briefcase", text: "Computer Operator / IT Assistant roles" },
+                { icon: "globe", text: "Recognized across government and private sectors" },
+                { icon: "rupee", text: "Better salary prospects with certification" },
+                { icon: "trend", text: "Mandatory or preferred in many govt jobs" },
+                { icon: "users", text: "Suitable for students and job aspirants" },
+            ],
+        },
+
+        opportunities: {
+            description:
+                "After completing the O-Level Certification, learners can pursue IT careers or higher-level certifications.",
+            points: [
+                { icon: "building", text: "IT Assistant / Computer Operator" },
+                { icon: "rocket", text: "Foundation for A-Level and advanced IT courses" },
+                { icon: "brain", text: "Strong logical and technical skills" },
+                { icon: "graduation", text: "Eligibility for higher NIELIT certifications" },
+            ],
+        },
+
+        eligibility: [
+            {
+                icon: "badge",
+                text:
+                    "10+2 or equivalent qualification preferred. Basic computer knowledge is recommended.",
+            },
+        ],
+    },
+
 }
 
 function TopCourseImage({ courseImg, courseTitle, courseDesc, duration }) {
@@ -1864,20 +1966,21 @@ function CourseData({ courseTitle }) {
 }
 
 export default function ParticularCourse() {
-    // const course = {
-    //     title: "C Programming",
-    //     desc: "Programming logic, structured programming, and strong problem-solving foundations.",
-    //     duration: "2 Months",
-    //     img: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230703144619/CPP-Language.png",
-    // };
+    const defaultCourse = {
+        title: "CCC (Course on Computer Concepts)",
+        desc: "Computer fundamentals, internet usage, and digital literacy.",
+        duration: "3 Months",
+        img: "https://cdn-icons-png.flaticon.com/512/2920/2920277.png",
+    }
 
     const location = useLocation();
-    const course = location?.state?.course
+    const course = location?.state?.course || defaultCourse
     console.log(course)
 
     return (
         <div className="bg-blue-50 min-h-screen">
             <Header />
+            <BreadCrumbs courseTitle={course.title} />
             <TopCourseImage
                 courseImg={course.img}
                 courseTitle={course.title}

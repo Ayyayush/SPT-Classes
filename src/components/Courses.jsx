@@ -121,6 +121,7 @@ const CourseCard = ({ course }) => {
   const handleCourseClick = () => {
     try {
       navigate("/Courses/ParticularCourse", { state: { course } });
+      window.scrollTo(0, 0);
     } catch {
       toast.error("Something went wrong");
     }

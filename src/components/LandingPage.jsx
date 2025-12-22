@@ -29,7 +29,7 @@ export default function LandingPage() {
     <div className="h-fit w-[100vw] relative">
       {/* http://localhost:3000 */}
       <Header />
-      <BreadCrumbs/>
+      <BreadCrumbs courseTitle={""}/>
       <HeroComponent ref={announcementsRef}/>
       {/* <HeroComponent2 ref={announcementsRef}/> */}
       <LatestNews ref={announcementsRef}/>

@@ -15,7 +15,7 @@ export default function CoursesPage(){
     return(
         <div>
             <Header/>
-            <BreadCrumbs/>
+            <BreadCrumbs courseTitle={""}/>
             <CoursesHero/>
             <ComapnyReviews/>
             <MentorsInfo/>

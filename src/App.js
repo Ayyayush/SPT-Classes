@@ -12,67 +12,57 @@ import AboutUs from "./components/AboutUs.jsx";
 import ContactUs from "./components/ContactUs.jsx";
 import { Toaster } from "react-hot-toast";
 import ParticularCourse from "./components/ParticularCourse.jsx";
+import RootLayout from "./components/RootLayout.jsx";
 
 
 const appRouter = createBrowserRouter([
     {
         path: "/",
-        element: <LandingPage />,
+        element: <RootLayout />, // 👈 IMPORTANT
+        children: [
+            { index: true, element: <LandingPage /> },
+            { path: "Browse", element: <Browse /> },
+            { path: "Login", element: <Login /> },
+            { path: "Signup", element: <Signup /> },
+            { path: "Courses", element: <CoursesPage /> },
+            { path: "Courses/ParticularCourse", element: <ParticularCourse /> },
+            { path: "About", element: <AboutUs /> },
+            { path: "Contact", element: <ContactUs /> },
+        ],
     },
-    {
-        path: "/Browse",
-        element: <Browse />,
-    },
-    {
-         path: "/Login",
-         element: <Login />,
-    },
-    {   path: "/Signup",
-        element: <Signup />
-    },
-    {   path: "/Courses" ,
-        element: <CoursesPage />
-    },
-    {   path: "/Courses/ParticularCourse" ,
-        element: <ParticularCourse />
-    },
-    {   path: "/About" ,
-        element: <AboutUs />
-    },
-    {   path: "/Contact" ,
-        element: <ContactUs />
-    },
+]);
 
-])
 
 
 function App() {
-    useEffect(() => {
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            smoothWheel: true,
-            smoothTouch: false,
-        });
+  useEffect(() => {
+    const lenis = new Lenis({
+      smoothWheel: true,
+      smoothTouch: false,
+      autoResize: false, // IMPORTANT with routing
+    });
 
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+    window.lenis = lenis;
 
-        requestAnimationFrame(raf);
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
 
-        return () => {
-            lenis.destroy();
-        };
-    }, []);
+    requestAnimationFrame(raf);
 
-    return (
-        <div>
-            <RouterProvider router={appRouter} />
-            <Toaster position="top-center" reverseOrder={false} />
-        </div>
-    )
+    return () => {
+      lenis.destroy();
+      window.lenis = null;
+    };
+  }, []);
+
+  return (
+    <>
+      <RouterProvider router={appRouter} />
+      <Toaster position="top-center" />
+    </>
+  );
 }
 
 export default App;
