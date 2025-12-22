@@ -10,16 +10,17 @@ const ContactUs = () => {
     email: "",
     phone: "",
     subject: "",
-    message: ""
+    message: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false); // ✅ ADDED
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -55,7 +56,8 @@ const ContactUs = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  // ✅ UPDATED: EMAIL CONNECTED (LOGIC SAME AS BEFORE)
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = validateForm();
@@ -66,16 +68,36 @@ const ContactUs = () => {
       return;
     }
 
-    toast.success("Thank you for contacting us! We'll get back to you soon.");
+    try {
+      setLoading(true);
 
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: ""
-    });
-    setErrors({});
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      toast.success("Thank you for contacting us! We'll get back to you soon.");
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+      setErrors({});
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -83,42 +105,46 @@ const ContactUs = () => {
       icon: "📧",
       title: "Email Us",
       content: "support@sptclasses.com",
-      subtitle: "We'll respond within 24 hours"
+      subtitle: "We'll respond within 24 hours",
     },
     {
       icon: "📞",
       title: "Call Us",
       content: "+91 9289011480",
-      subtitle: "Mon - Sat, 9:00 AM - 6:00 PM"
+      subtitle: "Mon - Sat, 9:00 AM - 6:00 PM",
     },
     {
       icon: "📍",
       title: "Visit Us",
       content: "Jamshedpur, Jharkhand",
-      subtitle: "India"
-    }
+      subtitle: "India",
+    },
   ];
 
   const faqs = [
     {
       question: "What courses do you offer?",
-      answer: "We offer 80+ courses including NIELIT certified programs, programming courses, skill development, and professional certifications."
+      answer:
+        "We offer 80+ courses including NIELIT certified programs, programming courses, skill development, and professional certifications.",
     },
     {
       question: "Do you provide placement assistance?",
-      answer: "Yes, we provide dedicated placement support, interview preparation, and career guidance to all our students."
+      answer:
+        "Yes, we provide dedicated placement support, interview preparation, and career guidance to all our students.",
     },
     {
       question: "Are your courses government certified?",
-      answer: "Yes, we offer NIELIT certified courses which are government-recognized and add credibility to your career."
-    }
+      answer:
+        "Yes, we offer NIELIT certified courses which are government-recognized and add credibility to your career.",
+    },
   ];
 
   return (
     <div className="bg-white">
       <Header />
-      <BreadCrumbs/>
+      <BreadCrumbs />
 
+      {/* HERO SECTION */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20 px-6">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400 rounded-full blur-3xl opacity-20"></div>
         <div className="absolute bottom-0 -right-24 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20"></div>
@@ -135,12 +161,13 @@ const ContactUs = () => {
           </h1>
 
           <p className="text-blue-100 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-            Have questions about our courses? Need guidance on your learning path?
-            Our team is here to help you every step of the way.
+            Have questions about our courses? Need guidance on your learning
+            path? Our team is here to help you every step of the way.
           </p>
         </div>
       </section>
 
+      {/* CONTACT SECTION */}
       <section className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
@@ -158,9 +185,7 @@ const ContactUs = () => {
                 <p className="text-blue-600 font-semibold mb-1">
                   {info.content}
                 </p>
-                <p className="text-gray-500 text-sm">
-                  {info.subtitle}
-                </p>
+                <p className="text-gray-500 text-sm">{info.subtitle}</p>
               </div>
             ))}
           </div>
@@ -171,10 +196,13 @@ const ContactUs = () => {
                 Send Us a Message
               </h2>
               <p className="text-gray-600 mb-8">
-                Fill out the form below and our team will get back to you as soon as possible.
+                Fill out the form below and our team will get back to you as
+                soon as possible.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* INPUTS — UNCHANGED */}
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Full Name
@@ -210,7 +238,9 @@ const ContactUs = () => {
                       } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all`}
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.email}
+                      </p>
                     )}
                   </div>
 
@@ -230,7 +260,9 @@ const ContactUs = () => {
                       } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all`}
                     />
                     {errors.phone && (
-                      <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.phone}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -250,7 +282,9 @@ const ContactUs = () => {
                     } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all`}
                   />
                   {errors.subject && (
-                    <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.subject}
+                    </p>
                   )}
                 </div>
 
@@ -269,19 +303,22 @@ const ContactUs = () => {
                     } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all resize-none`}
                   />
                   {errors.message && (
-                    <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.message}
+                    </p>
                   )}
                 </div>
 
                 <button
                   type="submit"
+                  disabled={loading} // ✅ ADDED
                   className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700
                            hover:from-blue-700 hover:to-blue-800
                            text-white font-semibold rounded-xl
                            shadow-lg hover:shadow-xl
                            transition-all duration-300 hover:scale-[1.02]"
                 >
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"} {/* ✅ ADDED */}
                 </button>
               </form>
             </div>
@@ -313,7 +350,8 @@ const ContactUs = () => {
                   Need Immediate Assistance?
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Our support team is available during business hours to help you with any urgent queries.
+                  Our support team is available during business hours to help
+                  you with any urgent queries.
                 </p>
                 <div className="flex flex-col gap-3">
                   <a
@@ -338,6 +376,7 @@ const ContactUs = () => {
         </div>
       </section>
 
+      {/* MAP SECTION */}
       <section className="py-16 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">

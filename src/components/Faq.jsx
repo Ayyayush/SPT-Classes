@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-
 import { forwardRef } from "react";
 
 const FaqComponent = forwardRef((props, ref) => {
@@ -11,23 +10,23 @@ const FaqComponent = forwardRef((props, ref) => {
   );
 });
 
-
 const Faq = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     subject: "",
-    message: ""
+    message: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false); // ✅ ADDED
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -63,7 +62,8 @@ const Faq = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  // ✅ UPDATED (EMAIL CONNECTED, LOGIC SAME)
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = validateForm();
@@ -74,16 +74,36 @@ const Faq = () => {
       return;
     }
 
-    toast.success("Thank you for contacting us! We'll get back to you soon.");
+    try {
+      setLoading(true);
 
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: ""
-    });
-    setErrors({});
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      toast.success("Thank you for contacting us! We'll get back to you soon.");
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+      setErrors({});
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -91,41 +111,42 @@ const Faq = () => {
       icon: "📧",
       title: "Email Us",
       content: "support@sptclasses.com",
-      subtitle: "We'll respond within 24 hours"
+      subtitle: "We'll respond within 24 hours",
     },
     {
       icon: "📞",
       title: "Call Us",
       content: "+91 9289011480",
-      subtitle: "Mon - Sat, 9:00 AM - 6:00 PM"
+      subtitle: "Mon - Sat, 9:00 AM - 6:00 PM",
     },
     {
       icon: "📍",
       title: "Visit Us",
       content: "Jamshedpur, Jharkhand",
-      subtitle: "India"
-    }
+      subtitle: "India",
+    },
   ];
 
   const faqs = [
     {
       question: "What courses do you offer?",
-      answer: "We offer 80+ courses including NIELIT certified programs, programming courses, skill development, and professional certifications."
+      answer:
+        "We offer 80+ courses including NIELIT certified programs, programming courses, skill development, and professional certifications.",
     },
     {
       question: "Do you provide placement assistance?",
-      answer: "Yes, we provide dedicated placement support, interview preparation, and career guidance to all our students."
+      answer:
+        "Yes, we provide dedicated placement support, interview preparation, and career guidance to all our students.",
     },
     {
       question: "Are your courses government certified?",
-      answer: "Yes, we offer NIELIT certified courses which are government-recognized and add credibility to your career."
-    }
+      answer:
+        "Yes, we offer NIELIT certified courses which are government-recognized and add credibility to your career.",
+    },
   ];
 
   return (
     <div className="bg-white">
-    
-
       <section className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
@@ -143,9 +164,7 @@ const Faq = () => {
                 <p className="text-blue-600 font-semibold mb-1">
                   {info.content}
                 </p>
-                <p className="text-gray-500 text-sm">
-                  {info.subtitle}
-                </p>
+                <p className="text-gray-500 text-sm">{info.subtitle}</p>
               </div>
             ))}
           </div>
@@ -156,10 +175,13 @@ const Faq = () => {
                 Send Us a Message
               </h2>
               <p className="text-gray-600 mb-8">
-                Fill out the form below and our team will get back to you as soon as possible.
+                Fill out the form below and our team will get back to you as
+                soon as possible.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* --- ALL YOUR INPUTS UNCHANGED --- */}
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Full Name
@@ -195,7 +217,9 @@ const Faq = () => {
                       } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all`}
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.email}
+                      </p>
                     )}
                   </div>
 
@@ -215,7 +239,9 @@ const Faq = () => {
                       } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all`}
                     />
                     {errors.phone && (
-                      <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.phone}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -235,7 +261,9 @@ const Faq = () => {
                     } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all`}
                   />
                   {errors.subject && (
-                    <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.subject}
+                    </p>
                   )}
                 </div>
 
@@ -254,19 +282,22 @@ const Faq = () => {
                     } focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all resize-none`}
                   />
                   {errors.message && (
-                    <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.message}
+                    </p>
                   )}
                 </div>
 
                 <button
                   type="submit"
+                  disabled={loading} // ✅ ADDED
                   className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700
                            hover:from-blue-700 hover:to-blue-800
                            text-white font-semibold rounded-xl
                            shadow-lg hover:shadow-xl
                            transition-all duration-300 hover:scale-[1.02]"
                 >
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"} {/* ✅ ADDED */}
                 </button>
               </form>
             </div>
@@ -298,7 +329,8 @@ const Faq = () => {
                   Need Immediate Assistance?
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Our support team is available during business hours to help you with any urgent queries.
+                  Our support team is available during business hours to help
+                  you with any urgent queries.
                 </p>
                 <div className="flex flex-col gap-3">
                   <a
@@ -322,9 +354,6 @@ const Faq = () => {
           </div>
         </div>
       </section>
-
-      
-    
     </div>
   );
 };
