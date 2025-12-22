@@ -1,21 +1,25 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FiUser, FiMenu, FiX } from "react-icons/fi";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FiUser, FiMenu, FiX, FiChevronDown } from "react-icons/fi";
 import logo from "./Assets/spt_classes_logo.svg";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { addPath } from "../redux/Slices/breadCrumbsSlice";
-import RegisterForm from "./RegisterForm";
 import { setShowRegisterFrom } from "../redux/Slices/registerFormSlice";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [facilitiesOpen, setFacilitiesOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-  const menuRef = useRef(null);
-  const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const userMenuRef = useRef(null);
+  const facilitiesRef = useRef(null);
+
+  /* ================= LOAD USER ================= */
   useEffect(() => {
     try {
       const raw = localStorage.getItem("user");
@@ -25,75 +29,130 @@ const Header = () => {
     }
   }, []);
 
+  /* ================= OUTSIDE CLICK ================= */
   useEffect(() => {
-    function onDocClick(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+    function handleClickOutside(e) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
         setMenuOpen(false);
       }
+      if (facilitiesRef.current && !facilitiesRef.current.contains(e.target)) {
+        setFacilitiesOpen(false);
+      }
     }
-    document.addEventListener("click", onDocClick);
-    return () => document.removeEventListener("click", onDocClick);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  function handleCourse() {
+  /* ================= HANDLERS ================= */
+  const handleCourse = () => {
     try {
-      navigate("/Courses", { state: { tab: "NIELIT Certified Courses" } });
+      navigate("/Courses", {
+        state: { tab: "NIELIT Certified Courses" },
+      });
       setMobileNavOpen(false);
     } catch {
       toast.error("Error loading courses");
     }
-  }
+  };
 
-  function handleLogout() {
+  const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
     setMenuOpen(false);
     navigate("/");
-  }
+  };
+
+  /* ================= NAV BOX ================= */
+  const navBox = (path) =>
+    `
+      flex items-center gap-1
+      px-4 py-1.5 rounded-full
+      transition-all duration-200
+      backdrop-blur-sm
+      ${
+        location.pathname === path
+          ? "bg-white/30 text-white shadow-md"
+          : "bg-white/10 text-white hover:bg-white/20 hover:shadow-md"
+      }
+    `;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] backdrop-blur-md border-b border-white/20 shadow-lg">
-
-      {/* TOP BAR */}
+    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] border-b border-white/20 shadow-lg">
       <div className="flex items-center justify-between px-4 md:px-12 py-4">
 
-        {/* LOGO + NAME */}
+        {/* LOGO */}
         <div className="flex items-center gap-3">
           <img src={logo} alt="SPT Logo" className="w-12 h-12" />
-
-          <div className="leading-tight">
-            {/* Mobile */}
-            <p className="text-white font-semibold text-sm md:hidden">
+          <div>
+            <p className="text-white font-semibold text-sm md:text-lg">
               Sharp Programmer Technology
             </p>
-
-            {/* Desktop */}
-            <p className="hidden md:block text-white font-semibold text-lg">
-              Sharp Programmer Technology
-            </p>
-
             <p className="hidden md:block text-blue-100 text-xs tracking-widest">
               Where Learning Meets Excellence
             </p>
           </div>
         </div>
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-10 text-white text-sm font-medium">
-          <Link className="hover:text-blue-100 transition" to="/">Home</Link>
-          <button onClick={handleCourse} className="hover:text-blue-100 transition">
-            Courses
+        {/* ================= DESKTOP NAV ================= */}
+        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-4 text-sm font-medium">
+
+          <Link to="/" className={navBox("/")}>Home</Link>
+          <button onClick={handleCourse} className={navBox("/Courses")}>Courses</button>
+          <Link to="/About" className={navBox("/About")}>About</Link>
+          <Link to="/Contact" className={navBox("/Contact")}>Contact</Link>
+
+          {/* ===== FACILITIES (PROFILE STYLE DROPDOWN) ===== */}
+          <div className="relative" ref={facilitiesRef}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setFacilitiesOpen(!facilitiesOpen);
+              }}
+              className={navBox("/facilities")}
+            >
+              Facilities
+              <FiChevronDown
+                className={`transition-transform ${
+                  facilitiesOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {facilitiesOpen && (
+              <div className="absolute top-12 left-1/2 -translate-x-1/2 w-56 bg-white rounded-xl shadow-xl p-3 animate-dropdown">
+                <button
+                  onClick={() => {
+                    setFacilitiesOpen(false);
+                    navigate("/facilities/library");
+                  }}
+                  className="block w-full text-left px-3 py-2 rounded hover:bg-blue-50 hover:text-blue-700 transition"
+                >
+                  Library
+                </button>
+
+                <button
+                  onClick={() => {
+                    setFacilitiesOpen(false);
+                    navigate("/facilities/online-test");
+                  }}
+                  className="block w-full text-left px-3 py-2 rounded hover:bg-blue-50 hover:text-blue-700 transition"
+                >
+                  Online Test
+                </button>
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => dispatch(setShowRegisterFrom())}
+            className={navBox("/register")}
+          >
+            Registration Form
           </button>
-          <Link className="hover:text-blue-100 transition" to="/About">About</Link>
-          <Link className="hover:text-blue-100 transition" to="/Contact">Contact</Link>
-          <Link className="hover:text-blue-100 transition" to="/Facilities">Facilities</Link>
-          <div className="hover:text-blue-100 transition cursor-pointer" onClick={() => {dispatch(setShowRegisterFrom())}}>Registration Form</div>
         </nav>
 
-        {/* RIGHT ICONS */}
-        <div className="flex items-center gap-3 relative" ref={menuRef}>
-
-          {/* MOBILE MENU ICON */}
+        {/* ================= PROFILE ================= */}
+        <div className="flex items-center gap-3 relative" ref={userMenuRef}>
           <button
             onClick={() => setMobileNavOpen(!mobileNavOpen)}
             className="lg:hidden text-white text-2xl"
@@ -101,13 +160,12 @@ const Header = () => {
             {mobileNavOpen ? <FiX /> : <FiMenu />}
           </button>
 
-          {/* USER ICON */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               setMenuOpen(!menuOpen);
             }}
-            className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow"
           >
             {user ? (
               <span className="font-semibold text-[#1E40AF]">
@@ -118,12 +176,11 @@ const Header = () => {
             )}
           </button>
 
-          {/* USER DROPDOWN */}
           {menuOpen && (
-            <div className="absolute right-0 top-12 w-60 bg-white rounded-xl shadow-xl p-4">
+            <div className="absolute right-0 top-12 w-60 bg-white rounded-xl shadow-xl p-4 animate-dropdown">
               {user ? (
                 <>
-                  <p className="font-semibold text-gray-800">{user.name}</p>
+                  <p className="font-semibold">{user.name}</p>
                   <p className="text-xs text-gray-500 mb-3">{user.email}</p>
 
                   <button
@@ -135,7 +192,7 @@ const Header = () => {
 
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-3 py-2 rounded bg-red-50 text-red-600 hover:bg-red-100"
+                    className="block w-full text-left px-3 py-2 rounded bg-red-50 text-red-600"
                   >
                     Logout
                   </button>
@@ -144,13 +201,13 @@ const Header = () => {
                 <>
                   <button
                     onClick={() => navigate("/Login")}
-                    className="block w-full py-2 bg-blue-600 text-white rounded mb-2"
+                    className="w-full py-2 bg-blue-600 text-white rounded mb-2"
                   >
                     Login
                   </button>
                   <button
                     onClick={() => navigate("/Signup")}
-                    className="block w-full py-2 bg-gray-100 rounded"
+                    className="w-full py-2 bg-gray-100 rounded"
                   >
                     Sign Up
                   </button>
@@ -161,20 +218,18 @@ const Header = () => {
         </div>
       </div>
 
-      {/* MOBILE NAV MENU */}
+      {/* ================= MOBILE NAV ================= */}
       {mobileNavOpen && (
-        <div className="lg:hidden bg-[#1E40AF]/95 backdrop-blur-md px-6 py-5 space-y-4 text-white text-sm font-medium">
+        <div className="lg:hidden bg-[#1E40AF]/95 px-6 py-5 space-y-4 text-white text-sm animate-dropdown">
           <Link to="/" onClick={() => setMobileNavOpen(false)}>Home</Link>
-          <button onClick={handleCourse} className="block w-full text-left">Courses</button>
-          <Link to="/about" onClick={() => setMobileNavOpen(false)}>About</Link>
-          <Link to="/contact" onClick={() => setMobileNavOpen(false)}>Contact</Link>
-           <Link to="/Facilities" onClick={() => setMobileNavOpen(false)}>Facilities</Link>
-          <div onClick={() => {dispatch(setShowRegisterFrom())}}>Registration Form</div>
+          <button onClick={handleCourse}>Courses</button>
+          <Link to="/About" onClick={() => setMobileNavOpen(false)}>About</Link>
+          <Link to="/Contact" onClick={() => setMobileNavOpen(false)}>Contact</Link>
+          <button onClick={() => dispatch(setShowRegisterFrom())}>
+            Registration Form
+          </button>
         </div>
       )}
-
-      
-
     </header>
   );
 };

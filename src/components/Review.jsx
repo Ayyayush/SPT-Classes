@@ -1,47 +1,44 @@
 import React from "react";
-import { useState,useEffect } from "react";
-import { FaChevronLeft,FaChevronRight } from "react-icons/fa6";
+import { useState, useEffect } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+
+/* ================= SKELETON ================= */
 
 export function ReviewCardSkeleton() {
   return (
-    <div className="w-[400px] h-[300px] bg-blue-50 rounded-2xl shadow-md p-4 flex flex-col gap-3 animate-pulse">
-
-      {/* User section */}
+    <div
+      className="
+        w-full sm:w-[320px] md:w-[360px] lg:w-[400px]
+        h-[300px]
+        bg-blue-50 rounded-2xl shadow-md
+        p-4 flex flex-col gap-3 animate-pulse
+      "
+    >
       <div className="flex items-center gap-3">
-
-        {/* Avatar */}
         <div className="h-12 w-12 rounded-full bg-blue-200"></div>
 
-        {/* Name + stars */}
         <div className="flex flex-col gap-2">
-
-          {/* Name */}
           <div className="h-4 w-24 bg-blue-200 rounded"></div>
 
-          {/* Stars */}
           <div className="flex gap-1">
-            <div className="h-4 w-4 bg-blue-200 rounded"></div>
-            <div className="h-4 w-4 bg-blue-200 rounded"></div>
-            <div className="h-4 w-4 bg-blue-200 rounded"></div>
-            <div className="h-4 w-4 bg-blue-200 rounded"></div>
-            <div className="h-4 w-4 bg-blue-200 rounded"></div>
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-4 w-4 bg-blue-200 rounded"></div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Message lines */}
       <div className="flex flex-col gap-2 mt-1">
         <div className="h-3 w-[90%] bg-blue-200 rounded"></div>
         <div className="h-3 w-[80%] bg-blue-200 rounded"></div>
         <div className="h-3 w-[70%] bg-blue-200 rounded"></div>
         <div className="h-3 w-[60%] bg-blue-200 rounded"></div>
       </div>
-
     </div>
   );
 }
 
-
+/* ================= REVIEW CARD ================= */
 
 export function ReviewCard(props) {
   const getInitials = (name) => {
@@ -53,29 +50,32 @@ export function ReviewCard(props) {
   };
 
   return (
-    <div className="
-      w-[400px] h-[300px] p-6 flex flex-col justify-between
-      rounded-2xl
-      bg-gradient-to-br from-white via-[#f8fbff] to-[#eef4ff]
-      border border-[#e5edff]
-      shadow-[0_25px_60px_rgba(37,99,235,0.18)]
-      hover:shadow-[0_35px_80px_rgba(37,99,235,0.28)]
-      transition-all duration-500
-    ">
-
-      {/* Top */}
+    <div
+      className="
+        w-full sm:w-[320px] md:w-[360px] lg:w-[400px]
+        h-[300px]
+        p-6 flex flex-col justify-between
+        rounded-2xl
+        bg-gradient-to-br from-white via-[#f8fbff] to-[#eef4ff]
+        border border-[#e5edff]
+        shadow-[0_25px_60px_rgba(37,99,235,0.18)]
+        hover:shadow-[0_35px_80px_rgba(37,99,235,0.28)]
+        transition-all duration-500
+      "
+    >
       <div className="space-y-4 relative">
-        {/* Accent bar */}
         <div className="absolute left-0 top-0 h-10 w-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-500" />
 
         <div className="flex items-start gap-4 pl-3">
-          <div className="
-            h-14 w-14 rounded-full
-            bg-gradient-to-br from-blue-500 to-indigo-600
-            flex items-center justify-center
-            text-white font-bold text-lg
-            shadow-md ring-4 ring-blue-100
-          ">
+          <div
+            className="
+              h-14 w-14 rounded-full
+              bg-gradient-to-br from-blue-500 to-indigo-600
+              flex items-center justify-center
+              text-white font-bold text-lg
+              shadow-md ring-4 ring-blue-100
+            "
+          >
             {getInitials(props?.username)}
           </div>
 
@@ -104,63 +104,42 @@ export function ReviewCard(props) {
         </p>
       </div>
 
-      {/* Footer */}
       <div className="flex items-center gap-2 text-xs text-blue-600 font-medium mt-4">
-        <svg
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        Verified Student
+        ✔ Verified Student
       </div>
     </div>
   );
 }
 
+/* ================= REVIEW SLIDER ================= */
 
 export function Review(props) {
   const [currentIndex, setCurrentIndex] = useState([0, ""]);
-
   const total = props?.feedBack.length;
 
-  // Handle previous button
   const handlePrev = () => {
     setCurrentIndex((prev) => {
       const oldArr = [...prev];
       oldArr[0] = (oldArr[0] - 1 + total) % total;
       oldArr[1] = "RIGHT";
       return oldArr;
-    })
+    });
   };
 
-  // Handle next button
   const handleNext = () => {
     setCurrentIndex((prev) => {
       const oldArr = [...prev];
       oldArr[0] = (oldArr[0] + 1) % total;
       oldArr[1] = "LEFT";
       return oldArr;
-    })
-
+    });
   };
 
-
-  // Get 4 reviews to display
   const getDisplayIndexes = () => {
     if (total <= 3) return Array.from({ length: total }, (_, i) => i);
-
     const left = (currentIndex[0] - 1 + total) % total;
     const center = currentIndex[0];
     const right = (currentIndex[0] + 1) % total;
-
     return [left, center, right];
   };
 
@@ -172,32 +151,22 @@ export function Review(props) {
         const oldArr = [...prev];
         oldArr[1] = "";
         return oldArr;
-      })
-    }, 1000)
-  })
-
+      });
+    }, 1000);
+  });
 
   return (
     <section className="w-full py-20 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-12 space-y-3">
-          <h2 className="text-4xl font-bold text-gray-800">Student Testimonials</h2>
-          <p className="text-gray-600 text-lg">
-            Hear what our students have to say about their learning experience
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto rounded-full"></div>
-        </div>
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="relative flex items-center justify-center py-12">
           <button
             onClick={handlePrev}
-            className="absolute left-0 md:left-4 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110"
-            aria-label="Previous review"
+            className="absolute left-2 sm:left-0 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full"
           >
-            <FaChevronLeft className="text-xl" />
+            <FaChevronLeft />
           </button>
 
-          <div className="flex items-center justify-center gap-6 w-full max-w-6xl overflow-hidden">
+          <div className="flex items-center justify-center gap-6 w-full overflow-hidden">
             {displayIndexes.map((idx, i) => {
               const review = props?.feedBack[idx];
               let scale = 0.85;
@@ -215,24 +184,12 @@ export function Review(props) {
                   style={{
                     transform: `scale(${scale})`,
                     opacity: opacity,
-                    width: "33%",
                   }}
                 >
-                  {currentIndex[1] === "LEFT" ? (
-                    i === 2 ? (
-                      <ReviewCardSkeleton />
-                    ) : (
-                      <ReviewCard username={review.username} message={review.message} />
-                    )
-                  ) : currentIndex[1] === "RIGHT" ? (
-                    i === 0 ? (
-                      <ReviewCardSkeleton />
-                    ) : (
-                      <ReviewCard username={review.username} message={review.message} />
-                    )
-                  ) : (
-                    <ReviewCard username={review.username} message={review.message} />
-                  )}
+                  <ReviewCard
+                    username={review.username}
+                    message={review.message}
+                  />
                 </div>
               );
             })}
@@ -240,43 +197,26 @@ export function Review(props) {
 
           <button
             onClick={handleNext}
-            className="absolute right-0 md:right-4 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110"
-            aria-label="Next review"
+            className="absolute right-2 sm:right-0 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full"
           >
-            <FaChevronRight className="text-xl" />
+            <FaChevronRight />
           </button>
         </div>
       </div>
     </section>
-  )
-};
+  );
+}
+
+/* ================= EXPORT ================= */
 
 export default function ReviewComponent() {
   const feedBack = [
-    {
-      username: "Taher Malik",
-      message: "SPT Classes has been an incredible learning experience. The instructors are knowledgeable and the course content is well-structured. I highly recommend it to anyone looking to enhance their programming skills."
-    },
-    {
-      username: "Ayush Pandey",
-      message: "The teaching methodology at SPT Classes is exceptional. The hands-on projects and real-world applications helped me understand complex concepts easily. Grateful for the support from the faculty."
-    },
-    {
-      username: "Abhishek Kumar",
-      message: "I enrolled in the Java Programming course and it exceeded my expectations. The practical approach and personalized attention made all the difference. Thanks to SPT Classes for preparing me for my career."
-    },
-    {
-      username: "Priya Sharma",
-      message: "Best decision I made was joining SPT Classes. The faculty is supportive and the learning environment is very encouraging. I gained confidence in my technical skills and secured a great placement."
-    },
-    {
-      username: "Rahul Verma",
-      message: "The curriculum is industry-relevant and the instructors bring real-world experience to the classroom. SPT Classes provided me with the foundation I needed to excel in my software development career."
-    }
-  ]
-  return (
-    <>
-      <Review feedBack={feedBack} />
-    </>
-  )
+    { username: "Taher Malik", message: "Great experience!" },
+    { username: "Ayush Pandey", message: "Loved the teaching style." },
+    { username: "Abhishek Kumar", message: "Very practical approach." },
+    { username: "Priya Sharma", message: "Highly recommended." },
+    { username: "Rahul Verma", message: "Industry relevant learning." },
+  ];
+
+  return <Review feedBack={feedBack} />;
 }
