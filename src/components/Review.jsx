@@ -1,6 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { FaChevronLeft, FaChevronRight, FaQuoteLeft, FaStar } from "react-icons/fa6";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaQuoteLeft,
+  FaStar,
+} from "react-icons/fa6";
 
 /* ================= REVIEW CARD ================= */
 
@@ -69,31 +74,24 @@ export function ReviewCard(props) {
 }
 
 /* ================= REVIEW SLIDER ================= */
-
-
-export function Review(props) {
+export function Review({ feedBack }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const total = props.feedBack.length;
+  const total = feedBack.length;
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
-  };
+  const prev = () => setCurrentIndex((i) => (i - 1 + total) % total);
+  const next = () => setCurrentIndex((i) => (i + 1) % total);
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % total);
-  };
-
-  const isMobile =
-    typeof window !== "undefined" && window.innerWidth < 640;
+  const left = (currentIndex - 1 + total) % total;
+  const right = (currentIndex + 1) % total;
 
   return (
-    <section className="relative w-full py-20">
+    <section className="relative w-full py-24">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-100" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="relative max-w-7xl mx-auto px-4">
         {/* Heading */}
-        <div className="text-center mb-14 space-y-4">
+        <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900">
             Voices of Our Learners
           </h2>
@@ -104,56 +102,70 @@ export function Review(props) {
           <div className="w-28 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full" />
         </div>
 
-        {/* Slider */}
-        <div className="relative flex flex-col items-center gap-8">
-          {/* Card */}
+        {/* ================= MOBILE ================= */}
+        <div className="sm:hidden flex flex-col items-center gap-8">
           <ReviewCard
-            username={props.feedBack[currentIndex].username}
-            message={props.feedBack[currentIndex].message}
+            username={feedBack[currentIndex].username}
+            message={feedBack[currentIndex].message}
           />
 
-          {/* Controls */}
-          <div className="flex items-center gap-6 sm:hidden">
+          <div className="flex gap-6">
             <button
-              onClick={handlePrev}
+              onClick={prev}
               className="p-3 bg-white shadow-lg text-blue-600 rounded-full"
             >
               <FaChevronLeft />
             </button>
-
             <button
-              onClick={handleNext}
+              onClick={next}
               className="p-3 bg-white shadow-lg text-blue-600 rounded-full"
             >
               <FaChevronRight />
             </button>
           </div>
+        </div>
 
-          {/* Desktop arrows */}
-          {!isMobile && (
-            <>
-              <button
-                onClick={handlePrev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
-              >
-                <FaChevronLeft />
-              </button>
+        {/* ================= DESKTOP ================= */}
+        <div className="hidden sm:flex relative items-center justify-center py-12">
+          <button
+            onClick={prev}
+            className="absolute left-0 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
+          >
+            <FaChevronLeft />
+          </button>
 
-              <button
-                onClick={handleNext}
-                className="absolute right-0 top-1/2 -translate-y-1/2 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
-              >
-                <FaChevronRight />
-              </button>
-            </>
-          )}
+          <div className="flex items-center gap-8">
+            <div className="scale-90 opacity-50">
+              <ReviewCard
+                username={feedBack[left].username}
+                message={feedBack[left].message}
+              />
+            </div>
+
+            <ReviewCard
+              username={feedBack[currentIndex].username}
+              message={feedBack[currentIndex].message}
+            />
+
+            <div className="scale-90 opacity-50">
+              <ReviewCard
+                username={feedBack[right].username}
+                message={feedBack[right].message}
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={next}
+            className="absolute right-0 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
+          >
+            <FaChevronRight />
+          </button>
         </div>
       </div>
     </section>
   );
 }
-
-
 
 /* ================= EXPORT ================= */
 
@@ -162,18 +174,18 @@ export default function ReviewComponent() {
     {
       username: "Priya Sharma",
       message:
-        "The structured curriculum and continuous mentor support helped me gain real-world confidence. Concepts were explained clearly with practical examples."
+        "The structured curriculum and continuous mentor support helped me gain real-world confidence. Concepts were explained clearly with practical examples.",
     },
     {
       username: "Rahul Verma",
       message:
-        "Industry-relevant learning with hands-on projects made a huge difference. I felt job-ready after completing the course."
+        "Industry-relevant learning with hands-on projects made a huge difference. I felt job-ready after completing the course.",
     },
     {
       username: "Abhishek Kumar",
       message:
-        "Very practical approach to teaching. The instructors ensured every student understood the fundamentals before moving forward."
-    }
+        "Very practical approach to teaching. The instructors ensured every student understood the fundamentals before moving forward.",
+    },
   ];
 
   return <Review feedBack={feedBack} />;
