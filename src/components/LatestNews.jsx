@@ -54,8 +54,8 @@ const AnnouncementModal = ({ news, onClose }) => {
   if (!news) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white max-w-lg w-full mx-4 rounded-xl shadow-2xl p-6 animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="bg-white max-w-lg w-full rounded-xl shadow-2xl p-6 animate-fadeIn">
         <div className="flex justify-between items-start gap-3 mb-4">
           <h3 className="text-xl font-bold text-gray-800">{news.title}</h3>
           <button
@@ -91,7 +91,6 @@ const AnnouncementModal = ({ news, onClose }) => {
 
 /* ================= CARD ================= */
 
-
 const AnnouncementCard = ({ news, index, onReadMore }) => {
   const getBadgeColor = (badge) => {
     switch (badge.toLowerCase()) {
@@ -119,7 +118,7 @@ const AnnouncementCard = ({ news, index, onReadMore }) => {
                  animate-fadeIn flex flex-col h-full"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
-      <div className="p-6 flex flex-col h-full">
+      <div className="p-5 sm:p-6 flex flex-col h-full">
         <div className="flex items-start justify-between gap-3 mb-3">
           <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition flex-1">
             {news.title}
@@ -137,12 +136,11 @@ const AnnouncementCard = ({ news, index, onReadMore }) => {
           {news.description}
         </p>
 
-        {/* FOOTER – ALWAYS ALIGNED */}
-        <div className="mt-auto flex items-center justify-between pt-3 border-t border-gray-100">
+        <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
           <span className="text-xs text-gray-400">{news.date}</span>
           <button
             onClick={onReadMore}
-            className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-1"
+            className="px-2 py-1 text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-1"
           >
             Read more →
           </button>
@@ -168,12 +166,12 @@ const LatestNews = forwardRef((props, ref) => {
       ref={ref}
       className="scroll-mt-24 w-full py-16 bg-gradient-to-b from-gray-50 to-blue-100"
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 space-y-3">
-          <h2 className="text-4xl font-bold text-gray-800">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">
             Latest Announcements
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-base sm:text-lg">
             Stay updated with our recent news and updates
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto rounded-full"></div>

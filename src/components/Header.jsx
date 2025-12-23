@@ -55,6 +55,12 @@ const Header = () => {
     }
   };
 
+  const handleRegister = () => {
+    setMobileNavOpen(false);
+    setMenuOpen(false);
+    dispatch(setShowRegisterFrom());
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -101,7 +107,6 @@ const Header = () => {
           <Link to="/About" className={navBox("/About")}>About</Link>
           <Link to="/Contact" className={navBox("/Contact")}>Contact</Link>
 
-          {/* ===== FACILITIES (PROFILE STYLE DROPDOWN) ===== */}
           <div className="relative" ref={facilitiesRef}>
             <button
               onClick={(e) => {
@@ -143,10 +148,7 @@ const Header = () => {
             )}
           </div>
 
-          <button
-            onClick={() => dispatch(setShowRegisterFrom())}
-            className={navBox("/register")}
-          >
+          <button onClick={handleRegister} className={navBox("/register")}>
             Registration Form
           </button>
         </nav>
@@ -218,19 +220,86 @@ const Header = () => {
         </div>
       </div>
 
+
+
+
+
       {/* ================= MOBILE NAV ================= */}
-      {mobileNavOpen && (
-        <div className="lg:hidden bg-[#1E40AF]/95 px-6 py-5 space-y-4 text-white text-sm animate-dropdown">
-          <Link to="/" onClick={() => setMobileNavOpen(false)}>Home</Link>
-          <button onClick={handleCourse}>Courses</button>
-          <Link to="/About" onClick={() => setMobileNavOpen(false)}>About</Link>
-          <Link to="/Contact" onClick={() => setMobileNavOpen(false)}>Contact</Link>
-          <button onClick={() => dispatch(setShowRegisterFrom())}>
-            Registration Form
-          </button>
-        </div>
-      )}
+     {/* ================= MOBILE NAV ================= */}
+{mobileNavOpen && (
+  <div className="lg:hidden bg-[#1E40AF]/95 px-6 py-6 space-y-2 text-white text-sm animate-dropdown">
+
+    <Link
+      to="/"
+      onClick={() => setMobileNavOpen(false)}
+      className="block py-2 border-b border-white/20"
+    >
+      Home
+    </Link>
+
+    <button
+      onClick={handleCourse}
+      className="block w-full text-left py-2 border-b border-white/20"
+    >
+      Courses
+    </button>
+
+    <Link
+      to="/About"
+      onClick={() => setMobileNavOpen(false)}
+      className="block py-2 border-b border-white/20"
+    >
+      About
+    </Link>
+
+    <Link
+      to="/Contact"
+      onClick={() => setMobileNavOpen(false)}
+      className="block py-2 border-b border-white/20"
+    >
+      Contact
+    </Link>
+
+    {/* ===== FACILITIES (MOBILE) ===== */}
+    <div className="pt-2">
+      <p className="text-white/70 text-xs uppercase tracking-wide mb-2">
+        Facilities
+      </p>
+
+      <button
+        onClick={() => {
+          setMobileNavOpen(false);
+          navigate("/facilities/library");
+        }}
+        className="block w-full text-left py-2 pl-3 border-l-2 border-white/30"
+      >
+        Library
+      </button>
+
+      <button
+        onClick={() => {
+          setMobileNavOpen(false);
+          navigate("/facilities/online-test");
+        }}
+        className="block w-full text-left py-2 pl-3 border-l-2 border-white/30"
+      >
+        Online Test
+      </button>
+    </div>
+
+    <button
+      onClick={handleRegister}
+      className="block w-full text-left py-2 mt-3 bg-white text-[#1E40AF] rounded-lg font-semibold text-center"
+    >
+      Registration Form
+    </button>
+  </div>
+)}
+
     </header>
+
+
+
   );
 };
 

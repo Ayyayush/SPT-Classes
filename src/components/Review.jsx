@@ -1,42 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-
-/* ================= SKELETON ================= */
-
-export function ReviewCardSkeleton() {
-  return (
-    <div
-      className="
-        w-full sm:w-[320px] md:w-[360px] lg:w-[400px]
-        h-[300px]
-        bg-blue-50 rounded-2xl shadow-md
-        p-4 flex flex-col gap-3 animate-pulse
-      "
-    >
-      <div className="flex items-center gap-3">
-        <div className="h-12 w-12 rounded-full bg-blue-200"></div>
-
-        <div className="flex flex-col gap-2">
-          <div className="h-4 w-24 bg-blue-200 rounded"></div>
-
-          <div className="flex gap-1">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-4 w-4 bg-blue-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2 mt-1">
-        <div className="h-3 w-[90%] bg-blue-200 rounded"></div>
-        <div className="h-3 w-[80%] bg-blue-200 rounded"></div>
-        <div className="h-3 w-[70%] bg-blue-200 rounded"></div>
-        <div className="h-3 w-[60%] bg-blue-200 rounded"></div>
-      </div>
-    </div>
-  );
-}
+import { FaChevronLeft, FaChevronRight, FaQuoteLeft, FaStar } from "react-icons/fa6";
 
 /* ================= REVIEW CARD ================= */
 
@@ -53,18 +17,18 @@ export function ReviewCard(props) {
     <div
       className="
         w-full sm:w-[320px] md:w-[360px] lg:w-[400px]
-        h-[300px]
+        h-[340px]
         p-6 flex flex-col justify-between
-        rounded-2xl
-        bg-gradient-to-br from-white via-[#f8fbff] to-[#eef4ff]
-        border border-[#e5edff]
-        shadow-[0_25px_60px_rgba(37,99,235,0.18)]
-        hover:shadow-[0_35px_80px_rgba(37,99,235,0.28)]
+        rounded-3xl
+        bg-white/70 backdrop-blur-xl
+        border border-blue-100
+        shadow-[0_30px_80px_rgba(59,130,246,0.18)]
+        hover:shadow-[0_45px_110px_rgba(59,130,246,0.28)]
         transition-all duration-500
       "
     >
       <div className="space-y-4 relative">
-        <div className="absolute left-0 top-0 h-10 w-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-500" />
+        <FaQuoteLeft className="absolute -top-2 -left-1 text-blue-200 text-3xl" />
 
         <div className="flex items-start gap-4 pl-3">
           <div
@@ -73,7 +37,7 @@ export function ReviewCard(props) {
               bg-gradient-to-br from-blue-500 to-indigo-600
               flex items-center justify-center
               text-white font-bold text-lg
-              shadow-md ring-4 ring-blue-100
+              shadow-lg ring-4 ring-blue-100
             "
           >
             {getInitials(props?.username)}
@@ -81,30 +45,23 @@ export function ReviewCard(props) {
 
           <div className="flex-1">
             <h3 className="text-gray-900 font-bold text-base">
-              {props?.username || "Anonymous"}
+              {props?.username}
             </h3>
 
             <div className="flex items-center gap-1 mt-1 text-yellow-400">
               {[...Array(5)].map((_, idx) => (
-                <svg
-                  key={idx}
-                  className="h-4 w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.21c.969 0 1.371 1.24.588 1.81l-3.404 2.473a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.404-2.473a1 1 0 00-1.175 0l-3.404 2.473c-.784.57-1.838-.197-1.539-1.118l1.285-3.97a1 1 0 00-.364-1.118L2.025 9.397c-.783-.57-.38-1.81.588-1.81h4.21a1 1 0 00.95-.69l1.286-3.97z" />
-                </svg>
+                <FaStar key={idx} className="h-4 w-4" />
               ))}
             </div>
           </div>
         </div>
 
-        <p className="text-gray-600 text-sm leading-relaxed line-clamp-5 pl-3">
-          “{props?.message}”
+        <p className="text-gray-700 text-sm leading-relaxed pl-3">
+          {props?.message}
         </p>
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-blue-600 font-medium mt-4">
+      <div className="flex items-center gap-2 text-xs text-blue-600 font-semibold mt-4">
         ✔ Verified Student
       </div>
     </div>
@@ -114,76 +71,71 @@ export function ReviewCard(props) {
 /* ================= REVIEW SLIDER ================= */
 
 export function Review(props) {
-  const [currentIndex, setCurrentIndex] = useState([0, ""]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const total = props?.feedBack.length;
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => {
-      const oldArr = [...prev];
-      oldArr[0] = (oldArr[0] - 1 + total) % total;
-      oldArr[1] = "RIGHT";
-      return oldArr;
-    });
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => {
-      const oldArr = [...prev];
-      oldArr[0] = (oldArr[0] + 1) % total;
-      oldArr[1] = "LEFT";
-      return oldArr;
-    });
+    setCurrentIndex((prev) => (prev + 1) % total);
   };
 
   const getDisplayIndexes = () => {
-    if (total <= 3) return Array.from({ length: total }, (_, i) => i);
-    const left = (currentIndex[0] - 1 + total) % total;
-    const center = currentIndex[0];
-    const right = (currentIndex[0] + 1) % total;
-    return [left, center, right];
+    if (typeof window !== "undefined" && window.innerWidth < 640) {
+      return [currentIndex];
+    }
+
+    const left = (currentIndex - 1 + total) % total;
+    const right = (currentIndex + 1) % total;
+    return [left, currentIndex, right];
   };
 
   const displayIndexes = getDisplayIndexes();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setCurrentIndex((prev) => {
-        const oldArr = [...prev];
-        oldArr[1] = "";
-        return oldArr;
-      });
-    }, 1000);
-  });
-
   return (
-    <section className="w-full py-20 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="relative w-full py-28 overflow-hidden">
+      {/* GLASSY BACKGROUND */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-100"></div>
+      <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-blue-300 rounded-full blur-3xl opacity-20"></div>
+      <div className="absolute bottom-0 -right-32 w-[500px] h-[500px] bg-indigo-300 rounded-full blur-3xl opacity-20"></div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+        {/* HEADING */}
+        <div className="text-center mb-16 space-y-4">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900">
+            Trusted by Our Students
+          </h2>
+
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Real stories from learners who transformed their careers through
+            structured guidance, expert mentors, and hands-on learning.
+          </p>
+
+          <div className="w-28 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
+        </div>
+
         <div className="relative flex items-center justify-center py-12">
           <button
             onClick={handlePrev}
-            className="absolute left-2 sm:left-0 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full"
+            className="absolute left-0 sm:-left-6 z-10 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
           >
             <FaChevronLeft />
           </button>
 
-          <div className="flex items-center justify-center gap-6 w-full overflow-hidden">
+          <div className="flex items-center justify-center gap-8 w-full">
             {displayIndexes.map((idx, i) => {
               const review = props?.feedBack[idx];
-              let scale = 0.85;
-              let opacity = 0.5;
-
-              if (i === 1) {
-                scale = 1;
-                opacity = 1;
-              }
+              const isCenter = i === 1 || displayIndexes.length === 1;
 
               return (
                 <div
                   key={idx}
                   className="transition-all duration-500 flex-shrink-0"
                   style={{
-                    transform: `scale(${scale})`,
-                    opacity: opacity,
+                    transform: `scale(${isCenter ? 1 : 0.85})`,
+                    opacity: isCenter ? 1 : 0.5,
                   }}
                 >
                   <ReviewCard
@@ -197,7 +149,7 @@ export function Review(props) {
 
           <button
             onClick={handleNext}
-            className="absolute right-2 sm:right-0 z-10 p-4 bg-white shadow-lg text-blue-600 rounded-full"
+            className="absolute right-0 sm:-right-6 z-10 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
           >
             <FaChevronRight />
           </button>
@@ -211,11 +163,21 @@ export function Review(props) {
 
 export default function ReviewComponent() {
   const feedBack = [
-    { username: "Taher Malik", message: "Great experience!" },
-    { username: "Ayush Pandey", message: "Loved the teaching style." },
-    { username: "Abhishek Kumar", message: "Very practical approach." },
-    { username: "Priya Sharma", message: "Highly recommended." },
-    { username: "Rahul Verma", message: "Industry relevant learning." },
+    {
+      username: "Priya Sharma",
+      message:
+        "The structured curriculum and continuous mentor support helped me gain real-world confidence. Concepts were explained clearly with practical examples."
+    },
+    {
+      username: "Rahul Verma",
+      message:
+        "Industry-relevant learning with hands-on projects made a huge difference. I felt job-ready after completing the course."
+    },
+    {
+      username: "Abhishek Kumar",
+      message:
+        "Very practical approach to teaching. The instructors ensured every student understood the fundamentals before moving forward."
+    }
   ];
 
   return <Review feedBack={feedBack} />;

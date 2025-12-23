@@ -17,9 +17,10 @@ export default function CoursesPage(){
             <Header/>
             <BreadCrumbs courseTitle={""}/>
             <CoursesHero/>
+              <Courses flag={false} courseName={tabData} length={15}/>
+                <MentorsInfo/>
             <ComapnyReviews/>
-            <MentorsInfo/>
-            <Courses flag={false} courseName={tabData} length={15}/>
+          
             <Footer/>
         </div>
     )
