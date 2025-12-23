@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setShowRegisterFrom } from "../redux/Slices/registerFormSlice";
 
-
 /* ================= CARD COMPONENT ================= */
 export function CardComponent({ index }) {
   const titleArray = ["Registration", "Latest Announcements", "Discover Us"];
@@ -40,15 +39,9 @@ export function CardComponent({ index }) {
 
 const HeroComponent = forwardRef((props, ref) => {
   const navigate = useNavigate();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
-  const heroImages = [
-    library1,
-    library2,
-    students,
-  ];
-
-
+  const heroImages = [library1, library2, students];
 
   const [currentImage, setCurrentImage] = useState(0);
   const [fade, setFade] = useState(true);
@@ -78,13 +71,18 @@ const HeroComponent = forwardRef((props, ref) => {
     ref?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleDiscoverUs = (e) => {
+    e.preventDefault();
+    navigate("/about");
+  };
+
   function handleRegisterClick(e) {
     try {
       e.preventDefault();
       e.stopPropagation();
-      dispatch(setShowRegisterFrom())
+      dispatch(setShowRegisterFrom());
     } catch (error) {
-      toast.error("wrong while clicking on register")
+      toast.error("wrong while clicking on register");
     }
   }
 
@@ -107,8 +105,9 @@ const HeroComponent = forwardRef((props, ref) => {
           <div className="absolute inset-0 bg-[#0B235A] animate-pulse" />
         ) : (
           <div
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1800ms] ${fade ? "opacity-100" : "opacity-0"
-              }`}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1800ms] ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
             style={{
               backgroundImage: `url(${heroImages[currentImage]})`,
               filter: "blur(2.5px)",
@@ -117,10 +116,8 @@ const HeroComponent = forwardRef((props, ref) => {
           />
         )}
 
-        {/* HERO OVERLAY (NORMAL STATE) */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B235A]/60 to-[#0B235A]/95" />
 
-        {/* HERO TEXT */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 md:pt-32">
           <h1 className="text-white text-4xl md:text-5xl font-bold leading-tight">
             Launching our Students into <br /> Bright Futures
@@ -131,7 +128,6 @@ const HeroComponent = forwardRef((props, ref) => {
           </p>
         </div>
 
-        {/* INFO CARDS */}
         <div className="relative z-10 mt-24 px-6 pb-12">
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
             {isLoading ? (
@@ -148,7 +144,7 @@ const HeroComponent = forwardRef((props, ref) => {
                 <div onClick={handleAnnouncements}>
                   <CardComponent index={1} />
                 </div>
-                <div>
+                <div onClick={handleDiscoverUs}>
                   <CardComponent index={2} />
                 </div>
               </>
@@ -156,7 +152,7 @@ const HeroComponent = forwardRef((props, ref) => {
           </div>
         </div>
 
-      </section> 
+      </section>
     </>
   );
 });

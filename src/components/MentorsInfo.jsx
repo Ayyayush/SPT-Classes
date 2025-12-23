@@ -40,100 +40,110 @@ export default function MentorsInfo() {
     (index + offset + mentors.length) % mentors.length;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      viewport={{ once: true }}
-      className="w-full max-w-6xl mx-auto py-12 px-4"
-    >
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-        viewport={{ once: true }}
-        className="text-2xl md:text-3xl font-semibold text-center text-sky-700 mb-10"
-      >
-        Meet Our Expert Mentors
-      </motion.h2>
+    <section className="relative w-full overflow-hidden">
+      {/* GLASSY BACKGROUND */}
+      <div className="absolute inset-0 bg-gradient-to-br from-sky-50/60 via-white/40 to-sky-100/60 backdrop-blur-2xl" />
 
-      <div className="relative flex items-center justify-center">
-        {/* Left Button */}
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          viewport={{ once: true }}
-          onClick={prev}
-          className="absolute left-2 md:left-0 z-20 p-2 rounded-full bg-sky-100 hover:bg-sky-200 shadow"
-        >
-          <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-sky-700" />
-        </motion.button>
+      <div className="relative w-full max-w-6xl mx-auto py-20 px-4">
+        {/* HEADING */}
+        <h2 className="text-3xl md:text-4xl font-semibold text-center text-sky-800 mb-3">
+          Meet Our Expert Mentors
+        </h2>
+        <p className="text-center text-sky-600 mb-14">
+          Learn from industry professionals who guide you at every step
+        </p>
 
-        {/* Cards */}
-        <div className="flex items-center justify-center gap-6 w-full">
-          {(window.innerWidth < 768 ? [0] : [-1, 0, 1]).map((pos) => {
+        <div className="relative flex items-center justify-center gap-6">
+          {/* LEFT BUTTON */}
+          <button
+            onClick={prev}
+            className="absolute left-0 z-20 p-3 rounded-full
+                       bg-white/70 backdrop-blur-md
+                       border border-white/40
+                       shadow-[0_10px_30px_rgba(56,189,248,0.25)]
+                       hover:scale-105 transition"
+          >
+            <ChevronLeft className="w-6 h-6 text-sky-700" />
+          </button>
+
+          {/* CARDS */}
+          {[-1, 0, 1].map((pos) => {
             const mentor = mentors[getIndex(pos)];
             const isCenter = pos === 0;
 
             return (
               <motion.div
                 key={mentor.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: isCenter ? 1 : 0.95 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
                 animate={{
                   scale: isCenter ? 1 : 0.9,
-                  opacity: isCenter ? 1 : 0.6,
+                  opacity: isCenter ? 1 : 0.55,
                 }}
-                className={`
-                w-full max-w-[320px]
-                ${!isCenter ? "hidden md:block blur-sm" : ""}
-              `}
+                transition={{ duration: 0.4 }}
+                className={`w-[280px] md:w-[320px]
+                  ${!isCenter ? "blur-[1.5px]" : ""}
+                `}
               >
-                <div className="bg-gradient-to-br from-sky-50 to-sky-100 border border-sky-200 rounded-2xl shadow-xl p-6 flex flex-col items-center text-center">
+                <div
+                  className="
+                    relative
+                    rounded-3xl p-6
+                    bg-white/70 backdrop-blur-xl
+                    border border-white/40
+                    shadow-[0_25px_70px_rgba(56,189,248,0.25)]
+                    flex flex-col items-center text-center
+                  "
+                >
+                  {/* IMAGE */}
                   <img
                     src={mentor.image}
                     alt={mentor.name}
-                    className="w-24 h-24 rounded-full border-4 border-white shadow mb-4 object-cover"
+                    className="w-24 h-24 rounded-full
+                               border-4 border-white
+                               shadow-lg mb-4"
                   />
-                  <h3 className="text-lg font-semibold text-sky-800">
+
+                  {/* NAME */}
+                  <h3 className="text-lg font-semibold text-sky-900">
                     {mentor.name}
                   </h3>
+
+                  {/* ROLE */}
                   <p className="text-sm text-sky-600 mt-1">
                     {mentor.role}
                   </p>
 
+                  {/* BADGE */}
                   {isCenter && (
-                    <motion.span
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.3 }}
-                      viewport={{ once: true }}
-                      className="mt-4 px-4 py-1 text-xs font-medium text-sky-700 bg-white rounded-full shadow"
+                    <span
+                      className="
+                        mt-4 px-4 py-1.5
+                        text-xs font-medium text-sky-700
+                        bg-white/80 backdrop-blur
+                        border border-white/50
+                        rounded-full shadow-sm
+                      "
                     >
                       Premium Instructor
-                    </motion.span>
+                    </span>
                   )}
                 </div>
               </motion.div>
             );
           })}
-        </div>
 
-        {/* Right Button */}
-        <motion.button
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          viewport={{ once: true }}
-          onClick={next}
-          className="absolute right-2 md:right-0 z-20 p-2 rounded-full bg-sky-100 hover:bg-sky-200 shadow"
-        >
-          <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-sky-700" />
-        </motion.button>
+          {/* RIGHT BUTTON */}
+          <button
+            onClick={next}
+            className="absolute right-0 z-20 p-3 rounded-full
+                       bg-white/70 backdrop-blur-md
+                       border border-white/40
+                       shadow-[0_10px_30px_rgba(56,189,248,0.25)]
+                       hover:scale-105 transition"
+          >
+            <ChevronRight className="w-6 h-6 text-sky-700" />
+          </button>
+        </div>
       </div>
-    </motion.div>
+    </section>
   );
 }

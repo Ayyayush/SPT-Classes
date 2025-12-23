@@ -165,6 +165,10 @@ const CourseCard = ({ course }) => {
 
 /* ================= COURSES SECTION ================= */
 
+
+
+/* ================= COURSES SECTION ================= */
+
 const Courses = ({ flag, courseName, length }) => {
   const [activeTab, setActiveTab] = useState(courseName);
   const [loading, setLoading] = useState(false);
@@ -177,31 +181,50 @@ const Courses = ({ flag, courseName, length }) => {
 
   return (
     <section className="bg-[#0B235A] pt-20 pb-10 text-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold">Explore Our Courses</h2>
-          <p className="text-white/70 mt-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+
+        {/* HEADING */}
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold">
+            Explore Our Courses
+          </h2>
+          <p className="text-white/70 mt-3 text-sm sm:text-base">
             Government certified and career-oriented programs
           </p>
         </div>
 
-        <div className="flex gap-3 justify-center mb-12">
+        {/* ===== CATEGORY TABS (FIXED MOBILE) ===== */}
+        <div
+          className="
+            flex gap-3 justify-start sm:justify-center
+            overflow-x-auto scrollbar-hide
+            pb-3 mb-10
+            whitespace-nowrap
+          "
+        >
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveTab(cat)}
-              className={`px-6 py-3 rounded-full font-semibold transition ${
-                activeTab === cat
-                  ? "bg-orange-500"
-                  : "bg-white/10 hover:bg-white/20"
-              }`}
+              className={`
+                px-4 sm:px-6 py-2 sm:py-3
+                rounded-full font-semibold
+                text-sm sm:text-base
+                transition flex-shrink-0
+                ${
+                  activeTab === cat
+                    ? "bg-orange-500"
+                    : "bg-white/10 hover:bg-white/20"
+                }
+              `}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* ===== COURSE GRID ===== */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {loading
             ? [...Array(length)].map((_, i) => (
                 <ShimmerCourseCard key={i} />
@@ -216,5 +239,7 @@ const Courses = ({ flag, courseName, length }) => {
     </section>
   );
 };
+
+
 
 export default Courses;

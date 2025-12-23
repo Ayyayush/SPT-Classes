@@ -2,10 +2,14 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import BreadCrumbs from "./BreadCrumbs";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import RegisterForm from "./RegisterForm";
 
 const AboutUs = () => {
+  const navigate = useNavigate();
+  const showRegister=useSelector((state)=>state?.RegistrationForm?.showRegisterForm);
+
   const highlights = [
     {
       icon: "🎓",
@@ -58,7 +62,13 @@ const AboutUs = () => {
     }
   ];
 
-  const showRegister=useSelector((state)=>state?.RegistrationForm?.showRegisterForm);
+  const handleExploreCourses = () => {
+    navigate("/courses");
+  };
+
+  const handleContactUs = () => {
+    navigate("/contact");
+  };
 
   return (
     <div className="bg-white">
@@ -212,14 +222,20 @@ const AboutUs = () => {
             Join thousands of students who have transformed their careers with SPT Classes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <button className="px-8 py-4 bg-orange-500 hover:bg-orange-600
+            <button
+              onClick={handleExploreCourses}
+              className="px-8 py-4 bg-orange-500 hover:bg-orange-600
                              rounded-xl font-semibold shadow-xl transition-all duration-300
-                             hover:scale-105">
+                             hover:scale-105"
+            >
               Explore Courses
             </button>
-            <button className="px-8 py-4 bg-white/10 hover:bg-white/20
+            <button
+              onClick={handleContactUs}
+              className="px-8 py-4 bg-white/10 hover:bg-white/20
                              border-2 border-white/30 rounded-xl font-semibold
-                             backdrop-blur-xl transition-all duration-300">
+                             backdrop-blur-xl transition-all duration-300"
+            >
               Contact Us
             </button>
           </div>
