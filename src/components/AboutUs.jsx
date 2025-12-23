@@ -2,6 +2,8 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import BreadCrumbs from "./BreadCrumbs";
+import { useSelector } from "react-redux";
+import RegisterForm from "./RegisterForm";
 
 const AboutUs = () => {
   const highlights = [
@@ -55,6 +57,8 @@ const AboutUs = () => {
       description: "Making quality education accessible and affordable for everyone, regardless of their background."
     }
   ];
+
+  const showRegister=useSelector((state)=>state?.RegistrationForm?.showRegisterForm);
 
   return (
     <div className="bg-white">
@@ -223,6 +227,12 @@ const AboutUs = () => {
       </section>
 
       <Footer />
+
+      {showRegister &&
+      <div className="w-[100vw] h-[100vh] backdrop-blur-xl fixed inset-0 z-[999] flex justify-center pb-6 pt-6">
+          <RegisterForm/>
+      </div>
+      }
     </div>
   );
 };

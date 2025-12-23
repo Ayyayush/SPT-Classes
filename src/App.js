@@ -13,23 +13,25 @@ import ContactUs from "./components/ContactUs.jsx";
 import { Toaster } from "react-hot-toast";
 import ParticularCourse from "./components/ParticularCourse.jsx";
 import RootLayout from "./components/RootLayout.jsx";
+import LibraryPage from "./components/Library.jsx";
 
 
 const appRouter = createBrowserRouter([
-    {
-        path: "/",
-        element: <RootLayout />, // 👈 IMPORTANT
-        children: [
-            { index: true, element: <LandingPage /> },
-            { path: "Browse", element: <Browse /> },
-            { path: "Login", element: <Login /> },
-            { path: "Signup", element: <Signup /> },
-            { path: "Courses", element: <CoursesPage /> },
-            { path: "Courses/ParticularCourse", element: <ParticularCourse /> },
-            { path: "About", element: <AboutUs /> },
-            { path: "Contact", element: <ContactUs /> },
-        ],
-    },
+  {
+    path: "/",
+    element: <RootLayout />, // 👈 IMPORTANT
+    children: [
+      { index: true, element: <LandingPage /> },
+      { path: "Browse", element: <Browse /> },
+      { path: "Login", element: <Login /> },
+      { path: "Signup", element: <Signup /> },
+      { path: "Courses", element: <CoursesPage /> },
+      { path: "Courses/ParticularCourse", element: <ParticularCourse /> },
+      { path: "About", element: <AboutUs /> },
+      { path: "Contact", element: <ContactUs /> },
+      { path: "Facilities/Library", element: <LibraryPage /> }
+    ],
+  },
 ]);
 
 

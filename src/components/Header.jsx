@@ -123,7 +123,7 @@ const Header = () => {
                 <button
                   onClick={() => {
                     setFacilitiesOpen(false);
-                    navigate("/facilities/library");
+                    navigate("/Facilities/Library");
                   }}
                   className="block w-full text-left px-3 py-2 rounded hover:bg-blue-50 hover:text-blue-700 transition"
                 >

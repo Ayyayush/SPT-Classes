@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Select from "react-select";
+import Select, { useStateManager } from "react-select";
 import { setDetails, setShowRegisterFrom } from "../redux/Slices/registerFormSlice";
 import axios from "axios";
 import { ADMIN_ENDPOINTS, USER_ENDPOINTS } from "./endpoint";
@@ -37,6 +37,17 @@ const selectStyles = {
       : "none",
     "&:hover": { borderColor: "#2563eb" },
   }),
+
+  menuPortal: (base) => ({
+    ...base,
+    zIndex: 9999,
+  }),
+
+  menuList: (base) => ({
+    ...base,
+    maxHeight: "200px",
+    overflowY: "auto",
+  }),
 };
 
 /* ================= REGISTER FORM ================= */
@@ -50,7 +61,16 @@ export default function RegisterForm() {
   const [guidance, setGuidance] = useState(false);
   const [needGuidance, setNeedGuidance] = useState(false);
 
+
+  ////// error stuff
+  const [nameError, setNameError] = useState(false)
+  const [ageError, setAgeError] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+  const [phoneError, setPhoneError] = useState(false)
+  const [domainError, setDomainError] = useState(false)
+
   const dispatch = useDispatch();
+  let hasError=false;
 
   useEffect(() => {
     if (domain?.value === "not-sure") {
@@ -67,27 +87,42 @@ export default function RegisterForm() {
       e.stopPropagation();
 
       if (name.trim() === "") {
-        toast.error("Name can't be empty");
-        return;
+        setNameError(true);
+        hasError=true;
       }
       if (!age) {
-        toast.error("Select the age");
-        return;
+        setAgeError(true)
+        hasError=true;
       }
-      const regexEmailId = /^[a-zA-Z0-9]+@gmail\.(com|in|net|org)$/;
-      if (!regexEmailId.test(emailId)) {
-        toast.error("Invalid email!");
-        return;
+      if(emailId.trim()===""){
+        setEmailError(true)
+        hasError=true;
+      }else{
+        const regexEmailId = /^[a-zA-Z0-9]+@gmail\.(com|in|net|org)$/;
+        if (!regexEmailId.test(emailId)) {
+          toast.error("Invalid email!");
+          hasError=true;
+          return;
+        }
       }
-      const regexPhoneNumber = /^[0-9]{10}$/;
-      if (!regexPhoneNumber.test(phoneNumber)) {
-        toast.error("Invalid phone number!");
-        return;
+
+      if(phoneNumber.trim()===""){
+        setPhoneError(true);
+        hasError=true;
+      }else{
+        const regexPhoneNumber = /^[0-9]{10}$/;
+        if (!regexPhoneNumber.test(phoneNumber)) {
+          toast.error("Invalid phone number!");
+          hasError=true;
+          return;
+        }
       }
       if (!domain) {
-        toast.error("Select the domain");
-        return;
+        setDomainError(true);
+        hasError=true;
       }
+
+      if(hasError) return;
 
       const obj = {
         studentFullName: name,
@@ -136,7 +171,7 @@ export default function RegisterForm() {
 
       {/* CLOSE BUTTON */}
       <div
-        onClick={()=>{dispatch(setShowRegisterFrom())}}
+        onClick={() => { dispatch(setShowRegisterFrom()) }}
         className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl flex justify-center items-center cursor-pointer"
       >
         ✕
@@ -152,11 +187,14 @@ export default function RegisterForm() {
       <div className="space-y-4">
         {/* Name */}
         <div>
-          <label className="text-sm font-medium text-gray-700">Full Name</label>
+          <div className="flex justify-between">
+            <label className="text-sm font-medium text-gray-700">Full Name</label>
+            {nameError && <span className="text-red-500 text-xs">Required Field</span>}
+          </div>
           <input
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {setName(e.target.value); setNameError(false)}}
             placeholder="Enter your name"
             className="w-full mt-1 border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-600 outline-none"
           />
@@ -164,24 +202,35 @@ export default function RegisterForm() {
 
         {/* Age */}
         <div>
-          <label className="text-sm font-medium text-gray-700">Age</label>
+          <div className="flex justify-between">
+            <label className="text-sm font-medium text-gray-700">Age</label>
+            {ageError && <span className="text-red-500 text-xs">Required Field</span>}
+          </div>
           <Select
             isSearchable={false}
             options={ageOptions}
             value={age}
-            onChange={setAge}
+            onChange={(e)=>{setAge(e); setAgeError(false)}}
             placeholder="Select age range"
             styles={selectStyles}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
+            maxMenuHeight={200}
+            menuShouldScrollIntoView={false}
+            menuShouldBlockScroll={false}
           />
         </div>
 
         {/* Email */}
         <div>
-          <label className="text-sm font-medium text-gray-700">Email</label>
+          <div className="flex justify-between">
+            <label className="text-sm font-medium text-gray-700">Email</label>
+            {emailError && <span className="text-red-500 text-xs">Required Field</span>}
+          </div>
           <input
             type="email"
             value={emailId}
-            onChange={(e) => setEmailId(e.target.value)}
+            onChange={(e) => {setEmailId(e.target.value); setEmailError(false)}}
             placeholder="you@example.com"
             className="w-full mt-1 border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-600 outline-none"
           />
@@ -189,14 +238,15 @@ export default function RegisterForm() {
 
         {/* Phone */}
         <div>
-          <label className="text-sm font-medium text-gray-700">
-            WhatsApp / Phone Number
-          </label>
+          <div className="flex justify-between">
+            <label className="text-sm font-medium text-gray-700">Whatsapp / Phone Number</label>
+            {phoneError && <span className="text-red-500 text-xs">Required Field</span>}
+          </div>
           <input
             type="tel"
             value={phoneNumber}
             maxLength={10}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(e) => {setPhoneNumber(e.target.value); setPhoneError(false)}}
             placeholder="Enter your phone number"
             className="w-full mt-1 border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-600 outline-none"
           />
@@ -204,24 +254,29 @@ export default function RegisterForm() {
 
         {/* Domain */}
         <div>
-          <label className="text-sm font-medium text-gray-700">
-            Preferred Learning Domain
-          </label>
+          <div className="flex justify-between">
+            <label className="text-sm font-medium text-gray-700">Preferred Leraning Domain</label>
+            {domainError && <span className="text-red-500 text-xs">Required Field</span>}
+          </div>
           <Select
             isSearchable={false}
             options={domainOptions}
             value={domain}
-            onChange={setDomain}
+            onChange={(e)=>{setDomain(e); setDomainError(false)}}
             placeholder="Select a domain"
             styles={selectStyles}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
+            maxMenuHeight={200}
+            menuShouldScrollIntoView={false}
+            menuShouldBlockScroll={false}
           />
         </div>
 
         {/* Guidance */}
         <div
-          className={`transition-all duration-500 overflow-hidden ${
-            guidance ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
-          }`}
+          className={`transition-all duration-500 overflow-hidden ${guidance ? "max-h-20 mt-2 opacity-100" : "max-h-0 opacity-0"
+            }`}
         >
           <label className="flex items-center gap-2 cursor-pointer">
             <input

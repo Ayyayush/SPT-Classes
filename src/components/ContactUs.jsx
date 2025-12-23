@@ -3,6 +3,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import toast from "react-hot-toast";
 import BreadCrumbs from "./BreadCrumbs";
+import { useSelector } from "react-redux";
+import RegisterForm from "./RegisterForm";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -138,6 +140,8 @@ const ContactUs = () => {
         "Yes, we offer NIELIT certified courses which are government-recognized and add credibility to your career.",
     },
   ];
+
+  const showRegister=useSelector((state)=>state?.RegistrationForm?.showRegisterForm);
 
   return (
     <div className="bg-white">
@@ -395,6 +399,11 @@ const ContactUs = () => {
       </section>
 
       <Footer />
+      {showRegister &&
+      <div className="w-[100vw] h-[100vh] backdrop-blur-xl fixed inset-0 z-[999] flex justify-center pb-6 pt-6">
+          <RegisterForm/>
+      </div>
+      }
     </div>
   );
 };

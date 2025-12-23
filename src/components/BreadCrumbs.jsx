@@ -6,10 +6,12 @@ import { BASE_URL } from "./endpoint.js";
 
 //// on addition of the new page need to update the things into this URL_OBJ
 export const URL_OBJ={
-    "LandingPage":`${BASE_URL}`,
+    "SPT Home Page":`${BASE_URL}`,
     "Courses":`${BASE_URL}/Courses`,
     "About":`${BASE_URL}/About`,
     "Contact":`${BASE_URL}/Contact`,
+    "Library":`${BASE_URL}/Facilities/Library`,
+    "Facilities":`${BASE_URL}/Facilities/Library`
 }
 
 export default function BreadCrumbs({courseTitle}) {
@@ -21,7 +23,7 @@ export default function BreadCrumbs({courseTitle}) {
     let arrayLength=pathArray.length;
 
     if(pathArray[arrayLength-1]==="") pathArray.pop();
-    pathArray[0]="LandingPage";    /// so that initial page can be the landing Page
+    pathArray[0]="SPT Home Page";    /// so that initial page can be the landing Page
     arrayLength=pathArray.length;
     if(pathArray[arrayLength-1]==="ParticularCourse") pathArray[arrayLength-1]=courseTitle
 

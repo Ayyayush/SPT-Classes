@@ -3,15 +3,18 @@ import Header from "./Header";
 import BreadCrumbs from "./BreadCrumbs";
 import Footer from "./Footer";
 import libraryBg from "./Assets/library-bg.jpg";
+import { useSelector } from "react-redux";
+import RegisterForm from "./RegisterForm";
 
 const LibraryPage = () => {
   const [open, setOpen] = useState(false);
+  const showRegister=useSelector((state)=>state?.RegistrationForm?.showRegisterForm);
 
   return (
     <div>
       {/* ===== HEADER ===== */}
       <Header />
-      <BreadCrumbs />
+      <BreadCrumbs courseTitle={""} />
 
       {/* ================= HERO SECTION ================= */}
       <section className="relative text-white overflow-hidden">
@@ -136,6 +139,12 @@ const LibraryPage = () => {
 
       {/* ===== FOOTER ===== */}
       <Footer />
+
+      {showRegister &&
+        <div className="w-[100vw] h-[100vh] backdrop-blur-xl fixed inset-0 z-[999] flex justify-center pb-6 pt-6">
+          <RegisterForm />
+        </div>
+      }
     </div>
   );
 };
