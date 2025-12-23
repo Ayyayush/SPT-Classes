@@ -70,9 +70,10 @@ export function ReviewCard(props) {
 
 /* ================= REVIEW SLIDER ================= */
 
+
 export function Review(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const total = props?.feedBack.length;
+  const total = props.feedBack.length;
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
@@ -82,85 +83,77 @@ export function Review(props) {
     setCurrentIndex((prev) => (prev + 1) % total);
   };
 
-  const getDisplayIndexes = () => {
-    if (typeof window !== "undefined" && window.innerWidth < 640) {
-      return [currentIndex];
-    }
-
-    const left = (currentIndex - 1 + total) % total;
-    const right = (currentIndex + 1) % total;
-    return [left, currentIndex, right];
-  };
-
-  const displayIndexes = getDisplayIndexes();
+  const isMobile =
+    typeof window !== "undefined" && window.innerWidth < 640;
 
   return (
-    <section className="relative w-full py-28 overflow-hidden">
-      {/* GLASSY BACKGROUND */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-100"></div>
-      <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-blue-300 rounded-full blur-3xl opacity-15"></div>
-      <div className="absolute bottom-0 -right-32 w-[500px] h-[500px] bg-indigo-300 rounded-full blur-3xl opacity-15"></div>
+    <section className="relative w-full py-20">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-100" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-        {/* HEADING */}
-        <div className="text-center mb-16 space-y-4">
+        {/* Heading */}
+        <div className="text-center mb-14 space-y-4">
           <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900">
             Voices of Our Learners
           </h2>
-
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Real experiences from students who turned learning into real-world
-            success with expert mentorship and hands-on training.
+            success.
           </p>
-
-          <div className="w-28 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
+          <div className="w-28 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full" />
         </div>
 
-        <div className="relative flex items-center justify-center py-12">
-          {/* LEFT */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-2 sm:-left-6 z-10 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
-          >
-            <FaChevronLeft />
-          </button>
+        {/* Slider */}
+        <div className="relative flex flex-col items-center gap-8">
+          {/* Card */}
+          <ReviewCard
+            username={props.feedBack[currentIndex].username}
+            message={props.feedBack[currentIndex].message}
+          />
 
-          {/* CARDS */}
-          <div className="flex items-center justify-center gap-8 w-full">
-            {displayIndexes.map((idx, i) => {
-              const review = props?.feedBack[idx];
-              const isCenter = i === 1 || displayIndexes.length === 1;
+          {/* Controls */}
+          <div className="flex items-center gap-6 sm:hidden">
+            <button
+              onClick={handlePrev}
+              className="p-3 bg-white shadow-lg text-blue-600 rounded-full"
+            >
+              <FaChevronLeft />
+            </button>
 
-              return (
-                <div
-                  key={idx}
-                  className="transition-all duration-500 flex-shrink-0"
-                  style={{
-                    transform: `scale(${isCenter ? 1 : 0.85})`,
-                    opacity: isCenter ? 1 : 0.5,
-                  }}
-                >
-                  <ReviewCard
-                    username={review.username}
-                    message={review.message}
-                  />
-                </div>
-              );
-            })}
+            <button
+              onClick={handleNext}
+              className="p-3 bg-white shadow-lg text-blue-600 rounded-full"
+            >
+              <FaChevronRight />
+            </button>
           </div>
 
-          {/* RIGHT */}
-          <button
-            onClick={handleNext}
-            className="absolute right-2 sm:-right-6 z-10 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
-          >
-            <FaChevronRight />
-          </button>
+          {/* Desktop arrows */}
+          {!isMobile && (
+            <>
+              <button
+                onClick={handlePrev}
+                className="absolute left-0 top-1/2 -translate-y-1/2 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
+              >
+                <FaChevronLeft />
+              </button>
+
+              <button
+                onClick={handleNext}
+                className="absolute right-0 top-1/2 -translate-y-1/2 p-4 bg-white shadow-xl text-blue-600 rounded-full hover:scale-110 transition"
+              >
+                <FaChevronRight />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </section>
   );
 }
+
+
 
 /* ================= EXPORT ================= */
 
