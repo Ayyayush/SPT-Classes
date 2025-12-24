@@ -1683,8 +1683,10 @@ function OverviewData({ courseTitle }) {
 }
 
 function CourseHandoutsData({ courseTitle }) {
+    const syllabus = courseDetails[courseTitle].syllabus;
+
     return (
-        <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6">
                 <BookOpen className="text-blue-600" />
@@ -1693,49 +1695,43 @@ function CourseHandoutsData({ courseTitle }) {
                 </h2>
             </div>
 
-            {/* Table Wrapper */}
-            <div className="overflow-x-auto bg-white rounded-3xl shadow-2xl">
+            {/* ===================== DESKTOP TABLE ===================== */}
+            <div className="hidden md:block overflow-x-auto bg-white rounded-3xl shadow-2xl">
                 <table className="w-full border-collapse">
-                    {/* Table Head */}
                     <thead className="bg-blue-50">
                         <tr className="text-blue-800 text-sm uppercase tracking-wide">
                             <th className="px-6 py-4 text-left">S. No.</th>
                             <th className="px-6 py-4 text-left">Chapter Name</th>
-                            <th className="px-6 py-4 text-center">Duration (Hours)</th>
-                            <th className="px-6 py-4 text-center">Theory (Hrs)</th>
-                            <th className="px-6 py-4 text-center">Lab (Hrs)</th>
+                            <th className="px-6 py-4 text-center">Duration</th>
+                            <th className="px-6 py-4 text-center">Theory</th>
+                            <th className="px-6 py-4 text-center">Lab</th>
                             <th className="px-6 py-4 text-left">Learning Outcomes</th>
                         </tr>
                     </thead>
 
-                    {/* Table Body */}
                     <tbody>
-                        {courseDetails[courseTitle].syllabus.map((item, index) => (
+                        {syllabus.map((item, index) => (
                             <tr
                                 key={item.sno}
-                                className={`border-t transition-all hover:bg-blue-50 hover:shadow-sm $
-                  ${index % 2 === 0 ? "bg-white" : "bg-blue-25"}`}
+                                className={`border-t transition-all hover:bg-blue-50 ${
+                                    index % 2 === 0 ? "bg-white" : "bg-blue-25"
+                                }`}
                             >
                                 <td className="px-6 py-6 font-medium text-gray-700">
                                     {item.sno}
                                 </td>
-
                                 <td className="px-6 py-6 font-semibold text-blue-700">
                                     {item.chapter}
                                 </td>
-
                                 <td className="px-6 py-6 text-center text-gray-600">
                                     {item.duration}
                                 </td>
-
                                 <td className="px-6 py-6 text-center text-gray-600">
                                     {item.theory}
                                 </td>
-
                                 <td className="px-6 py-6 text-center text-gray-600">
                                     {item.lab}
                                 </td>
-
                                 <td className="px-6 py-6 text-gray-600 leading-relaxed">
                                     {item.outcome}
                                 </td>
@@ -1744,9 +1740,55 @@ function CourseHandoutsData({ courseTitle }) {
                     </tbody>
                 </table>
             </div>
+
+            {/* ===================== MOBILE CARDS ===================== */}
+            <div className="md:hidden space-y-4">
+                {syllabus.map((item) => (
+                    <div
+                        key={item.sno}
+                        className="bg-white rounded-2xl shadow-md border p-4"
+                    >
+                        <div className="flex justify-between items-start mb-2">
+                            <span className="text-sm font-semibold text-blue-600">
+                                Module {item.sno}
+                            </span>
+                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                                {item.duration} hrs
+                            </span>
+                        </div>
+
+                        <h3 className="font-semibold text-blue-800 mb-3">
+                            {item.chapter}
+                        </h3>
+
+                        <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 mb-3">
+                            <p>
+                                <span className="font-medium text-gray-800">
+                                    Theory:
+                                </span>{" "}
+                                {item.theory} hrs
+                            </p>
+                            <p>
+                                <span className="font-medium text-gray-800">
+                                    Lab:
+                                </span>{" "}
+                                {item.lab} hrs
+                            </p>
+                        </div>
+
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                            <span className="font-medium text-gray-800">
+                                Learning Outcome:
+                            </span>{" "}
+                            {item.outcome}
+                        </p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
+
 
 
 function BenefitsData({ courseTitle }) {
