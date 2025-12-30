@@ -140,8 +140,10 @@ const RightLoginComponent = () => {
     }
 
     const result = await axios.post(`${AUTH_ENDPOINTS}/studentLogin`,{email:email,password:password},{withCredentials:true})
-    if(result?.data?.success) toast.success("Login done Successfully")
-    else toast.error(result?.data?.message)
+    if(result?.data?.success){
+      toast.success("Login done Successfully")
+      navigate("/")
+    } else toast.error(result?.data?.message)
     // console.log("Login Data:", { email, password });
   }
 

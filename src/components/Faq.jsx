@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { forwardRef } from "react";
+import { CONTACT_ENDPOINTS } from "./endpoint";
 
 const FaqComponent = forwardRef((props, ref) => {
   return (
@@ -76,12 +77,13 @@ const Faq = () => {
 
     try {
       setLoading(true);
-
-      const res = await fetch("https://spt-classes-backend.onrender.com/api/contact", {
+      console.log("Mail Button got clicked")
+      const res = await fetch(`${CONTACT_ENDPOINTS}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+      console.log(res)
 
       const data = await res.json();
 
@@ -91,15 +93,16 @@ const Faq = () => {
 
       toast.success("Thank you for contacting us! We'll get back to you soon.");
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
-      });
+      // setFormData({
+      //   name: "",
+      //   email: "",
+      //   phone: "",
+      //   subject: "",
+      //   message: "",
+      // });
       setErrors({});
     } catch (error) {
+      console.log(error)
       toast.error("Failed to send message. Please try again.");
     } finally {
       setLoading(false);
